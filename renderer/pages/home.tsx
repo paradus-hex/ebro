@@ -9,7 +9,7 @@ function Home() {
         <title>Nor SAAS</title>
       </Head>
       <div className="w-full flex justify-center">
-        <div className="">
+        <div className="max-w-[80%]">
           <MyProjectSlider />
         </div>
       </div>
