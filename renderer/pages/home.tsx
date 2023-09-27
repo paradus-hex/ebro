@@ -21,6 +21,7 @@ function Home() {
           <ImageUpload />
         </div>
       </div>
+      {/* <ImageUpload /> */}
     </React.Fragment>
   );
 }
