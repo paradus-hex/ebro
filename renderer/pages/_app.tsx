@@ -21,14 +21,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       <SideNavbar open={sidebarOpen} />
       <div
         className={`${
-          sidebarOpen
-            ? 'w-1/6 '
-            : 'w-0 overflow-hidden transition-width duration-300 ease-in-out'
-        } h-screen bg-background`}
+          sidebarOpen ? 'w-1/6 ' : 'w-0'
+        } h-screen bg-background overflow-hidden transition-width duration-300 ease-in-out`}
       ></div>
-      <div
-        className={`${sidebarOpen ? 'w-5/6' : 'w-screen'} h-screen bg-blue-600`}
-      >
+      <div className={`w-screen h-screen bg-blue-600`}>
         <Component {...pageProps} />
       </div>
     </div>

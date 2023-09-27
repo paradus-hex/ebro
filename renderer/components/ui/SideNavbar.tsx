@@ -20,7 +20,7 @@ export default function SideNavbar({ open }) {
         open ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
-      <div className="py-8 px-6 h-screen bg-back z-20 fixed top-0 left-0 w-64 peer-focus:left-0 peer:transition duration-300">
+      <div className="py-8 px-6 h-screen bg-back z-20 fixed top-0 left-0 w-60 peer-focus:left-0 peer:transition duration-300">
         <div className="flex flex-col justify-start item-center">
           <h1 className="text-base text-center cursor-pointer font-bold text-blue-900 border-b border-gray-100 pb-4 w-full"></h1>
           <div className=" my-4 border-b border-gray-100 pb-4">
