@@ -13,7 +13,6 @@ function Home() {
       <div className="w-full flex justify-center">
         <div className="max-w-[80%]">
           <MyProjectSlider />
-          {/* <MyProjectSlider2 /> */}
         </div>
       </div>
     </React.Fragment>
