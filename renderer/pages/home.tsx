@@ -1,8 +1,12 @@
-import React from 'react'
-import Head from 'next/head'
-import Link from 'next/link'
-import Image from 'next/image'
-import { Button } from '../components/ui/button'
+import React from 'react';
+import Head from 'next/head';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Button } from '../components/ui/button';
+import { BsHouse } from 'react-icons/bs';
+import { AiOutlineStar } from 'react-icons/ai';
+import { RiDeleteBin2Line } from 'react-icons/ri';
+import MyProjectSlider from '../components/ui/myProjectSlider';
 
 function Home() {
   return (
@@ -10,32 +14,19 @@ function Home() {
       <Head>
         <title>Home - Nextron (with-typescript-tailwindcss)</title>
       </Head>
-      <div className="grid grid-col-1 text-2xl w-full text-center">
-        <div>
-          <Image
-            className="ml-auto mr-auto"
-            src="/images/logo.png"
-            alt="Logo image"
-            width="256px"
-            height="256px"
-          />
+      <div className="grid grid-cols-12 text-2xl w-full text-center">
+        <div className="col-span-3 h-screen bg-red-600"></div>
+        <div className="col-span-9 h-screen bg-blue-600">
+          <MyProjectSlider />
         </div>
-        <span>⚡ Electron ⚡</span>
-        <span>+</span>
-        <span>Next.js</span>
-        <span>+</span>
-        <span>tailwindcss</span>
-        <span>=</span>
-        <span>💕 </span>
-        <Button>button</Button>
       </div>
-      <div className="mt-1 w-full flex-wrap flex justify-center">
+      {/* <div className="mt-1 w-full flex-wrap flex justify-center">
         <Link href="/next">
           <a className="btn-blue">Go to next page</a>
         </Link>
-      </div>
+      </div> */}
     </React.Fragment>
-  )
+  );
 }
 
-export default Home
+export default Home;
