@@ -66,33 +66,33 @@
   }
 }
 
-#journal-scroll {
-  scroll-margin-inline-start: 0;
-}
+/* #journal-scroll { */
+/* scroll-margin-inline-start: 0; */
+/* } */
 
-#journal-scroll::-webkit-scrollbar {
-  width: 2px;
-}
+/* #journal-scroll::-webkit-scrollbar { */
+/* width: 2px; */
+/* } */
 
 /* Track */
-#journal-scroll::-webkit-scrollbar-track {
-  background: #f4e4e4;
-  /* width: 2px; */
-}
+/* #journal-scroll::-webkit-scrollbar-track { */
+/* background: #f4e4e4; */
+/* width: 2px; */
+/* } */
 
 /* Handle */
-#journal-scroll::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 10px;
-  /* width: 2px; */
-}
+/* #journal-scroll::-webkit-scrollbar-thumb { */
+/* background: #888; */
+/* border-radius: 10px; */
+/* width: 2px; */
+/* } */
 
 /* Handle on hover */
-#journal-scroll::-webkit-scrollbar-thumb:hover {
-  background: #555;
-  margin: 5px;
-  /* width: 2px; */
-}
+/* #journal-scroll::-webkit-scrollbar-thumb:hover { */
+/* background: #555; */
+/* margin: 5px; */
+/* width: 2px; */
+/* } */
 
 @layer base {
   * {
@@ -101,4 +101,22 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 3px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090a;
+}
+::-webkit-scrollbar-thumb {
+  background: #9898cf;
+  border-radius: 50px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d7d4ff;
 }

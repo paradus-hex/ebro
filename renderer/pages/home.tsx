@@ -1,6 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import MyProjectSlider from '../components/ui/myProjectSlider';
+import ImageUpload from '../components/imageUpload';
 
 function Home() {
   return (
