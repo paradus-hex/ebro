@@ -15,6 +15,12 @@ function Home() {
           <MyProjectSlider />
         </div>
       </div>
+      <div className="w-full flex justify-center">
+        <div className="max-w-[80%]">
+          <ImageUpload />
+        </div>
+      </div>
+      {/* <ImageUpload /> */}
     </React.Fragment>
   );
 }
