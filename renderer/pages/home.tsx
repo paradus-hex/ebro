@@ -1,8 +1,12 @@
-import React from 'react'
-import Head from 'next/head'
-import Link from 'next/link'
-import Image from 'next/image'
-import { Button } from '../components/ui/button'
+import React from 'react';
+import Head from 'next/head';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Button } from '../components/ui/button';
+import { BsHouse } from 'react-icons/bs';
+import { AiOutlineStar } from 'react-icons/ai';
+import { RiDeleteBin2Line } from 'react-icons/ri';
+import MyProjectSlider from '../components/ui/myProjectSlider';
 
 function Home() {
   return (
@@ -11,13 +15,10 @@ function Home() {
         <title>Home - Nextron (with-typescript-tailwindcss)</title>
       </Head>
       <div className="grid grid-cols-12 text-2xl w-full text-center">
-        <div className='col-span-3 h-screen bg-red-600'>
-
+        <div className="col-span-3 h-screen bg-red-600"></div>
+        <div className="col-span-9 h-screen bg-blue-600">
+          <MyProjectSlider />
         </div>
-        <div className='col-span-9 h-screen bg-blue-600'>
-
-        </div>
-       
       </div>
       {/* <div className="mt-1 w-full flex-wrap flex justify-center">
         <Link href="/next">
@@ -25,7 +26,7 @@ function Home() {
         </Link>
       </div> */}
     </React.Fragment>
-  )
+  );
 }
 
-export default Home
+export default Home;
