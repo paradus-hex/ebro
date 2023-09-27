@@ -1,5 +1,6 @@
 import React from 'react';
 import MyProjectCard from './myProjectCard';
+import { projects } from '../lib/constants';
 
 export default function MyProjectSlider() {
   return (
