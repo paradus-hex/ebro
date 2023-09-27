@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { Button } from '../components/ui/button';
-
+//Create Page
 export default function Create() {
   const router = useRouter();
   const handleHomeClick = () => {
