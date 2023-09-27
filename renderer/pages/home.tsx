@@ -1,6 +1,8 @@
 import React from 'react';
 import Head from 'next/head';
-import MyProjectSlider from '../components/ui/myProjectSlider';
+import MyProjectSlider from '../components/myProjectSlider';
+import ImageUpload from '../components/imageUpload';
+import MyProjectSlider2 from '../components/myProjectSlider2';
 
 function Home() {
   return (
@@ -11,6 +13,7 @@ function Home() {
       <div className="w-full flex justify-center">
         <div className="max-w-[80%]">
           <MyProjectSlider />
+          {/* <MyProjectSlider2 /> */}
         </div>
       </div>
     </React.Fragment>
