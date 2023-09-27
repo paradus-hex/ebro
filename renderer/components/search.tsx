@@ -1,30 +1,38 @@
 import React, { useEffect, useRef } from 'react';
 import SearchRecommendationBox from './searchRecommendationBox';
 import { useState } from 'react';
+// import { useSearch } from '../context/searchContext';
+import { projects } from '../lib/constants';
 
 export default function Search() {
   const [search, setSearch] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
   const searchClick = () => {
     setSearch(true);
   };
 
   const searchRef = useRef(null);
+  const check = (e) => {
+    setSuggestions(
+      projects.filter((project) =>
+        project.name.toLowerCase().includes(e.target.value.toLowerCase()),
+      ),
+    );
+  };
 
   useEffect(() => {
     const clickAway = (e) => {
-      // setSearch(searchRef.current.contains(e.target));
       console.log(searchRef?.current?.contains(e.target));
       if (!searchRef?.current?.contains(e.target)) {
         setSearch(false);
       }
-      // console.log(e.target);
     };
     document.addEventListener('mousedown', clickAway);
     return () => {
       document.removeEventListener('mousedown', clickAway);
     };
   });
-  console.log('search');
+
   return (
     <div className="px-12 flex flex-row w-full">
       <div className="relative">
@@ -50,6 +58,7 @@ export default function Search() {
             onFocus={() => {
               searchClick();
             }}
+            onChange={(e) => check(e)}
             type="text"
             placeholder="Search for elixir..."
             className="pl-16 pr-4 py-4 rounded-md shadow-md bg-white border-0 w-full outline-none"
@@ -57,7 +66,12 @@ export default function Search() {
         </div>
 
         {/* <!-- INPUT --> */}
-        {search && <SearchRecommendationBox searchRef={searchRef} />}
+        {search && (
+          <SearchRecommendationBox
+            searchRef={searchRef}
+            suggestions={suggestions}
+          />
+        )}
       </div>
     </div>
   );
