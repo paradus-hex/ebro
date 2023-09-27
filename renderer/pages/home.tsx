@@ -10,30 +10,20 @@ function Home() {
       <Head>
         <title>Home - Nextron (with-typescript-tailwindcss)</title>
       </Head>
-      <div className="grid grid-col-1 text-2xl w-full text-center">
-        <div>
-          <Image
-            className="ml-auto mr-auto"
-            src="/images/logo.png"
-            alt="Logo image"
-            width="256px"
-            height="256px"
-          />
+      <div className="grid grid-cols-12 text-2xl w-full text-center">
+        <div className='col-span-3 h-screen bg-red-600'>
+
         </div>
-        <span>⚡ Electron ⚡</span>
-        <span>+</span>
-        <span>Next.js</span>
-        <span>+</span>
-        <span>tailwindcss</span>
-        <span>=</span>
-        <span>💕 </span>
-        <Button>button</Button>
+        <div className='col-span-9 h-screen bg-blue-600'>
+
+        </div>
+       
       </div>
-      <div className="mt-1 w-full flex-wrap flex justify-center">
+      {/* <div className="mt-1 w-full flex-wrap flex justify-center">
         <Link href="/next">
           <a className="btn-blue">Go to next page</a>
         </Link>
-      </div>
+      </div> */}
     </React.Fragment>
   )
 }
