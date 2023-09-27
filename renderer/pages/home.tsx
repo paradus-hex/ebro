@@ -14,7 +14,7 @@ function Home() {
           <MyProjectSlider />
         </div>
       </div>
-      <ImageUpload />
+      {/* <ImageUpload /> */}
     </React.Fragment>
   );
 }
