@@ -14,6 +14,7 @@ function Home() {
           <MyProjectSlider />
         </div>
       </div>
+      <ImageUpload />
     </React.Fragment>
   );
 }

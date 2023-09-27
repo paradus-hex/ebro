@@ -47,6 +47,7 @@ const ImageUpload = () => {
               />
             </div>
           </label>
+          <div>Upload Image</div>
         </form>
       ) : (
         <div className="flex flex-col items-center">
