@@ -47,14 +47,6 @@ export default function myProjectSlider2() {
             name={selectedCards[handleIndex(currentCardIndex)].name}
             address={selectedCards[handleIndex(currentCardIndex)].address}
           />
-          <MyProjectCard
-            name={selectedCards[handleIndex(currentCardIndex + 1)].name}
-            address={selectedCards[handleIndex(currentCardIndex)].address}
-          />
-          <MyProjectCard
-            name={selectedCards[handleIndex(currentCardIndex + 2)].name}
-            address={selectedCards[handleIndex(currentCardIndex)].address}
-          />
         </div>
         <button
           className=" bg-gray-200 hover:bg-gray-300 p-2 rounded-full"

@@ -24,7 +24,11 @@ function MyApp({ Component, pageProps }: AppProps) {
           sidebarOpen ? 'w-1/6 ' : 'w-0'
         } h-screen bg-background overflow-hidden transition-width duration-300 ease-in-out`}
       ></div>
-      <div className={`w-screen h-screen bg-blue-600`}>
+      <div
+        className={`${
+          sidebarOpen ? 'w-5/6 ' : 'w-screen'
+        } h-screen bg-blue-600 transition-width duration-300 ease-in-out`}
+      >
         <Component {...pageProps} />
       </div>
     </div>
