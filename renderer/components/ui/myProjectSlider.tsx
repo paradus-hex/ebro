@@ -9,9 +9,10 @@ export default function MyProjectSlider() {
       </div>
 
       <div
-        className="w-full flex flex-row overflow-x-scroll bg-black"
+        className="w-full flex flex-row justify-center overflow-x-scroll bg-black"
         id="journal-scroll"
       >
+        <MyProjectCard />
         <MyProjectCard />
         <MyProjectCard />
         <MyProjectCard />
