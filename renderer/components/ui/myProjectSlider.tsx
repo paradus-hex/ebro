@@ -16,8 +16,6 @@ export default function MyProjectSlider() {
         <MyProjectCard />
         <MyProjectCard />
         <MyProjectCard />
-        <MyProjectCard />
-        <MyProjectCard />
       </div>
     </div>
   );
