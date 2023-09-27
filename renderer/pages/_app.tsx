@@ -22,12 +22,12 @@ function MyApp({ Component, pageProps }: AppProps) {
       <div
         className={`${
           sidebarOpen ? 'w-1/6 ' : 'w-0'
-        } h-screen bg-background overflow-hidden transition-all duration-100 ease-in-out`}
+        } h-screen bg-background overflow-hidden transition-width duration-300 ease-in-out`}
       ></div>
       <div
         className={`${
           sidebarOpen ? 'w-5/6 ' : 'w-screen'
-        } h-screen transition-all duration-100 ease-in-out`}
+        } h-screen transition-width duration-300 ease-in-out`}
       >
         <Component {...pageProps} />
       </div>
