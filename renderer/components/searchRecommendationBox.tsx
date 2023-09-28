@@ -11,7 +11,7 @@ export default function SearchRecommendationBox({
   return (
     <ul
       ref={searchRef}
-      className="rounded-md shadow-md bg-white absolute left-0 right-0 -bottom-18 mt-3 p-3 transition ease-in-out delay-150 "
+      className="z-50 rounded-md shadow-md bg-white absolute left-0 right-0 -bottom-18 mt-3 p-3 transition ease-in-out delay-150 "
     >
       {suggestions.length != 0
         ? suggestions.map((project, index) => {
