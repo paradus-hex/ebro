@@ -18,6 +18,7 @@ import { Input } from '../components/ui/input';
 import { MultiSelect } from '../components/MultiSelect';
 import ImageUpload from '../components/imageUpload';
 import { FormPopOver } from '../components/formPopOver';
+import { useEffect, useState } from 'react';
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -63,7 +64,17 @@ export default function Create() {
       address: '',
     },
   });
-  const { control, formState, getValues } = form;
+  // const [values, setValues] = useState({} as any);
+  const { control, formState, watch } = form;
+  // useEffect(() => {
+  //   const subscription = watch();
+  //   console.log(subscription);
+  //   setValues(subscription);
+  //   // return () => subscription.unsubscribe();
+  // }, [watch]);
+  const values = watch();
+  // const values = form.getValues();
+
   const { errors } = formState;
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
@@ -93,7 +104,7 @@ export default function Create() {
                 </FormLabel>
                 <FormPopOver
                   className="mt-[8px] bg-white"
-                  values={getValues()}
+                  values={values}
                   type="address"
                 >
                   <div className="grid  items-center gap-4 ">
@@ -239,7 +250,7 @@ export default function Create() {
                 </FormLabel>
                 <FormPopOver
                   className="mt-[8px] bg-white"
-                  values={getValues()}
+                  values={values}
                   type="roomNumbers"
                 >
                   <FormField
