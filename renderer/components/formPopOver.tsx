@@ -1,7 +1,5 @@
-import { useEffect } from 'react';
 import { Button } from './ui/Button';
-import { Input } from './ui/Input';
-import { Label } from './ui/Label';
+
 import { Popover, PopoverContent, PopoverTrigger } from './ui/Popover';
 
 export function FormPopOver({
@@ -18,14 +16,14 @@ export function FormPopOver({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        {/* <Label>Address</Label> */}
-
-        {/* <h1>hello</h1> */}
-        <Button className={'text-left ' + ' ' + className} variant="outline">
+        <Button
+          className={'text-left w-[80%] m-auto' + ' ' + className}
+          variant="outline"
+        >
           {type == 'address'
             ? values?.address && values?.city && values?.zipCode
               ? values.address + ', ' + values.city + ', ' + values.zipCode
-              : 'No address selected'
+              : 'No Address Selected'
             : ''}
           {type == 'roomNumbers'
             ? values?.address && values?.numberOfBathRooms
@@ -36,7 +34,7 @@ export function FormPopOver({
                 'Bathrooms X' +
                 ' ' +
                 values.numberOfBathRooms
-              : 'No address selected'
+              : 'No Rooms Numbers Selected'
             : ''}
         </Button>
       </PopoverTrigger>
