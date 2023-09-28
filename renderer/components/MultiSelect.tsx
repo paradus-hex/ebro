@@ -2,16 +2,16 @@ import * as React from 'react';
 import { cn } from '../lib/utils';
 
 import { Check, X, ChevronsUpDown } from 'lucide-react';
-import { Button } from './ui/button';
+import { Button } from './ui/Button';
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from './ui/command';
+} from './ui/Command';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/Popover';
-import { Badge } from './ui/badge';
+import { Badge } from './ui/Badge';
 
 export type OptionType = {
   label: string;
