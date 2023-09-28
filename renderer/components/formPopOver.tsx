@@ -6,9 +6,13 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 export function FormPopOver({
   children,
   className,
+  values,
+  type,
 }: {
   children: React.ReactNode;
   className?: string;
+  values?: any;
+  type?: string;
 }) {
   return (
     <Popover>
@@ -16,8 +20,23 @@ export function FormPopOver({
         {/* <Label>Address</Label> */}
 
         {/* <h1>hello</h1> */}
-        <Button className={className} variant="outline">
-          click here
+        <Button className={'text-left ' + ' ' + className} variant="outline">
+          {type == 'address'
+            ? values?.address && values?.city && values?.zipCode
+              ? values.address + ', ' + values.city + ', ' + values.zipCode
+              : 'No address selected'
+            : ''}
+          {type == 'roomNumbers'
+            ? values?.address && values?.numberOfBathRooms
+              ? 'Bedrooms X' +
+                ' ' +
+                values.numberOfBedRooms +
+                ', ' +
+                'Bathrooms X' +
+                ' ' +
+                values.numberOfBathRooms
+              : 'No address selected'
+            : ''}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80">
