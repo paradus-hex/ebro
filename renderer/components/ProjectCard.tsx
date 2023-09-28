@@ -15,7 +15,7 @@ export default function MyProjectCard({
   return (
     <div
       key={id}
-      className=" p-5 grid-cols-5 flex justify-start items-center text-left min-w-[200px] min-h-[150px] rounded-lg bg-slate-100 m-2 transition ease-in-out delay-1000 start-translate-x-0 end-translate-x-10"
+      className=" p-5 grid-cols-5 flex justify-start items-center text-left min-w-[200px] min-h-[150px] rounded-lg  m-2 transition ease-in-out delay-1000 start-translate-x-0 end-translate-x-10"
     >
       <div className="col-span-4 bgh-green-600 w-full">
         <BsHouse className="w-[50px] h-[50px] mb-5"></BsHouse>

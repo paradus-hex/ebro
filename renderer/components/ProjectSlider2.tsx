@@ -24,45 +24,20 @@ export default function ProjectSlider2() {
   const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
   useEffect(() => {}, [currentCardIndex]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {};
-
-  const handlePrevImage = () => {
-    setCurrentCardIndex((prevIndex) =>
-      prevIndex === 0 ? selectedCards.length - 1 : prevIndex - 1,
-    );
-  };
-
-  const handleNextImage = () => {
-    setCurrentCardIndex((prevIndex) =>
-      prevIndex === selectedCards.length - 1 ? 0 : prevIndex + 1,
-    );
-  };
-
-  const handleIndex = (index: number) => {
-    if (index > selectedCards.length - 1) {
-      return index - selectedCards.length;
-    }
-    return index;
-  };
-
   return (
     <div className="pt-9 ">
-      <h1>My Project</h1>
+      <h1 className="mb-5">My Project</h1>
       <Splide
         hasTrack={true}
         options={{
-          // rewind: true,
-          type: 'loop',
           perPage: 3,
-
-          // width: 800,
           gap: '1rem',
           autoWidth: true,
         }}
         aria-label="My Favorite Images"
       >
         {selectedCards.map((card, index) => (
-          <SplideSlide key={card.key} className="m-5">
+          <SplideSlide key={card.key} className="m-5 slideRow">
             <MyProjectCard
               id={selectedCards[index].key}
               name={selectedCards[index].name}

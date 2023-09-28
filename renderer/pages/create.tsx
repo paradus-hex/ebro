@@ -18,6 +18,7 @@ import { Input } from '../components/ui/Input';
 import { MultiSelect } from '../components/MultiSelect';
 import ImageUpload from '../components/ImageUpload';
 import { FormPopOver } from '../components/FormPopOver';
+import { Textarea } from '../components/ui/textarea';
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -475,6 +476,17 @@ export default function Create() {
       </div>
       <div className="flex flex-col justify-center h-screen bg-white w-[30%] gap-y-40">
         <ImageUpload></ImageUpload>
+        <div
+          className="flex
+        flex-col justify-center items-center"
+        >
+          <Button className="m-5">Notes</Button>
+          <Textarea
+            className="w-[80%] m-auto"
+            placeholder="Type your message here."
+          />
+        </div>
+
         <Button className="text-xl mx-8" onClick={handleGenerateClick}>
           Generate
         </Button>
