@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import EditModal from '../components/finalpageModal';
 
 type Props = {};
 
 const FinalPage = (props: Props) => {
   const [text, setText] = useState<string>('Initial text');
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -16,6 +18,14 @@ const FinalPage = (props: Props) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
+  };
+
+  const handleAIButtonClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -46,13 +56,28 @@ const FinalPage = (props: Props) => {
         <div className="col-span-4 bg-white rounded-lg">Image</div>
       </div>
       <div className="flex flex-row justify-between bg-white h-20 gap-10 items-center">
-        <button className="ml-4 bg-slate-700 text-white rounded-xl text-sm px-2 h-10 flex-grow">
+        <button
+          className="ml-4 bg-slate-700 text-white rounded-xl text-sm px-2 h-10 flex-grow"
+          onClick={handleAIButtonClick}
+        >
           AI Modification
         </button>
         <button className="mr-4 bg-slate-700 text-white rounded-xl text-sm px-2 h-10 flex-grow">
           Export
         </button>
       </div>
+      {isModalOpen && (
+        <EditModal
+          text={text}
+          isEditing={isEditing}
+          setText={setText}
+          setIsEditing={setIsEditing}
+          handleChange={handleChange}
+          handleSaveClick={handleSaveClick}
+          handleCloseModal={handleCloseModal}
+          handleEditClick={handleEditClick}
+        />
+      )}
     </div>
   );
 };
