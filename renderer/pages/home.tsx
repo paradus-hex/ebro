@@ -1,8 +1,8 @@
 import React from 'react';
 import Head from 'next/head';
-import ProjectSlider from '../components/ProjectSlider';
+
 import ImageUpload from '../components/ImageUpload';
-import ProjectSlider2 from '../components/ProjectSlider2';
+import ProjectSlider from '../components/ProjectSlider';
 import { Button } from '../components/ui/Button';
 import { useRouter } from 'next/router';
 import Search from '../components/Search';
@@ -34,9 +34,7 @@ function Home() {
           </div>
         </div>
         <div className="w-[80%]">
-          {/* <ProjectSlider /> */}
-          <ProjectSlider2 />
-          {/* <Slider /> */}
+          <ProjectSlider />
         </div>
       </div>
       <Button
@@ -45,11 +43,7 @@ function Home() {
       >
         Create
       </Button>
-      <div className="w-full flex justify-center">
-        <div className="max-w-[80%]">
-          <ImageUpload />
-        </div>
-      </div>
+
       {/* <ImageUpload /> */}
     </React.Fragment>
   );

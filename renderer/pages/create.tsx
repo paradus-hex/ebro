@@ -64,17 +64,9 @@ export default function Create() {
       address: '',
     },
   });
-  // const [values, setValues] = useState({} as any);
-  const { control, formState, watch } = form;
-  // useEffect(() => {
-  //   const subscription = watch();
-  //   console.log(subscription);
-  //   setValues(subscription);
-  //   // return () => subscription.unsubscribe();
-  // }, [watch]);
-  const values = watch();
-  // const values = form.getValues();
 
+  const { control, formState, watch } = form;
+  const values = watch();
   const { errors } = formState;
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
@@ -91,10 +83,10 @@ export default function Create() {
         <div className="my-10"></div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <div className="grid grid-cols-2 gap-4 gap-y-14">
+            <div className="grid grid-cols-2 gap-4 gap-y-14 place-items-center">
               <div className="w-full flex flex-col">
                 <FormLabel
-                  className={`text-xl ${
+                  className={`text-xl  ${
                     errors.address || errors.city || errors.zipCode
                       ? 'text-red-600'
                       : ' '
@@ -112,7 +104,7 @@ export default function Create() {
                       control={form.control}
                       name="address"
                       render={({ field }) => (
-                        <FormItem className="flex flex-col items-center">
+                        <FormItem className=" flex flex-col items-center">
                           <FormLabel className="text-xl ">Address</FormLabel>
                           <FormControl>
                             <Input
@@ -133,7 +125,7 @@ export default function Create() {
                       control={form.control}
                       name="zipCode"
                       render={({ field }) => (
-                        <FormItem className="flex flex-col items-center">
+                        <FormItem className=" flex flex-col items-center">
                           <FormLabel className="text-xl col-span-1">
                             Zip Code
                           </FormLabel>
@@ -154,7 +146,7 @@ export default function Create() {
                       control={form.control}
                       name="city"
                       render={({ field }) => (
-                        <FormItem className="flex flex-col items-center">
+                        <FormItem className=" flex flex-col items-center">
                           <FormLabel className="text-xl col-span-1">
                             City
                           </FormLabel>
@@ -184,7 +176,7 @@ export default function Create() {
                 control={form.control}
                 name="yearOfConstruction"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col items-center">
+                  <FormItem className="w-[80%] flex flex-col items-center">
                     <FormLabel className="text-xl ">
                       Year of Construction
                     </FormLabel>
@@ -204,7 +196,7 @@ export default function Create() {
                 control={form.control}
                 name="sizeOfProperty"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col items-center">
+                  <FormItem className="w-[80%] flex flex-col items-center">
                     <FormLabel className="text-xl">
                       Size of the property {`(in acres)`}
                     </FormLabel>
@@ -223,7 +215,7 @@ export default function Create() {
                 control={form.control}
                 name="sizeOfHome"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col items-center">
+                  <FormItem className="w-[80%] flex flex-col items-center">
                     <FormLabel className="text-xl">
                       Size of the Home {`(in m^2)`}
                     </FormLabel>
@@ -238,7 +230,7 @@ export default function Create() {
                   </FormItem>
                 )}
               />
-              <div className="flex flex-col">
+              <div className="w-full flex flex-col">
                 <FormLabel
                   className={`text-xl ${
                     errors.numberOfBathRooms || errors.numberOfBedRooms
@@ -257,7 +249,7 @@ export default function Create() {
                     control={form.control}
                     name="numberOfBedRooms"
                     render={({ field }) => (
-                      <FormItem className="flex flex-col items-center">
+                      <FormItem className=" flex flex-col items-center">
                         <FormLabel className="text-xl">
                           Number of Bed Rooms
                         </FormLabel>
@@ -276,7 +268,7 @@ export default function Create() {
                     control={form.control}
                     name="numberOfBathRooms"
                     render={({ field }) => (
-                      <FormItem className="flex flex-col items-center">
+                      <FormItem className=" flex flex-col items-center">
                         <FormLabel className="text-xl">
                           Number of Bathrooms
                         </FormLabel>
@@ -309,7 +301,7 @@ export default function Create() {
                     field.value = [];
                   }
                   return (
-                    <FormItem className="flex flex-col items-center">
+                    <FormItem className="w-[80%] flex flex-col items-center">
                       <FormLabel className="text-xl">
                         Architectural Style
                       </FormLabel>
@@ -349,7 +341,7 @@ export default function Create() {
                     field.value = [];
                   }
                   return (
-                    <FormItem className="flex flex-col items-center">
+                    <FormItem className="w-[80%] flex flex-col items-center">
                       <FormLabel className="text-xl">Outbuildings</FormLabel>
                       <MultiSelect
                         selected={field.value}
@@ -383,7 +375,7 @@ export default function Create() {
                 control={form.control}
                 name="uniqueSellingPoints"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col items-center">
+                  <FormItem className="w-[80%] flex flex-col items-center">
                     <FormLabel className="text-xl">
                       Unique selling points
                     </FormLabel>
@@ -402,7 +394,7 @@ export default function Create() {
                 control={form.control}
                 name="interiorFeatures"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col items-center">
+                  <FormItem className="w-[80%] flex flex-col items-center">
                     <FormLabel className="text-xl">Interior Features</FormLabel>
                     <FormControl>
                       <Input
@@ -419,7 +411,7 @@ export default function Create() {
                 control={form.control}
                 name="localAttractions"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col items-center">
+                  <FormItem className="w-[80%] flex flex-col items-center">
                     <FormLabel className="text-xl">Local attractions</FormLabel>
                     <FormControl>
                       <Input
@@ -436,7 +428,7 @@ export default function Create() {
                 control={form.control}
                 name="geographicalFeatures"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col items-center">
+                  <FormItem className="w-[80%] flex flex-col items-center">
                     <FormLabel className="text-xl">
                       Geographical Featues
                     </FormLabel>
@@ -455,7 +447,7 @@ export default function Create() {
                 control={form.control}
                 name="nearbyAmenities"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col items-center">
+                  <FormItem className="w-[80%] flex flex-col items-center">
                     <FormLabel className="text-xl">Nearby Amenities</FormLabel>
                     <FormControl>
                       <Input
