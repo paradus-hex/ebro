@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/router';
-import { Button } from '../components/ui/button';
+import { Button } from '../components/ui/Button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { DevTool } from '@hookform/devtools';
@@ -18,7 +18,6 @@ import { Input } from '../components/ui/Input';
 import { MultiSelect } from '../components/MultiSelect';
 import ImageUpload from '../components/ImageUpload';
 import { FormPopOver } from '../components/FormPopOver';
-import { useEffect, useState } from 'react';
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -55,7 +54,7 @@ export default function Create() {
     router.push('/home');
   };
   const handleGenerateClick = () => {
-    router.push('/finalpage');
+    router.push('/finalPage');
   };
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

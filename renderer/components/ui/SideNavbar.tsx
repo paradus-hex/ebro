@@ -12,8 +12,13 @@ import {
 import { CgProfile } from 'react-icons/cg';
 import { FaRegComments } from 'react-icons/fa';
 import { BiMessageSquareDots } from 'react-icons/bi';
+import { useRouter } from 'next/router';
 
 export default function SideNavbar({ open }) {
+  const router = useRouter();
+  const handleClick = (e) => {
+    e.target.id === 'dashboardBtn' && router.push('/home');
+  };
   return (
     <div
       className={`fixed inset-y-0 left-0 w-1/6 text-white transition-transform duration-300 transform ${
@@ -24,9 +29,21 @@ export default function SideNavbar({ open }) {
         <div className="flex flex-col justify-start item-center">
           <h1 className="text-base text-center cursor-pointer font-bold text-blue-900 border-b border-gray-100 pb-4 w-full"></h1>
           <div className=" my-4 border-b border-gray-100 pb-4">
-            <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-              <MdOutlineSpaceDashboard className="text-2xl text-gray-600 group-hover:text-white " />
-              <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
+            <div
+              id="dashboardBtn"
+              onClick={handleClick}
+              className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto"
+            >
+              <MdOutlineSpaceDashboard
+                id="dashboardBtn"
+                onClick={handleClick}
+                className="text-2xl text-gray-600 group-hover:text-white "
+              />
+              <h3
+                id="dashboardBtn"
+                onClick={handleClick}
+                className="text-base text-gray-800 group-hover:text-white font-semibold "
+              >
                 Dashboard
               </h3>
             </div>

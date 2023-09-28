@@ -3,7 +3,7 @@ import Head from 'next/head';
 import ProjectSlider from '../components/ProjectSlider';
 import ImageUpload from '../components/ImageUpload';
 import ProjectSlider2 from '../components/ProjectSlider2';
-import { Button } from '../components/ui/button';
+import { Button } from '../components/ui/Button';
 import { useRouter } from 'next/router';
 import Search from '../components/Search';
 import Slider from '../components/Slider';
