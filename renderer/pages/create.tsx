@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Button } from '../components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { DevTool } from '@hookform/devtools';
 import { useForm } from 'react-hook-form';
 import {
   Form,
@@ -16,6 +17,7 @@ import {
 import { Input } from '../components/ui/input';
 import { MultiSelect } from '../components/MultiSelect';
 import ImageUpload from '../components/imageUpload';
+import { FormPopOver } from '../components/formPopOver';
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -24,12 +26,19 @@ const formSchema = z.object({
   address: z
     .string()
     .min(2, { message: 'Address must be at least 2 characters.' }),
+  zipCode: z
+    .string()
+    .min(2, { message: 'Address must be at least 2 characters.' }),
+  city: z
+    .string()
+    .min(2, { message: 'Address must be at least 2 characters.' }),
   yearOfConstruction: z
     .number()
     .min(4, { message: 'Year of construction must be at least 4 digits long' }),
   sizeOfProperty: z.number(),
   sizeOfHome: z.number(),
-  numberOfRooms: z.number(),
+  numberOfBedRooms: z.number(),
+  numberOfBathRooms: z.number(),
   architecturalStyle: z.array(z.string()),
   outbuildings: z.array(z.string()),
   uniqueSellingPoints: z.string(),
@@ -54,6 +63,8 @@ export default function Create() {
       address: '',
     },
   });
+  const { control, formState, getValues } = form;
+  const { errors } = formState;
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
@@ -70,33 +81,105 @@ export default function Create() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="grid grid-cols-2 gap-4 gap-y-14">
-              <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col items-center">
-                    <FormLabel className="text-xl">Address</FormLabel>
-                    <FormControl>
-                      <Input
-                        className="max-w-[920px] bg-white"
-                        placeholder="Enter the address of the property"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+              <div className="w-full flex flex-col">
+                <FormLabel
+                  className={`text-xl ${
+                    errors.address || errors.city || errors.zipCode
+                      ? 'text-red-600'
+                      : ' '
+                  } `}
+                >
+                  Address
+                </FormLabel>
+                <FormPopOver
+                  className="mt-[8px] bg-white"
+                  values={getValues()}
+                  type="address"
+                >
+                  <div className="grid  items-center gap-4 ">
+                    <FormField
+                      control={form.control}
+                      name="address"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col items-center">
+                          <FormLabel className="text-xl ">Address</FormLabel>
+                          <FormControl>
+                            <Input
+                              id="width"
+                              defaultValue="100%"
+                              className="max-w-[920px] bg-white col-span-2 h-8"
+                              placeholder="Enter the address of the property"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="grid  items-center gap-4">
+                    <FormField
+                      control={form.control}
+                      name="zipCode"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col items-center">
+                          <FormLabel className="text-xl col-span-1">
+                            Zip Code
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              className="max-w-[920px] bg-white col-span-2 h-8"
+                              placeholder="Enter the address of the property"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="grid  items-center gap-4">
+                    <FormField
+                      control={form.control}
+                      name="city"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col items-center">
+                          <FormLabel className="text-xl col-span-1">
+                            City
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              className="max-w-[920px] bg-white col-span-2 h-8"
+                              placeholder="Enter the address of the property"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </FormPopOver>
+                {(errors.address || errors.city || errors.zipCode) && (
+                  <div>
+                    <FormDescription className="text-red-600">
+                      Atleast one of the fields is invalid
+                    </FormDescription>
+                  </div>
                 )}
-              />
+              </div>
+
               <FormField
                 control={form.control}
                 name="yearOfConstruction"
                 render={({ field }) => (
                   <FormItem className="flex flex-col items-center">
-                    <FormLabel className="text-xl">
+                    <FormLabel className="text-xl ">
                       Year of Construction
                     </FormLabel>
                     <FormControl>
                       <Input
+                        type="number"
                         className="max-w-[920px] bg-white"
                         placeholder="Enter the year of construction of the property"
                         {...field}
@@ -144,23 +227,69 @@ export default function Create() {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="numberOfRooms"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col items-center">
-                    <FormLabel className="text-xl">Number of rooms</FormLabel>
-                    <FormControl>
-                      <Input
-                        className="max-w-[920px] bg-white"
-                        placeholder="Enter the number of rooms"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+              <div className="flex flex-col">
+                <FormLabel
+                  className={`text-xl ${
+                    errors.numberOfBathRooms || errors.numberOfBedRooms
+                      ? 'text-red-600'
+                      : ' '
+                  } `}
+                >
+                  Number of Rooms
+                </FormLabel>
+                <FormPopOver
+                  className="mt-[8px] bg-white"
+                  values={getValues()}
+                  type="roomNumbers"
+                >
+                  <FormField
+                    control={form.control}
+                    name="numberOfBedRooms"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col items-center">
+                        <FormLabel className="text-xl">
+                          Number of Bed Rooms
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            className="max-w-[920px] bg-white"
+                            placeholder="Enter the number of rooms"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="numberOfBathRooms"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col items-center">
+                        <FormLabel className="text-xl">
+                          Number of Bathrooms
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            className="max-w-[920px] bg-white"
+                            placeholder="Enter the number of rooms"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </FormPopOver>
+                {(errors.numberOfBathRooms || errors.numberOfBedRooms) && (
+                  <div>
+                    <FormDescription className="text-red-600">
+                      Atleast one of the fields is invalid
+                    </FormDescription>
+                  </div>
                 )}
-              />
+              </div>
+
               <FormField
                 control={form.control}
                 name="architecturalStyle"
@@ -170,7 +299,9 @@ export default function Create() {
                   }
                   return (
                     <FormItem className="flex flex-col items-center">
-                      <FormLabel>Architectural Style</FormLabel>
+                      <FormLabel className="text-xl">
+                        Architectural Style
+                      </FormLabel>
                       <MultiSelect
                         selected={field.value}
                         options={[
@@ -208,7 +339,7 @@ export default function Create() {
                   }
                   return (
                     <FormItem className="flex flex-col items-center">
-                      <FormLabel>Outbuildings</FormLabel>
+                      <FormLabel className="text-xl">Outbuildings</FormLabel>
                       <MultiSelect
                         selected={field.value}
                         options={[
@@ -330,6 +461,7 @@ export default function Create() {
             <Button type="submit">Submit</Button>
           </form>
         </Form>
+        <DevTool control={control} />
       </div>
       <div className="flex flex-col justify-center h-screen bg-white w-[30%] gap-y-40">
         <ImageUpload></ImageUpload>
