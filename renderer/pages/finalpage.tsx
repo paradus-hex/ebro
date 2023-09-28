@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import EditModal from '../components/FinalPageModal';
+import EditModal from '../components/finalpageModal';
 
 type Props = {};
 
