@@ -37,7 +37,10 @@ function Home() {
           {/* <MyProjectSlider2 /> */}
         </div>
       </div>
-      <Button className="mt-10 w-[90px] h-[50px]" onClick={handleCreateClick}>
+      <Button
+        className="mt-10 w-[90px] h-[50px] text-xl"
+        onClick={handleCreateClick}
+      >
         Create
       </Button>
       <div className="w-full flex justify-center">
