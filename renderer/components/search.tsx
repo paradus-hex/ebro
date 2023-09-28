@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import SearchRecommendationBox from './SearchRecommendationBox';
 import { useState } from 'react';
-// import { useSearch } from '../context/searchContext';
 import { projects } from '../lib/constants';
 
 export default function Search() {
