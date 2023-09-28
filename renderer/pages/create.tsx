@@ -17,7 +17,7 @@ import {
 import { Input } from '../components/ui/Input';
 import { MultiSelect } from '../components/MultiSelect';
 import ImageUpload from '../components/ImageUpload';
-import { FormPopOver } from '../components/formPopOver';
+import { FormPopOver } from '../components/FormPopOver';
 import { Textarea } from '../components/ui/textarea';
 
 const formSchema = z.object({
