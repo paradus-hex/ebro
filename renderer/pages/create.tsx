@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Button } from '../components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { DevTool } from '@hookform/devtools';
 import { useForm } from 'react-hook-form';
 import {
   Form,
@@ -59,6 +60,7 @@ export default function Create() {
       address: '',
     },
   });
+  const { control } = form;
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
@@ -203,7 +205,7 @@ export default function Create() {
                 )}
               />
               <div className="flex flex-col">
-                <FormLabel className="text-xl ">Address</FormLabel>
+                <FormLabel className="text-xl ">Number of Rooms</FormLabel>
                 <FormPopOver className="mt-[8px] bg-white">
                   <FormField
                     control={form.control}
@@ -417,6 +419,7 @@ export default function Create() {
             <Button type="submit">Submit</Button>
           </form>
         </Form>
+        <DevTool control={control} />
       </div>
       <div className="flex flex-col justify-center h-screen bg-white w-[30%] gap-y-40">
         <ImageUpload></ImageUpload>
