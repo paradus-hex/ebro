@@ -60,7 +60,8 @@ export default function Create() {
       address: '',
     },
   });
-  const { control } = form;
+  const { control, formState } = form;
+  const { errors } = formState;
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
@@ -78,7 +79,15 @@ export default function Create() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="grid grid-cols-2 gap-4 gap-y-14">
               <div className="w-full flex flex-col">
-                <FormLabel className="text-xl ">Address</FormLabel>
+                <FormLabel
+                  className={`text-xl ${
+                    errors.address || errors.city || errors.zipCode
+                      ? 'text-red-600'
+                      : ' '
+                  } `}
+                >
+                  Address
+                </FormLabel>
                 <FormPopOver className="mt-[8px] bg-white">
                   <div className="grid  items-center gap-4 ">
                     <FormField
@@ -144,6 +153,13 @@ export default function Create() {
                     />
                   </div>
                 </FormPopOver>
+                {(errors.address || errors.city || errors.zipCode) && (
+                  <div>
+                    <FormDescription className="text-red-600">
+                      Atleast one of the fields is invalid
+                    </FormDescription>
+                  </div>
+                )}
               </div>
 
               <FormField
@@ -151,7 +167,7 @@ export default function Create() {
                 name="yearOfConstruction"
                 render={({ field }) => (
                   <FormItem className="flex flex-col items-center">
-                    <FormLabel className="text-xl">
+                    <FormLabel className="text-xl ">
                       Year of Construction
                     </FormLabel>
                     <FormControl>
@@ -205,7 +221,15 @@ export default function Create() {
                 )}
               />
               <div className="flex flex-col">
-                <FormLabel className="text-xl ">Number of Rooms</FormLabel>
+                <FormLabel
+                  className={`text-xl ${
+                    errors.numberOfBathRooms || errors.numberOfBedRooms
+                      ? 'text-red-600'
+                      : ' '
+                  } `}
+                >
+                  Number of Rooms
+                </FormLabel>
                 <FormPopOver className="mt-[8px] bg-white">
                   <FormField
                     control={form.control}
@@ -246,6 +270,13 @@ export default function Create() {
                     )}
                   />
                 </FormPopOver>
+                {(errors.numberOfBathRooms || errors.numberOfBedRooms) && (
+                  <div>
+                    <FormDescription className="text-red-600">
+                      Atleast one of the fields is invalid
+                    </FormDescription>
+                  </div>
+                )}
               </div>
 
               <FormField
