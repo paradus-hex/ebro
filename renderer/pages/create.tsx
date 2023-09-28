@@ -18,6 +18,7 @@ import { Input } from '../components/ui/input';
 import { MultiSelect } from '../components/MultiSelect';
 import ImageUpload from '../components/imageUpload';
 import { FormPopOver } from '../components/formPopOver';
+import { useEffect, useState } from 'react';
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -60,14 +61,17 @@ export default function Create() {
       address: '',
     },
   });
+  // const [values, setValues] = useState({} as any);
   const { control, formState, watch } = form;
-  const values = watch([
-    'address',
-    'zipCode',
-    'city',
-    'numberOfBedRooms',
-    'numberOfBathRooms',
-  ]);
+  // useEffect(() => {
+  //   const subscription = watch();
+  //   console.log(subscription);
+  //   setValues(subscription);
+  //   // return () => subscription.unsubscribe();
+  // }, [watch]);
+  const values = watch();
+  // const values = form.getValues();
+
   const { errors } = formState;
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
