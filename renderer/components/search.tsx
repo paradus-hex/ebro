@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import SearchRecommendationBox from './searchRecommendationBox';
+import SearchRecommendationBox from './SearchRecommendationBox';
 import { useState } from 'react';
 // import { useSearch } from '../context/searchContext';
 import { projects } from '../lib/constants';
@@ -47,9 +47,9 @@ export default function Search() {
               stroke="currentColor"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </svg>

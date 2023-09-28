@@ -1,7 +1,7 @@
 import React from 'react';
-import MyProjectCard from './myProjectCard';
+import MyProjectCard from './ProjectCard';
 import { projects } from '../lib/constants';
-export default function MyProjectSlider() {
+export default function ProjectSlider() {
   return (
     <div className="pt-9">
       <div>
@@ -10,7 +10,13 @@ export default function MyProjectSlider() {
 
       <div className="flex flex-row overflow-x-auto">
         {projects.map((project) => (
-          <MyProjectCard name={project.name} address={project.address} />
+          <div key={project.id}>
+            <MyProjectCard
+              name={project.name}
+              address={project.address}
+              id={project.id}
+            />
+          </div>
         ))}
       </div>
     </div>
