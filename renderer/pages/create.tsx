@@ -14,6 +14,7 @@ import {
   FormMessage,
 } from '../components/ui/Form';
 import { Input } from '../components/ui/input';
+import { MultiSelect } from '../components/MultiSelect';
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -147,7 +148,7 @@ export default function Create() {
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="architecturalStyle"
               render={({ field }) => (
@@ -163,8 +164,46 @@ export default function Create() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
+              control={form.control}
+              name="architecturalStyle"
+              render={({ field }) => {
+                if (field.value === undefined) {
+                  field.value = [];
+                }
+                return (
+                  <FormItem className="flex flex-col items-center">
+                    <FormLabel>Architectural Style</FormLabel>
+                    <MultiSelect
+                      selected={field.value}
+                      options={[
+                        {
+                          value: 'style 1',
+                          label: 'style 1',
+                        },
+                        {
+                          value: 'style 2',
+                          label: 'style 2',
+                        },
+                        {
+                          value: 'style 3',
+                          label: 'style 3',
+                        },
+                        {
+                          value: 'style 4',
+                          label: 'style 4',
+                        },
+                      ]}
+                      {...field}
+                      className="sm:w-[510px]"
+                    />
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            {/* <FormField
               control={form.control}
               name="outbuildings"
               render={({ field }) => (
@@ -180,6 +219,44 @@ export default function Create() {
                   <FormMessage />
                 </FormItem>
               )}
+            /> */}
+            <FormField
+              control={form.control}
+              name="outbuildings"
+              render={({ field }) => {
+                if (field.value === undefined) {
+                  field.value = [];
+                }
+                return (
+                  <FormItem className="flex flex-col items-center">
+                    <FormLabel>Outbuildings</FormLabel>
+                    <MultiSelect
+                      selected={field.value}
+                      options={[
+                        {
+                          value: 'item 1',
+                          label: 'item 1',
+                        },
+                        {
+                          value: 'item 2',
+                          label: 'item 2',
+                        },
+                        {
+                          value: 'item 3',
+                          label: 'item 3',
+                        },
+                        {
+                          value: 'item 4',
+                          label: 'item 4',
+                        },
+                      ]}
+                      {...field}
+                      className="sm:w-[510px]"
+                    />
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
             <FormField
               control={form.control}
