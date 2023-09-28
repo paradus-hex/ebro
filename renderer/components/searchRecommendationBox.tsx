@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchListElement from './SearchListElement';
+import SearchListElement from './searchListElement';
 
 export default function SearchRecommendationBox({
   searchRef,

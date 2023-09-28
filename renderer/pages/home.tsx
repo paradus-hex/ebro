@@ -1,11 +1,11 @@
 import React from 'react';
 import Head from 'next/head';
 
-import ImageUpload from '../components/ImageUpload';
+import ImageUpload from '../components/imageUpload';
 import ProjectSlider from '../components/ProjectSlider';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import { useRouter } from 'next/router';
-import Search from '../components/Search';
+import Search from '../components/search';
 import Slider from '../components/Slider';
 
 function Home() {

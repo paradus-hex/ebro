@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/router';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { DevTool } from '@hookform/devtools';
@@ -14,11 +14,11 @@ import {
   FormLabel,
   FormMessage,
 } from '../components/ui/Form';
-import { Input } from '../components/ui/Input';
+import { Input } from '../components/ui/input';
 import { MultiSelect } from '../components/MultiSelect';
-import ImageUpload from '../components/ImageUpload';
-import { FormPopOver } from '../components/FormPopOver';
-import { Textarea } from '../components/ui/Textarea';
+import ImageUpload from '../components/imageUpload';
+import { FormPopOver } from '../components/formPopOver';
+import { Textarea } from '../components/ui/textarea';
 
 const formSchema = z.object({
   username: z.string().min(2, {

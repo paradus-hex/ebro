@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import SearchRecommendationBox from './SearchRecommendationBox';
+import SearchRecommendationBox from './searchRecommendationBox';
 import { useState } from 'react';
 // import { useSearch } from '../context/searchContext';
 import { projects } from '../lib/constants';

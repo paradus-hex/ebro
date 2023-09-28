@@ -1,6 +1,6 @@
-import { Button } from './ui/Button';
+import { Button } from './ui/button';
 
-import { Popover, PopoverContent, PopoverTrigger } from './ui/Popover';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 
 export function FormPopOver({
   children,
