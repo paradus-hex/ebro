@@ -53,6 +53,9 @@ export default function Create() {
   const handleHomeClick = () => {
     router.push('/home');
   };
+  const handleGenerateClick = () => {
+    router.push('/finalpage');
+  };
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -462,7 +465,9 @@ export default function Create() {
       </div>
       <div className="flex flex-col justify-center h-screen bg-white w-[30%] gap-y-40">
         <ImageUpload></ImageUpload>
-        <Button className="text-xl mx-8">Generate</Button>
+        <Button className="text-xl mx-8" onClick={handleGenerateClick}>
+          Generate
+        </Button>
       </div>
     </div>
   );
