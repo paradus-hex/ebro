@@ -1,11 +1,12 @@
 import React from 'react';
 import Head from 'next/head';
-import MyProjectSlider from '../components/myProjectSlider';
-import ImageUpload from '../components/imageUpload';
-import MyProjectSlider2 from '../components/myProjectSlider2';
+import ProjectSlider from '../components/ProjectSlider';
+import ImageUpload from '../components/ImageUpload';
+import ProjectSlider2 from '../components/ProjectSlider2';
 import { Button } from '../components/ui/button';
 import { useRouter } from 'next/router';
-import Search from '../components/search';
+import Search from '../components/Search';
+import Slider from '../components/Slider';
 
 function Home() {
   const router = useRouter();
@@ -32,9 +33,10 @@ function Home() {
             </div>
           </div>
         </div>
-        <div className="max-w-[80%]">
-          <MyProjectSlider />
-          {/* <MyProjectSlider2 /> */}
+        <div className="w-[80%]">
+          {/* <ProjectSlider /> */}
+          <ProjectSlider2 />
+          {/* <Slider /> */}
         </div>
       </div>
       <Button

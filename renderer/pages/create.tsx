@@ -14,10 +14,10 @@ import {
   FormLabel,
   FormMessage,
 } from '../components/ui/Form';
-import { Input } from '../components/ui/input';
+import { Input } from '../components/ui/Input';
 import { MultiSelect } from '../components/MultiSelect';
-import ImageUpload from '../components/imageUpload';
-import { FormPopOver } from '../components/formPopOver';
+import ImageUpload from '../components/ImageUpload';
+import { FormPopOver } from '../components/FormPopOver';
 import { useEffect, useState } from 'react';
 
 const formSchema = z.object({

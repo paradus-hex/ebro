@@ -10,7 +10,7 @@ import {
   CommandInput,
   CommandItem,
 } from './ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/Popover';
 import { Badge } from './ui/badge';
 
 export type OptionType = {
