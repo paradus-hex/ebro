@@ -60,7 +60,14 @@ export default function Create() {
       address: '',
     },
   });
-  const { control, formState, getValues } = form;
+  const { control, formState, watch } = form;
+  const values = watch([
+    'address',
+    'zipCode',
+    'city',
+    'numberOfBedRooms',
+    'numberOfBathRooms',
+  ]);
   const { errors } = formState;
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
@@ -90,7 +97,7 @@ export default function Create() {
                 </FormLabel>
                 <FormPopOver
                   className="mt-[8px] bg-white"
-                  values={getValues()}
+                  values={values}
                   type="address"
                 >
                   <div className="grid  items-center gap-4 ">
@@ -236,7 +243,7 @@ export default function Create() {
                 </FormLabel>
                 <FormPopOver
                   className="mt-[8px] bg-white"
-                  values={getValues()}
+                  values={values}
                   type="roomNumbers"
                 >
                   <FormField
