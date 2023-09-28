@@ -10,8 +10,8 @@ const ImageUpload = () => {
 
     if (files.length > 0) {
       const imageUrls = files.map((file) => URL.createObjectURL(file));
-      setSelectedImages(imageUrls);
-      setCurrentImageIndex(0);
+      setSelectedImages([...selectedImages, ...imageUrls]);
+      setCurrentImageIndex(selectedImages.length);
     }
   };
 
@@ -84,13 +84,29 @@ const ImageUpload = () => {
               <div className="flex gap-2">
                 <Image
                   src="/images/upload_image.svg"
-                  height={24}
-                  width={24}
+                  height={22}
+                  width={22}
                   alt="upload image"
                 />
-                <span> Upload More</span>
+                <span className="text-lg"> Upload More</span>
               </div>
             </label>
+            <button
+              onClick={() => {
+                setSelectedImages([]); // Clear all selected images
+                setCurrentImageIndex(0);
+              }}
+            >
+              <div className="flex gap-2">
+                <Image
+                  src="/images/reset.svg"
+                  height={22}
+                  width={22}
+                  alt="upload image"
+                />
+                <span className="text-lg"> Reset</span>
+              </div>
+            </button>
           </div>
         </div>
       )}
