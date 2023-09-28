@@ -158,25 +158,6 @@ export default function Create() {
                   </FormItem>
                 )}
               />
-              {/* <FormField
-                control={form.control}
-                name="architecturalStyle"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col items-center">
-                    <FormLabel className="text-xl">
-                      Architectural Style
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="max-w-[920px] bg-white"
-                        placeholder="Select the applicable architectural styles"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
               <FormField
                 control={form.control}
                 name="architecturalStyle"
@@ -215,23 +196,6 @@ export default function Create() {
                   );
                 }}
               />
-              {/* <FormField
-              control={form.control}
-                name="outbuildings"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col items-center">
-                    <FormLabel className="text-xl">Outbuildings</FormLabel>
-                    <FormControl>
-                      <Input
-                        className="max-w-[920px] bg-white"
-                        placeholder="Select a few applicable outbuildings"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
               <FormField
                 control={form.control}
                 name="outbuildings"
