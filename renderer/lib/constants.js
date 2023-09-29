@@ -10,3 +10,41 @@ export const projects = [
   { name: 'Project 9', address: 'address 1', id: '80' },
   { name: 'Project 10', address: 'address 1', id: '90' },
 ];
+
+export const architecturalStyles = [
+  {
+    value: 'style 1',
+    label: 'style 1',
+  },
+  {
+    value: 'style 2',
+    label: 'style 2',
+  },
+  {
+    value: 'style 3',
+    label: 'style 3',
+  },
+  {
+    value: 'style 4',
+    label: 'style 4',
+  },
+];
+
+export const outbuildings = [
+  {
+    value: 'item 1',
+    label: 'item 1',
+  },
+  {
+    value: 'item 2',
+    label: 'item 2',
+  },
+  {
+    value: 'item 3',
+    label: 'item 3',
+  },
+  {
+    value: 'item 4',
+    label: 'item 4',
+  },
+];
