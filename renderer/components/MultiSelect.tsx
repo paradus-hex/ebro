@@ -44,7 +44,7 @@ function MultiSelect({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={`w-full justify-between bg-white hover:bg-white${
+          className={`w-full justify-between bg-slate-300/20 rounded-xl border focus:border-1 focus:border-slate-400 ${
             selected.length > 1 ? 'h-full' : 'h-10'
           }`}
           onClick={() => setOpen(!open)}
@@ -54,7 +54,7 @@ function MultiSelect({
               <Badge
                 variant="secondary"
                 key={item}
-                className="mr-1 mb-1"
+                className="mr-1 mb-1 bg-white"
                 onClick={() => handleUnselect(item)}
               >
                 {item}
