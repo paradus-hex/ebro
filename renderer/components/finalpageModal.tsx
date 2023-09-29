@@ -42,33 +42,49 @@ const EditModal: React.FC<EditModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-500/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0">
       <div
-        className="bg-white p-8 rounded-2xl shadow-md flex flex-col items-center border border-slate-700 w-5/6 h-4/6"
+        className="bg-white p-8 rounded-3xl shadow-md flex flex-col items-center border border-slate-700 w-5/6"
         ref={modalRef}
       >
         <h2>Edit Content</h2>
-        {isEditing ? (
-          <div className="w-full">
+        <div className="flex flex-col w-full h-full">
+          {isEditing ? (
+            <div className="w-full flex-1">
+              <textarea
+                className="w-full flex rounded-3xl h-[200px] mt-2 p-3 text-sm text-black outline-1 border border-1 border-gray-400"
+                value={text}
+                onChange={handleChange}
+                placeholder="Write here...."
+                required
+              ></textarea>
+              <button onClick={handleSaveClick}>Save</button>
+            </div>
+          ) : (
+            <div className="flex flex-col w-full flex-1">
+              <div className="rounded-3xl h-[200px] mt-2 p-3 text-sm text-black outline-0 bg-gray-300/50 overflow-auto text-left">
+                <p>{text}</p>
+              </div>
+              <button onClick={handleEditClick}>Edit</button>
+            </div>
+          )}
+          <div className="w-full flex-1">
             <textarea
-              className="w-full flex rounded-lg h-[200px] mt-2 p-3 text-sm text-black outline-1 border border-1 border-gray-400"
-              value={text}
+              className="w-full flex rounded-3xl h-[200px] mt-2 p-3 text-sm text-black outline-1 border border-1 border-gray-400"
               onChange={handleChange}
-              placeholder="Write here...."
+              placeholder="AI Prompt"
               required
             ></textarea>
-            <button onClick={handleSaveClick}>Save</button>
+            <button onClick={handleSaveClick} className="mt-2">
+              Submit
+            </button>
           </div>
-        ) : (
-          <div className="flex flex-col w-full">
-            <div className="rounded-lg h-[200px] mt-2 p-3 text-sm text-black outline-0 bg-white/50 overflow-auto text-left">
-              <p>{text}</p>
-            </div>
-            <button onClick={handleEditClick}>Edit</button>
-          </div>
-        )}
-        <button onClick={handleCloseModal}>Close</button>
+        </div>
       </div>
     </div>
   );
 };
 
 export default EditModal;
+
+{
+  /* <button onClick={handleCloseModal}>Close</button> */
+}
