@@ -92,6 +92,7 @@ export default function Create() {
         >
           Home
         </Button> */}
+        <h1 className="font-extrabold mt-10">Project Name</h1>
         <div className="my-10"></div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from 'react';
 import React from 'react';
+import { Button } from './ui/button';
 
 interface EditModalProps {
   text: string;
@@ -42,40 +43,45 @@ const EditModal: React.FC<EditModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-500/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0">
       <div
-        className="bg-white p-8 rounded-3xl shadow-md flex flex-col items-center border border-slate-700 w-5/6"
+        className="bg-white p-8 rounded shadow-md flex flex-col items-center border border-slate-700 w-5/6"
         ref={modalRef}
       >
-        <h2>Edit Content</h2>
+        {/* <h2>Edit Content</h2> */}
+        <h1 className="font-extrabold">Edit Content</h1>
         <div className="flex flex-col w-full h-full">
           {isEditing ? (
             <div className="w-full flex-1">
               <textarea
-                className="w-full flex rounded-3xl h-[200px] mt-2 p-3 text-sm text-black outline-1 border border-1 border-gray-400"
+                className="w-full flex rounded h-[200px] mt-2 p-3 text-sm text-black outline-1 border border-1 border-gray-400"
                 value={text}
                 onChange={handleChange}
                 placeholder="Write here...."
                 required
               ></textarea>
-              <button onClick={handleSaveClick}>Save</button>
+              <Button className="mt-3 w-full" onClick={handleSaveClick}>
+                Save
+              </Button>
             </div>
           ) : (
             <div className="flex flex-col w-full flex-1">
-              <div className="rounded-3xl h-[200px] mt-2 p-3 text-sm text-black outline-0 bg-gray-300/50 overflow-auto text-left">
+              <div className="rounded h-[200px] mt-2 p-3 text-sm text-black outline-0 bg-gray-300/50 overflow-auto text-left">
                 <p>{text}</p>
               </div>
-              <button onClick={handleEditClick}>Edit</button>
+              <Button className="mt-3" onClick={handleEditClick}>
+                Edit
+              </Button>
             </div>
           )}
           <div className="w-full flex-1">
             <textarea
-              className="w-full flex rounded-3xl h-[200px] mt-2 p-3 text-sm text-black outline-1 border border-1 border-gray-400"
+              className="w-full flex rounded h-[200px] mt-2 p-3 text-sm text-black outline-1 border border-1 border-gray-400"
               onChange={handleChange}
               placeholder="AI Prompt"
               required
             ></textarea>
-            <button onClick={handleSaveClick} className="mt-2">
+            <Button onClick={handleSaveClick} className="mt-2 w-full">
               Submit
-            </button>
+            </Button>
           </div>
         </div>
       </div>

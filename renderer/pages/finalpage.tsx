@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import EditModal from '../components/finalpageModal';
+import { Button } from '../components/ui/button';
 
 type Props = {};
 
@@ -29,33 +30,52 @@ const FinalPage = (props: Props) => {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen  justify-between">
-      <div>Project Name</div>
+    <div className="flex flex-col w-full h-screen  justify-center">
+      <h1 className="font-extrabold mb-10">Project Name</h1>
       <div className="grid grid-cols-12 w-full gap-2 mx-2 h-3/5">
-        <div className="col-span-8 bg-transparent rounded-lg">
+        <div className="col-span-8 bg-transparent rounded">
           {isEditing ? (
-            <div className="">
+            <div className="w-full">
               <textarea
-                className="w-full flex rounded-3xl h-[300px] mt-2 p-3 text-sm text-black outline-1 border border-1 border-gray-400"
+                className="w-full flex rounded-md h-[500px] mt-2 p-3 px-5 text-sm text-black outline-1 border border-1 border-gray-400"
                 value={text}
                 onChange={handleChange}
                 placeholder="Write here...."
                 required
               ></textarea>
-              <button onClick={handleSaveClick}>Save</button>
+              <Button className="mt-5 w-full" onClick={handleSaveClick}>
+                Save
+              </Button>
+              {/* <button onClick={handleSaveClick}>Save</button> */}
             </div>
           ) : (
             <div className="flex flex-col">
-              <div className="rounded-3xl h-[300px] mt-2 p-3 text-sm text-black outline-0 bg-gray-300/50 overflow-auto text-left">
+              <div className="rounded-md h-[500px] mt-2 p-3 px-5 text-sm text-black outline-0 bg-gray-300/50 overflow-auto text-left">
                 <p>{text}</p>
               </div>
-              <button onClick={handleEditClick}>Edit</button>
+              <Button className="mt-5" onClick={handleEditClick}>
+                Edit
+              </Button>
             </div>
           )}
         </div>
-        <div className="col-span-4 bg-white rounded-lg">Image</div>
+        <div className="col-span-4 h-[500px] m-2 bg-white rounded mr-5">
+          Image
+        </div>
       </div>
-      <div className="flex flex-row justify-between bg-white h-20 gap-10 items-center">
+      <div className="  flex flex-row w-full justify-between items-center">
+        <Button
+          className="ml-4 bg-nav_primary text-white w-[200px] rounded-xl text-sm px-2 h-10 "
+          onClick={handleAIButtonClick}
+        >
+          AI Modification
+        </Button>
+        <Button className="mr-4 bg-nav_primary w-[200px] text-white rounded-xl text-sm px-2 h-10 ">
+          Export
+        </Button>
+      </div>
+
+      {/* <div className="flex flex-row justify-between bg-white h-20 gap-10 items-center">
         <button
           className="ml-4 bg-nav_primary text-white rounded-xl text-sm px-2 h-10 flex-grow"
           onClick={handleAIButtonClick}
@@ -65,7 +85,7 @@ const FinalPage = (props: Props) => {
         <button className="mr-4 bg-nav_primary text-white rounded-xl text-sm px-2 h-10 flex-grow">
           Export
         </button>
-      </div>
+      </div> */}
       {isModalOpen && (
         <EditModal
           text={text}
