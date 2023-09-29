@@ -4,7 +4,11 @@
 
 @layer base {
   html {
-    background-color: #ebf2fc;
+    background-color: #fff;
+  }
+
+  .nav_bg {
+    background-color: #121417;
   }
 }
 

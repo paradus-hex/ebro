@@ -55,7 +55,7 @@ export default function Create() {
     router.push('/home');
   };
   const handleGenerateClick = () => {
-    router.push('/finalPage');
+    router.push('/finalpage');
   };
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
