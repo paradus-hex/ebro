@@ -25,7 +25,7 @@ function Home() {
             <div className="bg-white w-full p-4 rounded-lg shadow-md shadow-gray-300">
               <div className="flex flex-row justify-between w-[250px]  bg-white ">
                 <p className="text-sm font-semibold">Your storage</p>
-                <p className="text-sm font-semibold">25% left</p>
+                <p className="text-sm font-bold text_grad_1">25% left</p>
               </div>
               <div className="text-left text-sm font-semibold pt-5">
                 <p>75 GB of 100 GB is being used</p>

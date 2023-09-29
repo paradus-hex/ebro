@@ -32,7 +32,7 @@ export default function SideNavbar({ open }) {
             <div
               id="dashboardBtn"
               onClick={handleClick}
-              className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-nav_primary p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto"
+              className="flex mb-2 justify-start items-center gap-4 pl-5 hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto"
             >
               <MdOutlineSpaceDashboard
                 id="dashboardBtn"
@@ -47,25 +47,25 @@ export default function SideNavbar({ open }) {
                 Dashboard
               </h3>
             </div>
-            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-nav_primary p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto">
               <CgProfile className="text-2xl text-gray-200 group-hover:text-white " />
               <h3 className="text-base text-gray-200 group-hover:text-white font-normal ">
                 Profile
               </h3>
             </div>
-            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-nav_primary p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto">
               <FaRegComments className="text-2xl text-gray-200 group-hover:text-white " />
               <h3 className="text-base text-gray-200 group-hover:text-white font-normal ">
                 Comments
               </h3>
             </div>
-            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-nav_primary p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto">
               <MdOutlineAnalytics className="text-2xl text-gray-200 group-hover:text-white " />
               <h3 className="text-base text-gray-200 group-hover:text-white font-normal ">
                 Analytics
               </h3>
             </div>
-            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-nav_primary p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto">
               <BiMessageSquareDots className="text-2xl text-gray-200 group-hover:text-white " />
               <h3 className="text-base text-gray-200 group-hover:text-white font-normal ">
                 Messages
@@ -74,13 +74,13 @@ export default function SideNavbar({ open }) {
           </div>
           {/* setting  */}
           <div className=" my-4 border-b border-gray-500 pb-4">
-            <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-nav_primary p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+            <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto">
               <MdOutlineSettings className="text-2xl text-gray-200 group-hover:text-white " />
               <h3 className="text-base text-gray-200 group-hover:text-white font-normal ">
                 Settings
               </h3>
             </div>
-            <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-nav_primary p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+            <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto">
               <MdOutlineMoreHoriz className="text-2xl text-gray-200 group-hover:text-white " />
               <h3 className="text-base text-gray-200 group-hover:text-white font-normal ">
                 More
@@ -89,7 +89,7 @@ export default function SideNavbar({ open }) {
           </div>
           {/* logout */}
           <div className=" my-4">
-            <div className="flex mb-2 justify-start items-center gap-4 pl-5 border border-gray-500  hover:bg-nav_primary p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+            <div className="flex mb-2 justify-start items-center gap-4 pl-5 border border-gray-500  hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto">
               <MdOutlineLogout className="text-2xl text-gray-200 group-hover:text-white " />
               <h3 className="text-base text-gray-200 group-hover:text-white font-normal ">
                 Logout
