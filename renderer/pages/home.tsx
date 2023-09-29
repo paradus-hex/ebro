@@ -38,7 +38,7 @@ function Home() {
         </div>
       </div>
       <div className="w-full  flex flex-col justify-center items-center space-y-10 mt-16 min-h-[300px]">
-        <h1 className="font-extrabold">Lets Go To Work!</h1>
+        <h1 className="font-extrabold">Lets Get To Work!</h1>
 
         <input
           type="text"
