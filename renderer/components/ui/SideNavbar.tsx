@@ -32,41 +32,41 @@ export default function SideNavbar({ open }) {
             <div
               id="dashboardBtn"
               onClick={handleClick}
-              className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto"
+              className="flex mb-2 justify-start gap-1 lg:gap-4 -translate-x-2 lg:translate-x-0 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg"
             >
               <MdOutlineSpaceDashboard
                 id="dashboardBtn"
                 onClick={handleClick}
-                className="text-2xl text-gray-600 group-hover:text-white "
+                className="text-2xl text-gray-600 group-hover:text-white shrink-0"
               />
               <h3
                 id="dashboardBtn"
                 onClick={handleClick}
-                className="text-base text-gray-800 group-hover:text-white font-semibold "
+                className="text-base text-gray-800 group-hover:text-white font-semibold whitespace-nowrap"
               >
                 Dashboard
               </h3>
             </div>
-            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-              <CgProfile className="text-2xl text-gray-600 group-hover:text-white " />
+            <div className="flex mb-2 justify-start gap-1 lg:gap-4 -translate-x-2 lg:translate-x-0 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+              <CgProfile className="text-2xl text-gray-600 group-hover:text-white shrink-0" />
               <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
                 Profile
               </h3>
             </div>
-            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-              <FaRegComments className="text-2xl text-gray-600 group-hover:text-white " />
+            <div className="flex  mb-2 justify-start gap-1 lg:gap-4 -translate-x-2 lg:translate-x-0 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+              <FaRegComments className="text-2xl text-gray-600 group-hover:text-white shrink-0" />
               <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
                 Comments
               </h3>
             </div>
-            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-              <MdOutlineAnalytics className="text-2xl text-gray-600 group-hover:text-white " />
+            <div className="flex  mb-2 justify-start gap-1 lg:gap-4 -translate-x-2 lg:translate-x-0 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+              <MdOutlineAnalytics className="text-2xl text-gray-600 group-hover:text-white shrink-0" />
               <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
                 Analytics
               </h3>
             </div>
-            <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-              <BiMessageSquareDots className="text-2xl text-gray-600 group-hover:text-white " />
+            <div className="flex  mb-2 justify-start gap-1 lg:gap-4 -translate-x-2 lg:translate-x-0 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+              <BiMessageSquareDots className="text-2xl text-gray-600 group-hover:text-white shrink-0" />
               <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
                 Messages
               </h3>
@@ -74,14 +74,14 @@ export default function SideNavbar({ open }) {
           </div>
           {/* setting  */}
           <div className=" my-4 border-b border-gray-100 pb-4">
-            <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-              <MdOutlineSettings className="text-2xl text-gray-600 group-hover:text-white " />
+            <div className="flex mb-2 justify-start gap-1 lg:gap-4 -translate-x-2 lg:translate-x-0 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+              <MdOutlineSettings className="text-2xl text-gray-600 group-hover:text-white shrink-0" />
               <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
                 Settings
               </h3>
             </div>
-            <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-              <MdOutlineMoreHoriz className="text-2xl text-gray-600 group-hover:text-white " />
+            <div className="flex mb-2 justify-start gap-1 lg:gap-4 -translate-x-2 lg:translate-x-0 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+              <MdOutlineMoreHoriz className="text-2xl text-gray-600 group-hover:text-white shrink-0" />
               <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
                 More
               </h3>
@@ -89,8 +89,8 @@ export default function SideNavbar({ open }) {
           </div>
           {/* logout */}
           <div className=" my-4">
-            <div className="flex mb-2 justify-start items-center gap-4 pl-5 border border-gray-200  hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
-              <MdOutlineLogout className="text-2xl text-gray-600 group-hover:text-white " />
+            <div className="flex mb-2 justify-start gap-1 lg:gap-4 -translate-x-2 lg:translate-x-0 border border-gray-200  hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+              <MdOutlineLogout className="text-2xl text-gray-600 group-hover:text-white shrink-0" />
               <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
                 Logout
               </h3>
