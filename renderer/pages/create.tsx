@@ -348,6 +348,7 @@ export default function Create() {
                         selected={field.value}
                         options={outbuildings}
                         {...field}
+                        palaceholder="Select the outbuildings of the property"
                         className="sm:w-[510px]"
                       />
                       <FormMessage />
