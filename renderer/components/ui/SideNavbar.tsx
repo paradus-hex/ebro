@@ -1,6 +1,5 @@
 import React from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
-
 import {
   MdOutlineSpaceDashboard,
   MdOutlineAnalytics,
@@ -13,6 +12,7 @@ import { CgProfile } from 'react-icons/cg';
 import { FaRegComments } from 'react-icons/fa';
 import { BiMessageSquareDots } from 'react-icons/bi';
 import { useRouter } from 'next/router';
+import LiveClock from '../LiveClock';
 
 export default function SideNavbar({ open }) {
   const router = useRouter();
@@ -25,10 +25,11 @@ export default function SideNavbar({ open }) {
         open ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
-      <div className="py-8 px-6 h-screen border border-r-2 border-nav_color nav_bg z-20 fixed top-0 left-0 w-full peer-focus:left-0 peer:transition duration-300">
+      <div className="py-8 px-6 h-screen border border-r-2 border-nav_color bg-[#06367A] z-20 fixed top-0 left-0 w-full peer-focus:left-0 peer:transition duration-300">
         <div className="flex flex-col justify-start item-center">
-          <h1 className="text-base text-center cursor-pointer text-blue-900 border-b border-nav_color pb-4 w-full"></h1>
-          <div className=" my-4 border-b border-gray-500 pb-4">
+          <h1 className="mt-10 text-base text-center cursor-pointer text-blue-900 border-b border-gray-300 pb-4 w-full"></h1>
+          <div className="my-4 border-b border-gray-300 pb-4">
+            <LiveClock className="flex justify-start px-0 mx-0 mt-2 mb-4 text-xl lg:text-2xl text-back translate-x-0 lg:translate-x-2" />
             <div
               id="dashboardBtn"
               onClick={handleClick}
@@ -73,7 +74,7 @@ export default function SideNavbar({ open }) {
             </div> */}
           </div>
           {/* setting  */}
-          <div className=" my-4 border-b border-gray-500 pb-4">
+          <div className=" my-4 border-b border-gray-300 pb-4">
             <div className="flex mb-2 justify-start gap-1 lg:gap-4 -translate-x-2 lg:translate-x-0 hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto">
               <MdOutlineSettings className="text-2xl text-gray-200 group-hover:text-white shrink-0" />
               <h3 className="text-base text-gray-200 group-hover:text-white font-normal ">
@@ -88,8 +89,8 @@ export default function SideNavbar({ open }) {
             </div>
           </div>
           {/* logout */}
-          <div className=" my-4">
-            <div className="flex mb-2 justify-start gap-1 lg:gap-4 -translate-x-2 lg:translate-x-0 border border-gray-500 hover:border-none  hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto">
+          <div className="my-4">
+            <div className="flex my-4 mb-2 justify-start gap-1 lg:gap-4 -translate-x-2 lg:translate-x-0 border border-gray-200 hover:border-none  hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto">
               <MdOutlineLogout className="text-2xl text-gray-200 group-hover:text-white shrink-0" />
               <h3 className="text-base text-gray-200 group-hover:text-white font-normal">
                 Logout
