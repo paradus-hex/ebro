@@ -38,7 +38,7 @@ function Home() {
         </div>
       </div>
       <Button
-        className="mt-10 w-[90px] h-[50px] text-xl"
+        className="mt-20 text-xl rounded-full px-8 py-6 tracking-wider"
         onClick={handleCreateClick}
       >
         Create
