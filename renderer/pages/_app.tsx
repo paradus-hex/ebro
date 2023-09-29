@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app';
 
 import '../styles/globals.css';
 import SideNavbar from '../components/ui/SideNavbar';
-
+import { RxAvatar } from 'react-icons/rx';
 function MyApp({ Component, pageProps }: AppProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -13,10 +13,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div className="flex text-2xl w-full text-center">
       <button
-        className="sticky top-2 left-6 z-10 w-12 h-12 text-center text-white bg-gray-700 rounded-full hover:bg-gray-600"
+        className="sticky top-3 left-7 z-10 w-9 h-9 flex justify-center items-center text-center text-white bg-gray-700 rounded-full hover:bg-gray-600"
         onClick={toggleSidebar}
       >
-        AV
+        <RxAvatar className="w-10 h-10" />
       </button>
       <SideNavbar open={sidebarOpen} />
       <div
