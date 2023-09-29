@@ -1,10 +1,13 @@
 'use client';
 import { useRouter } from 'next/router';
-import { Button } from '../components/ui/button';
+import { Button } from '../components/ui/Button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { DevTool } from '@hookform/devtools';
 import { useForm } from 'react-hook-form';
+import { useChat } from 'ai/react';
+import { Loader2 } from 'lucide-react';
+
 import {
   Form,
   FormControl,
@@ -14,15 +17,16 @@ import {
   FormLabel,
   FormMessage,
 } from '../components/ui/Form';
-import { Input } from '../components/ui/input';
+import { Input } from '../components/ui/Input';
 import { MultiSelect } from '../components/MultiSelect';
 import ImageUpload from '../components/imageUpload';
 import { FormPopOver } from '../components/formPopOver';
-import { Textarea } from '../components/ui/textarea';
+import { Textarea } from '../components/ui/Textarea';
 import { architecturalStyles, outbuildings } from '../lib/constants';
 import { useState } from 'react';
+import { measureMemory } from 'vm';
 
-const formSchema = z.object({
+export const formSchema = z.object({
   address: z
     .string()
     .min(2, { message: 'Address must be at least 2 characters.' }),
@@ -75,13 +79,29 @@ export default function Create() {
       interiorFeatures: '',
     },
   });
+  const [result, setResult] = useState<string | null>(null);
+  const { messages, append, isLoading, setMessages } = useChat({
+    onFinish: (message) => {
+      console.log('result', message.content);
+      setResult(message.content);
+    },
+  });
+  const [loading, setLoading] = useState(false);
   const [notes, setNotes] = useState(false);
 
   const { control, formState, watch } = form;
   const values = watch();
   const { errors } = formState;
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    setMessages([]);
+    append({ role: 'user', content: JSON.stringify(values) });
+    setLoading(isLoading);
+    console.log('values:', values);
+    // handleSubmit={(message: string) => {
+    //   setMessages([]);
+    //   append({ role: "user", content: message });
+    // }}
+    // isLoading={isLoading}
   }
   return (
     <div className="flex">
@@ -92,6 +112,7 @@ export default function Create() {
         >
           Home
         </Button> */}
+        {result}
         <h1 className="font-extrabold mt-10">Project Name</h1>
         <div className="my-10"></div>
         <Form {...form}>
@@ -448,7 +469,11 @@ export default function Create() {
                 )}
               />
             </div>
-            <Button type="submit">Submit</Button>
+            <Button disabled={loading} type="submit">
+              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Submit
+            </Button>
+            {/* <Button type="submit">Submit</Button> */}
           </form>
         </Form>
         <DevTool control={control} />
