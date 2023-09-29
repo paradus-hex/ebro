@@ -29,7 +29,7 @@ export default function SideNavbar({ open }) {
         <div className="flex flex-col justify-start item-center">
           <h1 className="mt-10 text-base text-center cursor-pointer text-blue-900 border-b border-gray-300 pb-4 w-full"></h1>
           <div className="my-4 border-b border-gray-300 pb-4">
-            <LiveClock className="flex justify-start px-0 mx-0 mb-4 text-xl lg:text-2xl text-back translate-x-0 lg:translate-x-2" />
+            <LiveClock className="flex justify-start px-0 mx-0 mt-2 mb-4 text-xl lg:text-2xl text-back translate-x-0 lg:translate-x-2" />
             <div
               id="dashboardBtn"
               onClick={handleClick}
