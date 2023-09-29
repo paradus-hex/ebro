@@ -28,27 +28,29 @@ const ImageUpload = () => {
   };
 
   return (
-    <div className="mx-5 my-2 max-w-xs">
+    <div className="mx-5 mt-7 max-w-xs">
       {selectedImages.length === 0 ? (
-        <form>
-          <label>
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleImageChange}
-            />
-            <div>
-              <Image
-                src="/images/upload_image.svg"
-                height={100}
-                width={100}
-                alt="upload image"
+        <div className="flex flex-col items-center h-[295px]">
+          <form>
+            <label>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageChange}
               />
-            </div>
-          </label>
-          <div>Upload Image</div>
-        </form>
+              <div>
+                <Image
+                  src="/images/upload_image.svg"
+                  height={100}
+                  width={100}
+                  alt="upload image"
+                />
+              </div>
+            </label>
+            <div>Upload Image</div>
+          </form>
+        </div>
       ) : (
         <div className="flex flex-col items-center">
           <div className="flex flex-row gap-3">

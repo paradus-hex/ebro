@@ -36,7 +36,7 @@ const FinalPage = (props: Props) => {
           {isEditing ? (
             <div className="">
               <textarea
-                className="w-full flex rounded-lg h-[200px] mt-2 p-3 text-sm text-black outline-1 border border-1 border-gray-400"
+                className="w-full flex rounded-3xl h-[300px] mt-2 p-3 text-sm text-black outline-1 border border-1 border-gray-400"
                 value={text}
                 onChange={handleChange}
                 placeholder="Write here...."
@@ -46,7 +46,7 @@ const FinalPage = (props: Props) => {
             </div>
           ) : (
             <div className="flex flex-col">
-              <div className="rounded-lg h-[200px] mt-2 p-3 text-sm text-black outline-0 bg-white/50 overflow-auto text-left">
+              <div className="rounded-3xl h-[300px] mt-2 p-3 text-sm text-black outline-0 bg-gray-300/50 overflow-auto text-left">
                 <p>{text}</p>
               </div>
               <button onClick={handleEditClick}>Edit</button>
@@ -57,12 +57,12 @@ const FinalPage = (props: Props) => {
       </div>
       <div className="flex flex-row justify-between bg-white h-20 gap-10 items-center">
         <button
-          className="ml-4 bg-slate-700 text-white rounded-xl text-sm px-2 h-10 flex-grow"
+          className="ml-4 bg-nav_primary text-white rounded-xl text-sm px-2 h-10 flex-grow"
           onClick={handleAIButtonClick}
         >
           AI Modification
         </button>
-        <button className="mr-4 bg-slate-700 text-white rounded-xl text-sm px-2 h-10 flex-grow">
+        <button className="mr-4 bg-nav_primary text-white rounded-xl text-sm px-2 h-10 flex-grow">
           Export
         </button>
       </div>
