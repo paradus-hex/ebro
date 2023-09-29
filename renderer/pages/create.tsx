@@ -19,11 +19,9 @@ import { MultiSelect } from '../components/MultiSelect';
 import ImageUpload from '../components/imageUpload';
 import { FormPopOver } from '../components/formPopOver';
 import { Textarea } from '../components/ui/textarea';
+import { architecturalStyles, outbuildings } from '../lib/constants';
 
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
   address: z
     .string()
     .min(2, { message: 'Address must be at least 2 characters.' }),
@@ -33,13 +31,26 @@ const formSchema = z.object({
   city: z
     .string()
     .min(2, { message: 'Address must be at least 2 characters.' }),
-  yearOfConstruction: z
+  yearOfConstruction: z.coerce
     .number()
-    .min(4, { message: 'Year of construction must be at least 4 digits long' }),
-  sizeOfProperty: z.number(),
-  sizeOfHome: z.number(),
-  numberOfBedRooms: z.number(),
-  numberOfBathRooms: z.number(),
+    .min(1800, {
+      message: 'Year of construction must be at least 1800',
+    })
+    .int({ message: 'The year of construction must be an integer' }),
+  sizeOfProperty: z.coerce
+    .number()
+    .gt(0, { message: 'Size of the property must be greater than 0 acres' }),
+  sizeOfHome: z.coerce
+    .number()
+    .gt(0, { message: 'Size of the home must be greater than 0 m^2' }),
+  numberOfBedRooms: z.coerce
+    .number()
+    .gt(0, { message: 'The number of bedrooms cannot be 0' })
+    .int({ message: 'The number of bedrooms must be an integer' }),
+  numberOfBathRooms: z.coerce
+    .number()
+    .gt(0, { message: 'The number of bathrooms cannot be 0' })
+    .int({ message: 'The number of bathrooms must be an integer' }),
   architecturalStyle: z.array(z.string()),
   outbuildings: z.array(z.string()),
   uniqueSellingPoints: z.string(),
@@ -55,13 +66,12 @@ export default function Create() {
     router.push('/home');
   };
   const handleGenerateClick = () => {
-    router.push('/finalPage');
+    router.push('/finalpage');
   };
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
-      address: '',
+      interiorFeatures: '',
     },
   });
 
@@ -132,7 +142,7 @@ export default function Create() {
                           <FormControl>
                             <Input
                               className="max-w-[920px] bg-white col-span-2 h-8"
-                              placeholder="Enter the address of the property"
+                              placeholder="Enter the zip code"
                               {...field}
                             />
                           </FormControl>
@@ -153,7 +163,7 @@ export default function Create() {
                           <FormControl>
                             <Input
                               className="max-w-[920px] bg-white col-span-2 h-8"
-                              placeholder="Enter the address of the property"
+                              placeholder="Enter the name of the city"
                               {...field}
                             />
                           </FormControl>
@@ -302,29 +312,15 @@ export default function Create() {
                   }
                   return (
                     <FormItem className="w-[80%] flex flex-col items-center">
-                      <FormLabel className="text-xl">
+                      <FormLabel
+                        className="text-xl"
+                        placeholder="Select the architectural style of the property"
+                      >
                         Architectural Style
                       </FormLabel>
                       <MultiSelect
                         selected={field.value}
-                        options={[
-                          {
-                            value: 'style 1',
-                            label: 'style 1',
-                          },
-                          {
-                            value: 'style 2',
-                            label: 'style 2',
-                          },
-                          {
-                            value: 'style 3',
-                            label: 'style 3',
-                          },
-                          {
-                            value: 'style 4',
-                            label: 'style 4',
-                          },
-                        ]}
+                        options={architecturalStyles}
                         {...field}
                         className="sm:w-[510px]"
                       />
@@ -345,24 +341,7 @@ export default function Create() {
                       <FormLabel className="text-xl">Outbuildings</FormLabel>
                       <MultiSelect
                         selected={field.value}
-                        options={[
-                          {
-                            value: 'item 1',
-                            label: 'item 1',
-                          },
-                          {
-                            value: 'item 2',
-                            label: 'item 2',
-                          },
-                          {
-                            value: 'item 3',
-                            label: 'item 3',
-                          },
-                          {
-                            value: 'item 4',
-                            label: 'item 4',
-                          },
-                        ]}
+                        options={outbuildings}
                         {...field}
                         className="sm:w-[510px]"
                       />
@@ -430,7 +409,7 @@ export default function Create() {
                 render={({ field }) => (
                   <FormItem className="w-[80%] flex flex-col items-center">
                     <FormLabel className="text-xl">
-                      Geographical Featues
+                      Geographical Features
                     </FormLabel>
                     <FormControl>
                       <Input
