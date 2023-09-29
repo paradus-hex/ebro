@@ -13,10 +13,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div className="flex text-2xl w-full text-center">
       <button
-        className="p-2 absolute top-2 left-8 z-10 text-white bg-gray-700 rounded-full hover:bg-gray-600"
+        className="sticky top-2 left-6 z-10 w-12 h-12 text-center text-white bg-gray-700 rounded-full hover:bg-gray-600"
         onClick={toggleSidebar}
       >
-        Avatar
+        AV
       </button>
       <SideNavbar open={sidebarOpen} />
       <div
