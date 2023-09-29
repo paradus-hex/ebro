@@ -6,8 +6,9 @@
 
 @layer base {
   html {
-    background-color: #fff;
+    background-color: #ebf2fc;
     font-family: 'Lato', sans-serif;
+    color: #06367a;
   }
 
   .nav_bg {
@@ -94,13 +95,27 @@
   }
 }
 .splide > ul {
-  top: 182px;
+  top: 200px;
 }
 .splide__arrows > .splide__arrow--next {
   right: -3em;
 }
 .splide__arrows > .splide__arrow--prev {
   left: -3em;
+}
+
+.input::placeholder {
+  text-align: center;
+}
+input::focus {
+  border: 1px solid #ccc;
+  padding: 5px;
+}
+
+/* For Firefox */
+input::-moz-selection {
+  /* background-color: #ff0000;
+  color: #ffffff; */
 }
 
 ::-webkit-scrollbar {
@@ -122,7 +137,7 @@
 }
 
 .slideRow:nth-child(4n + 1) {
-  background: linear-gradient(to right, rgb(153, 246, 228), rgb(217, 249, 157));
+  background: linear-gradient(to right, rgb(153, 246, 228), rgb(178, 250, 236));
 }
 .slideRow:nth-child(4n + 2) {
   background: linear-gradient(to right, rgb(56, 189, 248), rgb(103, 232, 249));

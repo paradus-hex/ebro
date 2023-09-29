@@ -20,6 +20,7 @@ import ImageUpload from '../components/imageUpload';
 import { FormPopOver } from '../components/formPopOver';
 import { Textarea } from '../components/ui/textarea';
 import { architecturalStyles, outbuildings } from '../lib/constants';
+import { useState } from 'react';
 
 const formSchema = z.object({
   address: z
@@ -74,6 +75,7 @@ export default function Create() {
       interiorFeatures: '',
     },
   });
+  const [notes, setNotes] = useState(false);
 
   const { control, formState, watch } = form;
   const values = watch();
@@ -84,12 +86,12 @@ export default function Create() {
   return (
     <div className="flex">
       <div className="w-full flex-col gap-10 justify-center">
-        <Button
+        {/* <Button
           className="w-[90px] h-[50px] text-xl mt-4"
           onClick={handleHomeClick}
         >
           Home
-        </Button>
+        </Button> */}
         <div className="my-10"></div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -348,6 +350,7 @@ export default function Create() {
                         selected={field.value}
                         options={outbuildings}
                         {...field}
+                        palaceholder="Select the outbuildings of the property"
                         className="sm:w-[510px]"
                       />
                       <FormMessage />
@@ -456,11 +459,18 @@ export default function Create() {
           className="flex
         flex-col justify-center items-center"
         >
-          <Button className="m-5 rounded-xl">Notes</Button>
-          <Textarea
-            className="w-[80%] m-auto border focus:border-1 focus:border-slate-400"
-            placeholder="Type your message here."
-          />
+          <Button
+            onClick={() => setNotes((prev) => !prev)}
+            className="m-5 rounded-xl"
+          >
+            Notes
+          </Button>
+          {notes && (
+            <Textarea
+              className="w-[80%] m-auto border focus:border-1 bg-white focus:border-slate-400"
+              placeholder="Type your notes here."
+            />
+          )}
         </div>
 
         <Button

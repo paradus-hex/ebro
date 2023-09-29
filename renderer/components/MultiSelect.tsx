@@ -75,6 +75,9 @@ function MultiSelect({
                 </button>
               </Badge>
             ))}
+            {selected.length === 0 && (
+              <p className="text-gray-700/80">Select an option</p>
+            )}
           </div>
           <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
         </Button>

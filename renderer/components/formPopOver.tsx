@@ -16,9 +16,12 @@ export function FormPopOver({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button
-          className={'text-left w-[80%] m-auto' + ' ' + className}
-          variant="outline"
+        <button
+          className={
+            'text-left text-sm py-[8px] px-[12px] text-gray-700/80 w-[80%] m-auto' +
+            ' ' +
+            className
+          }
         >
           {type == 'address'
             ? values?.address && values?.city && values?.zipCode
@@ -36,7 +39,7 @@ export function FormPopOver({
                 values.numberOfBathRooms
               : 'No Rooms Numbers Selected'
             : ''}
-        </Button>
+        </button>
       </PopoverTrigger>
       <PopoverContent className="w-80">
         <div className="grid gap-4">

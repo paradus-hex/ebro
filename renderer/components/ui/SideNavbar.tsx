@@ -44,7 +44,7 @@ export default function SideNavbar({ open }) {
                 onClick={handleClick}
                 className="text-base text-gray-200 group-hover:text-white font-normal whitespace-nowrap"
               >
-                Dashboard
+                Home
               </h3>
             </div>
             <div className="flex mb-2 justify-start gap-1 lg:gap-4 -translate-x-2 lg:translate-x-0 hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto">
@@ -53,7 +53,7 @@ export default function SideNavbar({ open }) {
                 Profile
               </h3>
             </div>
-            <div className="flex mb-2 justify-start gap-1 lg:gap-4 -translate-x-2 lg:translate-x-0 hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto">
+            {/* <div className="flex mb-2 justify-start gap-1 lg:gap-4 -translate-x-2 lg:translate-x-0 hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto">
               <FaRegComments className="text-2xl text-gray-200 group-hover:text-white shrink-0" />
               <h3 className="text-base text-gray-200 group-hover:text-white font-normal ">
                 Comments
@@ -70,7 +70,7 @@ export default function SideNavbar({ open }) {
               <h3 className="text-base text-gray-200 group-hover:text-white font-normal ">
                 Messages
               </h3>
-            </div>
+            </div> */}
           </div>
           {/* setting  */}
           <div className=" my-4 border-b border-gray-500 pb-4">
