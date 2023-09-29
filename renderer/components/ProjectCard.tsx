@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AiOutlineStar } from 'react-icons/ai';
 import { BsHouse } from 'react-icons/bs';
 import { RiDeleteBin2Line } from 'react-icons/ri';
+import { BsStarFill } from 'react-icons/bs';
 
 export default function MyProjectCard({
   name,
@@ -12,19 +13,31 @@ export default function MyProjectCard({
   address: string;
   id: string;
 }) {
+  const [isFavorite, setIsFavorite] = useState(false);
   return (
     <div
       key={id}
-      className=" p-5 grid-cols-5 flex justify-start items-center text-left min-w-[200px] min-h-[150px] rounded-lg  m-2 transition ease-in-out delay-1000 start-translate-x-0 end-translate-x-10"
+      className=" p-5 relative  flex justify-start items-center text-left min-w-[200px] min-h-[150px] rounded-lg  m-2 "
     >
-      <div className="col-span-4 bgh-green-600 w-full">
-        <BsHouse className="w-[50px] h-[50px] mb-5"></BsHouse>
-        <h1>{name}</h1>
-        <p>{address}</p>
+      <div className="w-[90%]   ">
+        <BsHouse className="text-gray-700 w-[50px] h-[50px] mb-5"></BsHouse>
+        <h1 className="text-white font-bold ">{name}</h1>
+        <p className="text-gray font-bold text-sm">{address}</p>
       </div>
-      <div className="col-span-1 bgh-red-500 flex flex-col justify-between h-full">
-        <AiOutlineStar></AiOutlineStar>
-        <RiDeleteBin2Line></RiDeleteBin2Line>
+      <div className="w-[10%] h-[120px] flex flex-col justify-between ">
+        <div
+          onClick={() => {
+            setIsFavorite((prev) => !prev);
+          }}
+        >
+          {isFavorite ? (
+            <BsStarFill className="text-yellow-300 hover:text-yellow-300  transition-colors ease-in-out delay-200" />
+          ) : (
+            <AiOutlineStar className=" hover:text-yellow-300  transition-colors ease-in-out delay-200"></AiOutlineStar>
+          )}
+        </div>
+
+        <RiDeleteBin2Line className=" hover:text-red-500 transition-colors ease-in-out delay-200"></RiDeleteBin2Line>
       </div>
     </div>
   );

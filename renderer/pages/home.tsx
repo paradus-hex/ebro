@@ -37,12 +37,22 @@ function Home() {
           <ProjectSlider />
         </div>
       </div>
-      <Button
-        className="mt-20 text-xl rounded-full px-8 py-6 tracking-wider"
-        onClick={handleCreateClick}
-      >
-        Create
-      </Button>
+      <div className="w-full  flex flex-col justify-center items-center space-y-10 mt-16 min-h-[300px]">
+        <h1 className="font-extrabold">Lets Go To Work!</h1>
+
+        <input
+          type="text"
+          placeholder="Project Name"
+          className="w-[300px] bg-white rounded-md shadow p-2 input"
+        />
+
+        <Button
+          className="mt-20 text-xl rounded-md px-8 py-6 tracking-wider w-[300px]"
+          onClick={handleCreateClick}
+        >
+          Create New
+        </Button>
+      </div>
 
       {/* <ImageUpload /> */}
     </React.Fragment>

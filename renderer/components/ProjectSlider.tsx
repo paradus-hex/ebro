@@ -26,7 +26,9 @@ export default function ProjectSlider2() {
 
   return (
     <div className="pt-9 ">
-      <h1 className="mb-5 tracking-wider text-2xl">My Project</h1>
+      <h1 className="mb-5 tracking-wider text-2xl font-extrabold">
+        My Projects
+      </h1>
       <Splide
         hasTrack={true}
         options={{
