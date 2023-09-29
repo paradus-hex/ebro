@@ -142,7 +142,7 @@ export default function Create() {
                           <FormControl>
                             <Input
                               className="max-w-[920px] bg-white col-span-2 h-8"
-                              placeholder="Enter the address of the property"
+                              placeholder="Enter the zip code"
                               {...field}
                             />
                           </FormControl>
@@ -163,7 +163,7 @@ export default function Create() {
                           <FormControl>
                             <Input
                               className="max-w-[920px] bg-white col-span-2 h-8"
-                              placeholder="Enter the address of the property"
+                              placeholder="Enter the name of the city"
                               {...field}
                             />
                           </FormControl>
@@ -312,7 +312,10 @@ export default function Create() {
                   }
                   return (
                     <FormItem className="w-[80%] flex flex-col items-center">
-                      <FormLabel className="text-xl">
+                      <FormLabel
+                        className="text-xl"
+                        placeholder="Select the architectural style of the property"
+                      >
                         Architectural Style
                       </FormLabel>
                       <MultiSelect
