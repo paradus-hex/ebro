@@ -445,20 +445,23 @@ export default function Create() {
         </Form>
         <DevTool control={control} />
       </div>
-      <div className="flex flex-col justify-center h-screen bg-white w-[30%] gap-y-40">
+      <div className="flex flex-col justify-start bg-white w-[30%] ">
         <ImageUpload></ImageUpload>
         <div
           className="flex
         flex-col justify-center items-center"
         >
-          <Button className="m-5">Notes</Button>
+          <Button className="m-5 rounded-xl">Notes</Button>
           <Textarea
             className="w-[80%] m-auto"
             placeholder="Type your message here."
           />
         </div>
 
-        <Button className="text-xl mx-8" onClick={handleGenerateClick}>
+        <Button
+          className="text-xl mx-8 my-10 rounded-xl"
+          onClick={handleGenerateClick}
+        >
           Generate
         </Button>
       </div>
