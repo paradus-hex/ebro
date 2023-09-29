@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
+import '@splidejs/react-splide/css';
+import { Splide, SplideSlide, SplideTrack } from '@splidejs/react-splide';
 
 const ImageUpload = () => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
@@ -53,7 +55,7 @@ const ImageUpload = () => {
         </div>
       ) : (
         <div className="flex flex-col items-center">
-          <div className="flex flex-row gap-3">
+          {/* <div className="flex flex-row gap-3">
             <button
               className=" bg-gray-200 hover:bg-gray-300 p-2 rounded-full"
               onClick={handlePrevImage}
@@ -74,7 +76,28 @@ const ImageUpload = () => {
             >
               &rarr;
             </button>
-          </div>
+          </div> */}
+          <Splide
+            hasTrack={true}
+            options={{
+              perPage: 1,
+              gap: '1rem',
+              autoWidth: true,
+              arrows: false,
+            }}
+            aria-label="My Favorite Images"
+          >
+            {selectedImages.map((image, index) => (
+              <SplideSlide key={image} className="m-5 shadow-md rounded-xl">
+                <img
+                  src={image}
+                  alt="Preview"
+                  className="object-cover"
+                  style={{ width: '250px', height: '200px' }}
+                />
+              </SplideSlide>
+            ))}
+          </Splide>
           <div>
             <label>
               <input
