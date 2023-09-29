@@ -108,7 +108,7 @@ export default function Create() {
                   Address
                 </FormLabel>
                 <FormPopOver
-                  className="mt-[8px] bg-slate-300/20 rounded-xl border focus:border-1 focus:border-slate-400"
+                  className="mt-[8px] bg-white rounded-xl border focus:border-1 focus:border-slate-400"
                   values={values}
                   type="address"
                 >
@@ -123,7 +123,7 @@ export default function Create() {
                             <Input
                               id="width"
                               defaultValue="100%"
-                              className="max-w-[920px] bg-slate-300/20 rounded-xl col-span-2 h-8 border focus:border-1 focus:border-slate-400"
+                              className="max-w-[920px] bg-white rounded-xl col-span-2 h-8 border focus:border-1 focus:border-slate-400"
                               placeholder="Enter the address of the property"
                               {...field}
                             />
@@ -144,7 +144,7 @@ export default function Create() {
                           </FormLabel>
                           <FormControl>
                             <Input
-                              className="max-w-[920px] bg-slate-300/20 rounded-xl col-span-2 h-8 border focus:border-1 focus:border-slate-400"
+                              className="max-w-[920px] bg-white rounded-xl col-span-2 h-8 border focus:border-1 focus:border-slate-400"
                               placeholder="Enter the zip code"
                               {...field}
                             />
@@ -165,7 +165,7 @@ export default function Create() {
                           </FormLabel>
                           <FormControl>
                             <Input
-                              className="max-w-[920px] bg-slate-300/20 rounded-xl col-span-2 h-8 border focus:border-1 focus:border-slate-400"
+                              className="max-w-[920px] bg-white rounded-xl col-span-2 h-8 border focus:border-1 focus:border-slate-400"
                               placeholder="Enter the name of the city"
                               {...field}
                             />
@@ -196,7 +196,7 @@ export default function Create() {
                     <FormControl>
                       <Input
                         type="number"
-                        className="max-w-[920px] bg-slate-300/20 rounded-xl border focus:border-1 focus:border-slate-400"
+                        className="max-w-[920px] bg-white rounded-xl border focus:border-1 focus:border-slate-400"
                         placeholder="Enter the year of construction of the property"
                         {...field}
                       />
@@ -215,7 +215,7 @@ export default function Create() {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="max-w-[920px] bg-slate-300/20 rounded-xl border focus:border-1 focus:border-slate-400"
+                        className="max-w-[920px] bg-white rounded-xl border focus:border-1 focus:border-slate-400"
                         placeholder="Enter the size of the property"
                         {...field}
                       />
@@ -234,7 +234,7 @@ export default function Create() {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="max-w-[920px] bg-slate-300/20 rounded-xl border focus:border-1 focus:border-slate-400"
+                        className="max-w-[920px] bg-white rounded-xl border focus:border-1 focus:border-slate-400"
                         placeholder="Enter the size of the home"
                         {...field}
                       />
@@ -254,7 +254,7 @@ export default function Create() {
                   Number of Rooms
                 </FormLabel>
                 <FormPopOver
-                  className="mt-[8px] bg-slate-300/20 rounded-xl border focus:border-1 focus:border-slate-400"
+                  className="mt-[8px] bg-white rounded-xl border focus:border-1 focus:border-slate-400"
                   values={values}
                   type="roomNumbers"
                 >
@@ -268,7 +268,7 @@ export default function Create() {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            className="max-w-[920px] bg-slate-300/20 rounded-xl border focus:border-1 focus:border-slate-400"
+                            className="max-w-[920px] bg-white rounded-xl border focus:border-1 focus:border-slate-400"
                             placeholder="Enter the number of rooms"
                             {...field}
                           />
@@ -287,7 +287,7 @@ export default function Create() {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            className="max-w-[920px] bg-slate-300/20 rounded-xl border focus:border-1 focus:border-slate-400"
+                            className="max-w-[920px] bg-white rounded-xl border focus:border-1 focus:border-slate-400"
                             placeholder="Enter the number of rooms"
                             {...field}
                           />
@@ -368,7 +368,7 @@ export default function Create() {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="max-w-[920px] bg-slate-300/20 rounded-xl border focus:border-1 focus:border-slate-400"
+                        className="max-w-[920px] bg-white rounded-xl border focus:border-1 focus:border-slate-400"
                         placeholder="Write about some unique selling points of the property"
                         {...field}
                       />
@@ -385,7 +385,7 @@ export default function Create() {
                     <FormLabel className="text-xl">Interior Features</FormLabel>
                     <FormControl>
                       <Input
-                        className="max-w-[920px] bg-slate-300/20 rounded-xl border focus:border-1 focus:border-slate-400"
+                        className="max-w-[920px] bg-white rounded-xl border focus:border-1 focus:border-slate-400"
                         placeholder="Write about some interior features of the property"
                         {...field}
                       />
@@ -402,7 +402,7 @@ export default function Create() {
                     <FormLabel className="text-xl">Local attractions</FormLabel>
                     <FormControl>
                       <Input
-                        className="max-w-[920px] bg-slate-300/20 rounded-xl border focus:border-1 focus:border-slate-400"
+                        className="max-w-[920px] bg-white rounded-xl border focus:border-1 focus:border-slate-400"
                         placeholder="Mention some local attractions"
                         {...field}
                       />
@@ -421,7 +421,7 @@ export default function Create() {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="max-w-[920px] bg-slate-300/20 rounded-xl border focus:border-1 focus:border-slate-400"
+                        className="max-w-[920px] bg-white rounded-xl border focus:border-1 focus:border-slate-400"
                         placeholder="Point out some geographical features of the property"
                         {...field}
                       />
@@ -438,7 +438,7 @@ export default function Create() {
                     <FormLabel className="text-xl">Nearby Amenities</FormLabel>
                     <FormControl>
                       <Input
-                        className="max-w-[920px] bg-slate-300/20 rounded-xl border focus:border-1 focus:border-slate-400"
+                        className="max-w-[920px] bg-white rounded-xl border focus:border-1 focus:border-slate-400"
                         placeholder="Mention some of the notable nearby amenities"
                         {...field}
                       />
