@@ -22,7 +22,7 @@ import { Textarea } from '../components/ui/textarea';
 import { architecturalStyles, outbuildings } from '../lib/constants';
 import { useState } from 'react';
 
-const formSchema = z.object({
+export const formSchema = z.object({
   address: z
     .string()
     .min(2, { message: 'Address must be at least 2 characters.' }),
