@@ -89,7 +89,7 @@ export default function SideNavbar({ open }) {
           </div>
           {/* logout */}
           <div className=" my-4">
-            <div className="flex mb-2 justify-start items-center gap-4 pl-5 border border-gray-500  hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto">
+            <div className="flex mb-2 justify-start items-center gap-4 pl-5 border border-gray-500 hover:border-none  hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto">
               <MdOutlineLogout className="text-2xl text-gray-200 group-hover:text-white " />
               <h3 className="text-base text-gray-200 group-hover:text-white font-normal ">
                 Logout
