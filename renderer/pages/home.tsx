@@ -22,7 +22,7 @@ function Home() {
         <div className="mt-10 flex flex-row ">
           <Search />
           <div>
-            <div className="bg-white w-full p-4 rounded-md shadow">
+            <div className="bg-white w-full p-4 rounded-lg shadow-md shadow-gray-300">
               <div className="flex flex-row justify-between w-[250px]  bg-white ">
                 <p className="text-sm font-semibold">Your storage</p>
                 <p className="text-sm font-semibold">25% left</p>
