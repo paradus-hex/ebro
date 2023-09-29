@@ -105,7 +105,7 @@ export default function Create() {
                   Address
                 </FormLabel>
                 <FormPopOver
-                  className="mt-[8px] bg-white"
+                  className="mt-[8px] bg-slate-300/20 rounded-xl"
                   values={values}
                   type="address"
                 >
@@ -120,7 +120,7 @@ export default function Create() {
                             <Input
                               id="width"
                               defaultValue="100%"
-                              className="max-w-[920px] bg-white col-span-2 h-8"
+                              className="max-w-[920px] bg-slate-300/20 rounded-xl col-span-2 h-8"
                               placeholder="Enter the address of the property"
                               {...field}
                             />
@@ -141,7 +141,7 @@ export default function Create() {
                           </FormLabel>
                           <FormControl>
                             <Input
-                              className="max-w-[920px] bg-white col-span-2 h-8"
+                              className="max-w-[920px] bg-slate-300/20 rounded-xl col-span-2 h-8"
                               placeholder="Enter the zip code"
                               {...field}
                             />
@@ -162,7 +162,7 @@ export default function Create() {
                           </FormLabel>
                           <FormControl>
                             <Input
-                              className="max-w-[920px] bg-white col-span-2 h-8"
+                              className="max-w-[920px] bg-slate-300/20 rounded-xl col-span-2 h-8"
                               placeholder="Enter the name of the city"
                               {...field}
                             />
@@ -193,7 +193,7 @@ export default function Create() {
                     <FormControl>
                       <Input
                         type="number"
-                        className="max-w-[920px] bg-white"
+                        className="max-w-[920px] bg-slate-300/20 rounded-xl"
                         placeholder="Enter the year of construction of the property"
                         {...field}
                       />
@@ -212,7 +212,7 @@ export default function Create() {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="max-w-[920px] bg-white"
+                        className="max-w-[920px] bg-slate-300/20 rounded-xl"
                         placeholder="Enter the size of the property"
                         {...field}
                       />
@@ -231,7 +231,7 @@ export default function Create() {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="max-w-[920px] bg-white"
+                        className="max-w-[920px] bg-slate-300/20 rounded-xl"
                         placeholder="Enter the size of the home"
                         {...field}
                       />
@@ -251,7 +251,7 @@ export default function Create() {
                   Number of Rooms
                 </FormLabel>
                 <FormPopOver
-                  className="mt-[8px] bg-white"
+                  className="mt-[8px] bg-slate-300/20 rounded-xl"
                   values={values}
                   type="roomNumbers"
                 >
@@ -265,7 +265,7 @@ export default function Create() {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            className="max-w-[920px] bg-white"
+                            className="max-w-[920px] bg-slate-300/20 rounded-xl"
                             placeholder="Enter the number of rooms"
                             {...field}
                           />
@@ -284,7 +284,7 @@ export default function Create() {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            className="max-w-[920px] bg-white"
+                            className="max-w-[920px] bg-slate-300/20 rounded-xl"
                             placeholder="Enter the number of rooms"
                             {...field}
                           />
@@ -311,7 +311,7 @@ export default function Create() {
                     field.value = [];
                   }
                   return (
-                    <FormItem className="w-[80%] flex flex-col items-center">
+                    <FormItem className="w-[80%] flex flex-col items-center ">
                       <FormLabel
                         className="text-xl"
                         placeholder="Select the architectural style of the property"
@@ -338,7 +338,12 @@ export default function Create() {
                   }
                   return (
                     <FormItem className="w-[80%] flex flex-col items-center">
-                      <FormLabel className="text-xl">Outbuildings</FormLabel>
+                      <FormLabel
+                        className="text-xl"
+                        placeholder="Select the architectural style of the property"
+                      >
+                        Outbuildings
+                      </FormLabel>
                       <MultiSelect
                         selected={field.value}
                         options={outbuildings}
@@ -360,7 +365,7 @@ export default function Create() {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="max-w-[920px] bg-white"
+                        className="max-w-[920px] bg-slate-300/20 rounded-xl"
                         placeholder="Write about some unique selling points of the property"
                         {...field}
                       />
@@ -377,7 +382,7 @@ export default function Create() {
                     <FormLabel className="text-xl">Interior Features</FormLabel>
                     <FormControl>
                       <Input
-                        className="max-w-[920px] bg-white"
+                        className="max-w-[920px] bg-slate-300/20 rounded-xl"
                         placeholder="Write about some interior features of the property"
                         {...field}
                       />
@@ -394,7 +399,7 @@ export default function Create() {
                     <FormLabel className="text-xl">Local attractions</FormLabel>
                     <FormControl>
                       <Input
-                        className="max-w-[920px] bg-white"
+                        className="max-w-[920px] bg-slate-300/20 rounded-xl"
                         placeholder="Mention some local attractions"
                         {...field}
                       />
@@ -413,7 +418,7 @@ export default function Create() {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="max-w-[920px] bg-white"
+                        className="max-w-[920px] bg-slate-300/20 rounded-xl"
                         placeholder="Point out some geographical features of the property"
                         {...field}
                       />
@@ -430,7 +435,7 @@ export default function Create() {
                     <FormLabel className="text-xl">Nearby Amenities</FormLabel>
                     <FormControl>
                       <Input
-                        className="max-w-[920px] bg-white"
+                        className="max-w-[920px] bg-slate-300/20 rounded-xl"
                         placeholder="Mention some of the notable nearby amenities"
                         {...field}
                       />
@@ -445,7 +450,7 @@ export default function Create() {
         </Form>
         <DevTool control={control} />
       </div>
-      <div className="flex flex-col justify-start bg-white w-[30%] ">
+      <div className="flex flex-col justify-start bg-slate-200/50 w-[30%] min-h-screen">
         <ImageUpload></ImageUpload>
         <div
           className="flex
