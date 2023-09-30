@@ -6,24 +6,30 @@ import { Button } from './ui/button';
 
 interface EditModalProps {
   text: string;
+  feedback: string;
   isEditing: boolean;
   setText: React.Dispatch<React.SetStateAction<string>>;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  handleAIPromptChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   handleSaveClick: () => void;
   handleCloseModal: () => void;
   handleEditClick: () => void;
+  handleAISubmitClick: () => void;
 }
 
 const EditModal: React.FC<EditModalProps> = ({
   text,
+  feedback,
   isEditing,
   setText,
   setIsEditing,
   handleChange,
+  handleAIPromptChange,
   handleSaveClick,
   handleCloseModal,
   handleEditClick,
+  handleAISubmitClick,
 }) => {
   const modalRef = useRef(null);
   const handleClickOutsideModal = (event) => {
@@ -75,11 +81,12 @@ const EditModal: React.FC<EditModalProps> = ({
           <div className="w-full flex-1">
             <textarea
               className="w-full flex rounded h-[200px] mt-2 p-3 text-sm text-black outline-1 border border-1 border-gray-400"
-              onChange={handleChange}
+              onChange={handleAIPromptChange}
               placeholder="AI Prompt"
+              value={feedback}
               required
             ></textarea>
-            <Button onClick={handleSaveClick} className="mt-2 w-full">
+            <Button onClick={handleAISubmitClick} className="mt-2 w-full">
               Submit
             </Button>
           </div>
