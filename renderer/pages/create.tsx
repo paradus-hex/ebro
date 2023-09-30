@@ -1,13 +1,12 @@
 'use client';
 import { useRouter } from 'next/router';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { DevTool } from '@hookform/devtools';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { useChat } from 'ai/react';
 import { Loader2 } from 'lucide-react';
-
 import {
   Form,
   FormControl,
@@ -17,14 +16,14 @@ import {
   FormLabel,
   FormMessage,
 } from '../components/ui/Form';
-import { Input } from '../components/ui/Input';
+import { Input } from '../components/ui/input';
 import { MultiSelect } from '../components/MultiSelect';
 import ImageUpload from '../components/imageUpload';
 import { FormPopOver } from '../components/formPopOver';
-import { Textarea } from '../components/ui/Textarea';
+import { Textarea } from '../components/ui/textarea';
 import { architecturalStyles, outbuildings } from '../lib/constants';
 import { useState } from 'react';
-import { measureMemory } from 'vm';
+import { useCreatePageStore } from '../stores/createPageStore';
 
 export const formSchema = z.object({
   address: z
@@ -67,54 +66,60 @@ export const formSchema = z.object({
 
 export default function Create() {
   const router = useRouter();
-  const handleHomeClick = () => {
+  const {
+    setValues,
+    setResponse,
+    getValues: getStoredValues,
+    getResponse: getStoredResponse,
+  } = useCreatePageStore();
+
+  const handleGenerateClick = () => {
+    router.push('/finalpage');
+  };
+  const handleGoBackClick = () => {
     router.push('/home');
   };
-  const handleGenerateClick = () => {
+  const handleNextPageClick = () => {
     router.push('/finalpage');
   };
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      interiorFeatures: '',
-    },
+    defaultValues: getStoredValues(),
   });
-  const [result, setResult] = useState<string | null>(null);
-  const { messages, append, isLoading, setMessages } = useChat({
+  const textAlreadyExists = getStoredResponse().length !== 0;
+  console.log('textAlreadyExists:', textAlreadyExists);
+  const { append, isLoading, setMessages } = useChat({
     onFinish: (message) => {
-      console.log('result', message.content);
-      setResult(message.content);
+      setResponse(message.content.slice(1, -1));
+      router.push('/finalpage');
     },
   });
   const [loading, setLoading] = useState(false);
   const [notes, setNotes] = useState(false);
-
   const { control, formState, watch } = form;
   const values = watch();
   const { errors } = formState;
   function onSubmit(values: z.infer<typeof formSchema>) {
+    setValues(values);
     setMessages([]);
     append({ role: 'user', content: JSON.stringify(values) });
     setLoading(isLoading);
-    console.log('values:', values);
-    // handleSubmit={(message: string) => {
-    //   setMessages([]);
-    //   append({ role: "user", content: message });
-    // }}
-    // isLoading={isLoading}
   }
+
   return (
     <div className="flex">
-      <div className="w-full flex-col gap-10 justify-center">
-        {/* <Button
-          className="w-[90px] h-[50px] text-xl mt-4"
-          onClick={handleHomeClick}
-        >
-          Home
-        </Button> */}
-        {result}
-        <h1 className="font-extrabold mt-10">Project Name</h1>
-        <div className="my-10"></div>
+      <div className="w-full flex-col gap-10 justify-center px-auto mx-auto">
+        <div className="flex justify-between mt-10 mb-8">
+          <Button onClick={handleGoBackClick}>Go Back</Button>
+          <h1 className="font-extrabold">Project Name</h1>
+          <Button
+            disabled={!textAlreadyExists}
+            onClick={handleNextPageClick}
+            className="-translate-x-4"
+          >
+            Next Page
+          </Button>
+        </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="grid grid-cols-2 gap-4 gap-y-14 place-items-center">

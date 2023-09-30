@@ -1,19 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import EditModal from '../components/finalpageModal';
 import { Button } from '../components/ui/button';
+import { useCreatePageStore } from '../stores/createPageStore';
+import { useRouter } from 'next/router';
 
 type Props = {};
 
 const FinalPage = (props: Props) => {
+  const router = useRouter();
   const [text, setText] = useState<string>('Initial text');
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const { getResponse, setResponse } = useCreatePageStore();
+
+  const handleGoBack = () => {
+    router.push('/create');
+  };
 
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
   const handleSaveClick = () => {
+    setResponse(text);
     setIsEditing(false);
   };
 
@@ -28,9 +37,19 @@ const FinalPage = (props: Props) => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+  useEffect(() => {
+    const data = getResponse();
+    setText(data);
+  }, []);
 
   return (
     <div className="flex flex-col w-full h-screen  justify-center">
+      <Button
+        className="sticky text-xl top-0 left-2 w-28 h-12"
+        onClick={handleGoBack}
+      >
+        Go back
+      </Button>
       <h1 className="font-extrabold mb-10">Project Name</h1>
       <div className="grid grid-cols-12 w-full gap-2 mx-2 h-3/5">
         <div className="col-span-8 bg-transparent rounded">
