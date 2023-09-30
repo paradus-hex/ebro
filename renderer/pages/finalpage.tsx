@@ -59,7 +59,7 @@ const FinalPage = (props: Props) => {
   useEffect(() => {
     const data = getResponse();
     setText(data);
-  }, [setResponse, handleAISubmitClick]);
+  }, [isLoading, getResponse, setText]);
 
   return (
     <div className="flex flex-col w-full h-screen  justify-center">
