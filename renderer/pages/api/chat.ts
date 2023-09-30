@@ -63,7 +63,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     - Interior Details: ${values.interiorFeatures}
     - Unique Selling Points: ${values.uniqueSellingPoints}
     `;
-    console.log(values)
+    // console.log(values)
 
   } else {
     const [prev, feedback] = lastMessage!.content.split('$$$')
@@ -80,7 +80,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     2. Property Features: Describe the property's layout in a way that allows potential buyers to visualize living there. Emphasize functional and aesthetic aspects, detailing the flow from one room to another, and highlight any recent renovations, bespoke features, or technological integrations. Also, mention any additional structures, such as garages or sheds, and their current condition.
     3. Location Description: Convey the advantages of the property's location. Discuss proximity to essential services, local attractions, geographical features, and the overall ambiance of the neighborhood. If the area has any historical or cultural significance, use this to enhance the appeal.
     `
-    console.log(feedback)
+    // console.log(feedback)
   }
 
 
