@@ -1,12 +1,8 @@
 // ./app/api/chat/route.ts
 import {
   ChatCompletionRequestMessageRoleEnum,
-  Configuration,
-  OpenAIApi,
 } from "openai-edge";
 import OpenAI from 'openai';
-
-import { OpenAIStream, StreamingTextResponse } from "ai";
 import { z } from "zod";
 import { formSchema } from "../create";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -18,29 +14,17 @@ const systemPrompt = {
   content: `The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.`,
 } as const;
 
-// Create an OpenAI API client (that's edge friendly!)
-const config = new Configuration({
-  // apiKey: process.env.OPENAI_API_KEY,
-  apiKey: "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"
+const openai = new OpenAI({
+  apiKey: "suck_it_scrapers"
 });
-const openai2 = new OpenAI({
-  apiKey: "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"
-});
-const openai = new OpenAIApi(config);
 
-// IMPORTANT! Set the runtime to edge
 export const runtime = "edge";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
-  // Extract the `prompt` from the body of the request
-  // console.log(req.body)
-
 
   const { messages } = (await JSON.parse(req.body)) as {
     messages: { content: string; role: ChatCompletionRequestMessageRoleEnum }[];
   };
-  // console.log(messages)
-  // return res.status(200).json({ message: messages });
 
   const lastMessage = messages.pop();
 
@@ -75,26 +59,13 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   - Unique Selling Points: ${values.uniqueSellingPoints}
   `;
 
+  // console.log(values)
+
   if (!lastMessage) {
     throw new Error("No messages provided");
   }
 
-  // Ask OpenAI for a streaming chat completion given the prompt
-  // const response = await openai.createChatCompletion({
-  //   model: "gpt-3.5-turbo",
-  //   stream: false,
-  //   messages: [
-  //     systemPrompt,
-  //     {
-  //       role: "user",
-  //       content: prompt,
-  //     },
-  //   ],
-  // });
-
-
-
-  const response2 = await openai2.chat.completions.create({
+  const response = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
     stream: false,
     messages: [
@@ -105,21 +76,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       },
     ],
   });
-  // const stream2 = OpenAIStream(response2);
 
+  const returnMessage = response.choices[0].message.content.replace(/(\r\n|\n|\r)/gm, "");
 
-  // Convert the response into a friendly text-stream
-  // const stream = await OpenAIStream(response);
-  // Respond with the stream
-  // console.log(values)
-  // console.log("----------------------")
-  // console.log(prompt)
-  // console.log("----------------------")
-  // // console.log(stream2)
-  // console.log("----------------------")
-  // console.log(response2)
-  // return new StreamingTextResponse(stream);
-  // return new StreamingTextResponse(stream2);
-
-  return res.status(200).json({ message: { content: "slightly kaj kore", response: response2.choices[0].message } });
+  return res.status(200).json(returnMessage);
 }

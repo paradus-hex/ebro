@@ -23,6 +23,7 @@
     "cmdk": "^0.2.0",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.1.0",
+    "immer": "^10.0.2",
     "lucide-react": "^0.279.0",
     "openai": "^4.11.0",
     "openai-edge": "^1.2.2",
@@ -30,7 +31,8 @@
     "react-icons": "^4.11.0",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.22.2"
+    "zod": "^3.22.2",
+    "zustand": "^4.4.1"
   },
   "devDependencies": {
     "@hookform/devtools": "^4.3.1",
