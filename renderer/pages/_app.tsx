@@ -5,13 +5,14 @@ import '../styles/globals.css';
 import SideNavbar from '../components/ui/SideNavbar';
 import { RxAvatar } from 'react-icons/rx';
 import Script from 'next/script';
+import { Test } from '../components/Test';
 
 // import { world } from './renderer';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  // window?.myAPI?.on();
+  // os?.homedir();
   // console.log(world);
 
   const toggleSidebar = () => {
@@ -19,6 +20,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   };
   return (
     <>
+      {/* <Test /> */}
       <Script
         src="/renderer.js"
         strategy="lazyOnload"

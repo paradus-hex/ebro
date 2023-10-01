@@ -3,8 +3,10 @@ import {
   BrowserWindow,
   BrowserWindowConstructorOptions,
   Rectangle,
+  ipcMain,
 } from 'electron'
 import Store from 'electron-store'
+import path from 'path'
 
 export const createWindow = (
   windowName: string,
@@ -31,7 +33,11 @@ export const createWindow = (
       height: size[1],
     }
   }
-
+  ipcMain.on('set-title', (event, title) => {
+    const webContents = event.sender
+    const win = BrowserWindow.fromWebContents(webContents)
+    win.setTitle(title)
+  })
   const windowWithinBounds = (windowState, bounds) => {
     return (
       windowState.x >= bounds.x &&
@@ -75,6 +81,7 @@ export const createWindow = (
     ...options,
     webPreferences: {
       ...options.webPreferences,
+      preload: path.join(__dirname, '../app/preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
     },

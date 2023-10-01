@@ -21,18 +21,18 @@ if (isProd) {
 
 ; (async () => {
   await app.whenReady()
+  // console.log('app is ready', path.join(__dirname))
 
   const mainWindow = createWindow('main', {
     width: 1000,
     height: 600,
     minWidth: 960,
     minHeight: 600,
-    webPreferences: {
-      contextIsolation: true,
-      nodeIntegration: false,
-      preload: path.join(__dirname, '/preload.js'),
-    }
+
+
   })
+
+
 
   if (isProd) {
     await mainWindow.loadURL('app://./home')
