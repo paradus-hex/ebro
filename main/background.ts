@@ -1,6 +1,15 @@
-import { app } from 'electron'
+import { app, contextBridge, ipcMain, ipcRenderer } from 'electron'
 import serve from 'electron-serve'
 import { createWindow } from './helpers'
+import path from 'path'
+
+
+const sqlite3 = require('sqlite3');
+const db = new sqlite3.Database('../dataBase.db');
+// db.serialize(() => {
+//   db.run("CREATE TABLE foody (name, lastName)");
+//   db.run("INSERT INTO foody VALUES (?, ?)", ['foo', 'bar']);
+// });
 
 const isProd: boolean = process.env.NODE_ENV === 'production'
 
@@ -18,6 +27,9 @@ if (isProd) {
     height: 600,
     minWidth: 960,
     minHeight: 600,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.ts'),
+    }
   })
 
   if (isProd) {
@@ -32,3 +44,15 @@ if (isProd) {
 app.on('window-all-closed', () => {
   app.quit()
 })
+
+contextBridge.exposeInMainWorld('myAPI', {
+  send: (channel: string, data: any) => {
+    ipcRenderer.send(channel, data);
+  },
+  on: (channel: string, callback: (event: any, ...args: any[]) => void) => {
+    ipcRenderer.on(channel, callback);
+  },
+});
+
+
+

@@ -4,16 +4,22 @@ import ProjectSlider from '../components/ProjectSlider';
 import { Button } from '../components/ui/button';
 import { useRouter } from 'next/router';
 import Search from '../components/search';
+import { ipcRenderer } from 'electron';
+import MyComponent from '../components/Test';
 
 function Home() {
   const router = useRouter();
   const handleCreateClick = () => {
     router.push('/create');
   };
+
+  // window.Electron.doThing();
+  const rows = ipcRenderer.invoke('db-query', 'SELECT * FROM Users');
   return (
     <React.Fragment>
       <Head>
         <title>Nor SAAS</title>
+        {/* <MyComponent /> */}
       </Head>
       <div className="w-full flex flex-col justify-center items-center">
         <div className="mt-10 flex flex-row ">
