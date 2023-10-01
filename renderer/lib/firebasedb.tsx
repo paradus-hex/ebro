@@ -3,6 +3,7 @@ import {
   getFirestore,
   collection,
   getDocs,
+  addDoc,
   // getAnalytics,
 } from 'firebase/firestore/lite';
 // Follow this pattern to import other Firebase services
@@ -14,11 +15,16 @@ const firebaseConfig = firebaseConstant;
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const booksCol = collection(db, 'books');
 
 // Get a list of cities from your databas
-async function getCities(db) {
-  const citiesCol = collection(db, 'books');
+export async function getBooks(col = booksCol) {
+  const citiesCol = col;
   const citySnapshot = await getDocs(citiesCol);
   const cityList = citySnapshot.docs.map((doc) => doc.data());
   return cityList;
+}
+
+export async function setBooks(data: any, col = booksCol) {
+  addDoc(col, data);
 }
