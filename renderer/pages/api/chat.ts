@@ -15,7 +15,7 @@ const systemPrompt = {
 } as const;
 
 const openai = new OpenAI({
-  apiKey: "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"
+  apiKey: ""
 });
 
 export const runtime = "edge";
