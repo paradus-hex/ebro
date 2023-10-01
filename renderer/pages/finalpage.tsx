@@ -3,6 +3,7 @@ import EditModal from '../components/finalpageModal';
 import { Button } from '../components/ui/button';
 import { useCreatePageStore } from '../stores/createPageStore';
 import { useRouter } from 'next/router';
+import { useChat } from 'ai/react';
 
 type Props = {};
 
@@ -12,6 +13,12 @@ const FinalPage = (props: Props) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { getResponse, setResponse } = useCreatePageStore();
+  const [feedback, setFeedback] = useState<string>('');
+  const { append, isLoading, setMessages } = useChat({
+    onFinish: (message) => {
+      setResponse(message.content.slice(1, -1));
+    },
+  });
 
   const handleGoBack = () => {
     router.push('/create');
@@ -26,8 +33,20 @@ const FinalPage = (props: Props) => {
     setIsEditing(false);
   };
 
+  const handleAISubmitClick = () => {
+    append({
+      role: 'user',
+      content: JSON.stringify(text + '$$$' + feedback),
+    });
+    handleCloseModal();
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
+  };
+
+  const handleAIPromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setFeedback(e.target.value);
   };
 
   const handleAIButtonClick = () => {
@@ -40,7 +59,7 @@ const FinalPage = (props: Props) => {
   useEffect(() => {
     const data = getResponse();
     setText(data);
-  }, []);
+  }, [isLoading, getResponse, setText]);
 
   return (
     <div className="flex flex-col w-full h-screen  justify-center">
@@ -108,13 +127,16 @@ const FinalPage = (props: Props) => {
       {isModalOpen && (
         <EditModal
           text={text}
+          feedback={feedback}
           isEditing={isEditing}
           setText={setText}
           setIsEditing={setIsEditing}
           handleChange={handleChange}
+          handleAIPromptChange={handleAIPromptChange}
           handleSaveClick={handleSaveClick}
           handleCloseModal={handleCloseModal}
           handleEditClick={handleEditClick}
+          handleAISubmitClick={handleAISubmitClick}
         />
       )}
     </div>

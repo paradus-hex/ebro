@@ -4,7 +4,7 @@ import { Button } from '../components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { DevTool } from '@hookform/devtools';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useChat } from 'ai/react';
 import { Loader2 } from 'lucide-react';
 import {
@@ -101,7 +101,6 @@ export default function Create() {
   const { errors } = formState;
   function onSubmit(values: z.infer<typeof formSchema>) {
     setValues(values);
-    setMessages([]);
     append({ role: 'user', content: JSON.stringify(values) });
     setLoading(isLoading);
   }
