@@ -13,7 +13,7 @@ function Home() {
   return (
     <React.Fragment>
       <Head>
-        <title>Nor SAAS</title>
+        <title>Ebro App</title>
       </Head>
       <div className="w-full flex flex-col justify-center items-center">
         <div className="mt-10 flex flex-row ">
