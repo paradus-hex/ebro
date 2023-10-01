@@ -109,10 +109,12 @@ export default function Create() {
     <div className="flex">
       <div className="w-full flex-col gap-10 justify-center px-auto mx-auto">
         <div className="flex justify-between mt-10 mb-8">
-          <Button onClick={handleGoBackClick}>Go Back</Button>
+          <Button disabled={isLoading} onClick={handleGoBackClick}>
+            Go Back
+          </Button>
           <h1 className="font-extrabold">Project Name</h1>
           <Button
-            disabled={!textAlreadyExists}
+            disabled={!textAlreadyExists || isLoading}
             onClick={handleNextPageClick}
             className="-translate-x-4"
           >
@@ -473,7 +475,7 @@ export default function Create() {
                 )}
               />
             </div>
-            <Button disabled={loading} type="submit">
+            <Button disabled={isLoading} type="submit">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Submit
             </Button>
@@ -490,6 +492,7 @@ export default function Create() {
         >
           <Button
             onClick={() => setNotes((prev) => !prev)}
+            disabled={isLoading}
             className="m-5 rounded-xl"
           >
             Notes
@@ -505,6 +508,7 @@ export default function Create() {
         <Button
           className="text-xl mx-8 my-10 rounded-xl"
           onClick={handleGenerateClick}
+          disabled={isLoading}
         >
           Generate
         </Button>

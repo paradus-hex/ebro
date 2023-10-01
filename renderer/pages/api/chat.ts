@@ -15,7 +15,7 @@ const systemPrompt = {
 } as const;
 
 const openai = new OpenAI({
-  apiKey: "suck_it_scrapers"
+  apiKey: ""
 });
 
 export const runtime = "edge";
@@ -46,7 +46,8 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   
     3. Location Description: Convey the advantages of the property's location. Discuss proximity to essential services, local attractions, geographical features, and the overall ambiance of the neighborhood. If the area has any historical or cultural significance, use this to enhance the appeal.
   
-  
+
+    Don't add the above three sections as bullet points, but rather write them in a paragraph form.
     Inputs:
     - Property address: ${values.address}
     - City: ${values.city}
@@ -79,6 +80,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     1. Standard Description: Introduce the property with an engaging tone. Highlight its age, size, and any special architectural features that would appeal to a potential buyer. Make sure to touch upon the property's condition, history, and any unique selling points.
     2. Property Features: Describe the property's layout in a way that allows potential buyers to visualize living there. Emphasize functional and aesthetic aspects, detailing the flow from one room to another, and highlight any recent renovations, bespoke features, or technological integrations. Also, mention any additional structures, such as garages or sheds, and their current condition.
     3. Location Description: Convey the advantages of the property's location. Discuss proximity to essential services, local attractions, geographical features, and the overall ambiance of the neighborhood. If the area has any historical or cultural significance, use this to enhance the appeal.
+    Don't add the above three sections as bullet points, but rather write them in a paragraph form.
     `
     // console.log(feedback)
   }

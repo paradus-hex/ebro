@@ -66,6 +66,7 @@ const FinalPage = (props: Props) => {
       <Button
         className="sticky text-xl top-0 left-2 w-28 h-12"
         onClick={handleGoBack}
+        disabled={isLoading}
       >
         Go back
       </Button>
@@ -76,12 +77,17 @@ const FinalPage = (props: Props) => {
             <div className="w-full">
               <textarea
                 className="w-full flex rounded-md h-[500px] mt-2 p-3 px-5 text-sm text-black outline-1 border border-1 border-gray-400"
+                disabled={isLoading}
                 value={text}
                 onChange={handleChange}
                 placeholder="Write here...."
                 required
               ></textarea>
-              <Button className="mt-5 w-full" onClick={handleSaveClick}>
+              <Button
+                disabled={isLoading}
+                className="mt-5 w-full"
+                onClick={handleSaveClick}
+              >
                 Save
               </Button>
               {/* <button onClick={handleSaveClick}>Save</button> */}
@@ -91,7 +97,11 @@ const FinalPage = (props: Props) => {
               <div className="rounded-md h-[500px] mt-2 p-3 px-5 text-sm text-black outline-0 bg-gray-300/50 overflow-auto text-left">
                 <p>{text}</p>
               </div>
-              <Button className="mt-5" onClick={handleEditClick}>
+              <Button
+                disabled={isLoading}
+                className="mt-5"
+                onClick={handleEditClick}
+              >
                 Edit
               </Button>
             </div>
@@ -103,12 +113,16 @@ const FinalPage = (props: Props) => {
       </div>
       <div className="  flex flex-row w-full justify-between items-center">
         <Button
+          disabled={isLoading}
           className="ml-4 bg-nav_primary text-white w-[200px] rounded-xl text-sm px-2 h-10 "
           onClick={handleAIButtonClick}
         >
           AI Modification
         </Button>
-        <Button className="mr-4 bg-nav_primary w-[200px] text-white rounded-xl text-sm px-2 h-10 ">
+        <Button
+          disabled={isLoading}
+          className="mr-4 bg-nav_primary w-[200px] text-white rounded-xl text-sm px-2 h-10 "
+        >
           Export
         </Button>
       </div>
@@ -129,6 +143,7 @@ const FinalPage = (props: Props) => {
           text={text}
           feedback={feedback}
           isEditing={isEditing}
+          isLoading={isLoading}
           setText={setText}
           setIsEditing={setIsEditing}
           handleChange={handleChange}

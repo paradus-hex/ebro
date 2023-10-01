@@ -30,7 +30,7 @@ export const useCreatePageStore = create(
       interiorFeatures: 'Cold floors to sleep on',
       localAttractions: 'Local slums to get daily reality checks',
       geographicalFeatures: 'Mountain for views and also to jump off of',
-      nearbyAmenities: 'Psychiatrist office',
+      nearbyAmenities: 'Psychiatrist office, Swimming pool full of sharks',
     },
     response: "",
     note: "",
