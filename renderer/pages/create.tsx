@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/router';
-import { Button } from '../components/ui/button';
+import { Button } from '../components/ui/Button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { DevTool } from '@hookform/devtools';
@@ -16,11 +16,11 @@ import {
   FormLabel,
   FormMessage,
 } from '../components/ui/Form';
-import { Input } from '../components/ui/input';
+import { Input } from '../components/ui/Input';
 import { MultiSelect } from '../components/MultiSelect';
 import ImageUpload from '../components/imageUpload';
 import { FormPopOver } from '../components/formPopOver';
-import { Textarea } from '../components/ui/textarea';
+import { Textarea } from '../components/ui/Textarea';
 import { architecturalStyles, outbuildings } from '../lib/constants';
 import { useState } from 'react';
 import { useCreatePageStore } from '../stores/createPageStore';

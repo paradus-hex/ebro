@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import ProjectSlider from '../components/ProjectSlider';
-import { Button } from '../components/ui/button';
+import { Button } from '../components/ui/Button';
 import { useRouter } from 'next/router';
 import Search from '../components/search';
 import { ipcRenderer } from 'electron';
@@ -13,8 +13,10 @@ function Home() {
     router.push('/create');
   };
 
-  // window.Electron.doThing();
-  const rows = ipcRenderer.invoke('db-query', 'SELECT * FROM Users');
+  // window.myAPI.on();
+  // window?.electronAPI?.myAPI.on();
+
+  // const rows = ipcRenderer.invoke('db-query', 'SELECT * FROM Users');
   return (
     <React.Fragment>
       <Head>

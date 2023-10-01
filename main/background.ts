@@ -28,7 +28,9 @@ if (isProd) {
     minWidth: 960,
     minHeight: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.ts'),
+      contextIsolation: true,
+      nodeIntegration: false,
+      preload: path.join(__dirname, '/preload.js'),
     }
   })
 
@@ -37,22 +39,17 @@ if (isProd) {
   } else {
     const port = process.argv[2]
     await mainWindow.loadURL(`http://localhost:${port}/home`)
-    // mainWindow.webContents.openDevTools()
+
   }
 })()
+
+
 
 app.on('window-all-closed', () => {
   app.quit()
 })
 
-contextBridge.exposeInMainWorld('myAPI', {
-  send: (channel: string, data: any) => {
-    ipcRenderer.send(channel, data);
-  },
-  on: (channel: string, callback: (event: any, ...args: any[]) => void) => {
-    ipcRenderer.on(channel, callback);
-  },
-});
+
 
 
 
