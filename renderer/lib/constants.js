@@ -13,38 +13,38 @@ export const projects = [
 
 export const architecturalStyles = [
   {
-    value: 'style 1',
-    label: 'style 1',
+    value: 'colonial',
+    label: 'Colonial',
   },
   {
-    value: 'style 2',
-    label: 'style 2',
+    value: 'modern',
+    label: 'Modern',
   },
   {
-    value: 'style 3',
-    label: 'style 3',
+    value: 'victorian',
+    label: 'Victorian',
   },
   {
-    value: 'style 4',
-    label: 'style 4',
+    value: 'craftsman',
+    label: 'Craftsman',
   },
 ];
 
 export const outbuildings = [
   {
-    value: 'item 1',
-    label: 'item 1',
+    value: 'garage',
+    label: 'Garage',
   },
   {
-    value: 'item 2',
-    label: 'item 2',
+    value: 'guestHouse',
+    label: 'Guest House',
   },
   {
-    value: 'item 3',
-    label: 'item 3',
+    value: 'barn',
+    label: 'Barn',
   },
   {
-    value: 'item 4',
-    label: 'item 4',
+    value: 'shed',
+    label: 'Shed',
   },
 ];
