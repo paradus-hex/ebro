@@ -10,10 +10,21 @@ import {
   updateDoc,
   deleteDoc,
 } from 'firebase/firestore/lite';
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from 'firebase/auth';
 import { firebaseConfig } from '../firebase-constants';
+// import { useSignedInStoreState } from '../stores/createPageStore';
+
+// const { getValues, setValues } = useSignedInStoreState();
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 const projects = collection(db, 'projects');
 
 export async function getProjects(col = projects) {
@@ -68,4 +79,31 @@ export async function isFav(id: string, fav: boolean) {
 export async function deleteProject(id: string) {
   const docRef = doc(db, 'projects', id);
   deleteDoc(docRef).then((e) => console.log(id, 'has been deleted'));
+}
+
+export async function newUser(email: string, password: string) {
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((cred) => {
+      // console.log(cred);
+      // setValues({ signedIn: true });
+      console.log('User created', cred.user);
+    })
+    .catch((err) => console.log(err));
+}
+export async function signInUser(email: string, password: string) {
+  signInWithEmailAndPassword(auth, email, password)
+    .then((cred) => {
+      // console.log(cred);
+      // setValues({ signedIn: true });
+      console.log('User signed in', cred.user);
+    })
+    .catch((err) => console.log(err));
+}
+
+export async function signIn(email: string, password: string) {}
+export async function logout() {
+  signOut(auth).then(() => {
+    // setValues({ signedIn: true });
+    console.log('User signed out');
+  });
 }

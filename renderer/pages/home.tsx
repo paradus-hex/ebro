@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import Head from 'next/head';
 import ProjectSlider from '../components/ProjectSlider';
-import { Button } from '../components/ui/button';
+import { Button } from '../components/ui/Button';
 import { useRouter } from 'next/router';
 import Search from '../components/search';
 import { getProjects, getProjectsUsingUsername } from '../lib/firebasedb';
+import Layout from '../components/Layout';
 
 function Home() {
   const router = useRouter();
@@ -57,5 +58,9 @@ function Home() {
     </React.Fragment>
   );
 }
+
+Home.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>;
+};
 
 export default Home;
