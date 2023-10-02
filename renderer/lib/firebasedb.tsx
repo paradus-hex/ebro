@@ -18,9 +18,9 @@ import {
   signOut,
 } from 'firebase/auth';
 import { firebaseConfig } from '../firebase-constants';
-import { useSignedInStoreState } from '../stores/createPageStore';
+// import { useSignedInStoreState } from '../stores/createPageStore';
 
-const { getValues, setValues } = useSignedInStoreState();
+// const { getValues, setValues } = useSignedInStoreState();
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -85,7 +85,7 @@ export async function newUser(email: string, password: string) {
   createUserWithEmailAndPassword(auth, email, password)
     .then((cred) => {
       // console.log(cred);
-      setValues({ signedIn: true });
+      // setValues({ signedIn: true });
       console.log('User created', cred.user);
     })
     .catch((err) => console.log(err));
@@ -94,7 +94,7 @@ export async function signInUser(email: string, password: string) {
   signInWithEmailAndPassword(auth, email, password)
     .then((cred) => {
       // console.log(cred);
-      setValues({ signedIn: true });
+      // setValues({ signedIn: true });
       console.log('User signed in', cred.user);
     })
     .catch((err) => console.log(err));
@@ -103,7 +103,7 @@ export async function signInUser(email: string, password: string) {
 export async function signIn(email: string, password: string) {}
 export async function logout() {
   signOut(auth).then(() => {
-    setValues({ signedIn: false });
+    // setValues({ signedIn: true });
     console.log('User signed out');
   });
 }

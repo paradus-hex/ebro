@@ -15,23 +15,43 @@ export default function ProjectSlider2() {
       isFavorite: any;
     }[]
   >([]);
+
+  const [Changed, setChanged] = useState(false);
   const delFromSelectedCards = (key: string) => {
     const filteredCards = selectedCards.filter((e) => e.key != key);
     setSelectedCards(filteredCards);
+  };
+  const favSelectedCards = (key: string) => {
+    // const card = selectedCards.filter((e) => e.key == key);
+    const filteredCards = selectedCards.filter((e) => e.key == key);
+    filteredCards[0].isFavorite = !filteredCards[0].isFavorite;
+    const restOfTheCards = selectedCards.filter((e) => e.key != key);
+    setSelectedCards([...restOfTheCards, ...filteredCards]);
+
+    selectedCards.sort((a, b) => {
+      if (a.isFavorite !== b.isFavorite) {
+        return b.isFavorite - a.isFavorite;
+      }
+      return a.updatedAt - b.updatedAt;
+    });
+    console.log('filter', filteredCards);
+    // setSelectedCards(filteredCards);
   };
   const fillCarousel = async () => {
     const projects = await getProjectsForCarousel('user3'); // TODO: get username from context
     console.log('Projects: ', projects);
     setSelectedCards(projects);
   };
+  useEffect(() => {}, [selectedCards]);
   useEffect(() => {
     fillCarousel();
   }, []);
 
   selectedCards.sort((a, b) => {
-    const dateA = new Date(a.updatedAt);
-    const dateB = new Date(b.updatedAt);
-    return dateA > dateB ? 1 : -1;
+    if (a.isFavorite !== b.isFavorite) {
+      return b.isFavorite - a.isFavorite;
+    }
+    return a.updatedAt - b.updatedAt;
   });
 
   return (
@@ -59,6 +79,7 @@ export default function ProjectSlider2() {
               address={selectedCards[index].address}
               isFavourite={selectedCards[index].isFavorite}
               delFromSelectedCards={delFromSelectedCards}
+              favSelectedCards={favSelectedCards}
             />
           </SplideSlide>
         ))}

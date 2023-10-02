@@ -11,12 +11,14 @@ export default function MyProjectCard({
   id,
   isFavourite,
   delFromSelectedCards,
+  favSelectedCards,
 }: {
   projectName: string;
   address: string;
   id: string;
   isFavourite: boolean;
   delFromSelectedCards: (key: string) => void;
+  favSelectedCards: (key: string) => void;
 }) {
   const setFav = (id: string) => {
     console.log('is fav', id);
@@ -55,6 +57,7 @@ export default function MyProjectCard({
               onClick={(e) => {
                 setNotFave(id);
                 isFav(id, false);
+                favSelectedCards(id);
               }}
               className="text-yellow-300 hover:text-yellow-300  transition-colors ease-in-out delay-200"
             />
@@ -63,6 +66,7 @@ export default function MyProjectCard({
               onClick={(e) => {
                 setFav(id);
                 isFav(id, true);
+                favSelectedCards(id);
               }}
               className=" hover:text-yellow-300  transition-colors ease-in-out delay-200"
             ></AiOutlineStar>
