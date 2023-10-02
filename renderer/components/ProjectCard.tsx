@@ -4,6 +4,7 @@ import { BsHouse } from 'react-icons/bs';
 import { RiDeleteBin2Line } from 'react-icons/ri';
 import { BsStarFill } from 'react-icons/bs';
 import { isFav, deleteProject } from '../lib/firebasedb';
+import { useRouter } from 'next/router';
 
 export default function MyProjectCard({
   projectName,
@@ -20,15 +21,25 @@ export default function MyProjectCard({
   delFromSelectedCards: (key: string) => void;
   favSelectedCards: (key: string) => void;
 }) {
+  const router = useRouter();
   const setFav = (id: string) => {
-    console.log('is fav', id);
+    // console.log('is fav', id);
   };
   const setNotFave = (id: string) => {
-    console.log('is not fav', id);
+    // console.log('is not fav', id);
   };
   const handleProjectArrowClick = () => {
-    console.log(
-      `Address ${address}, ProjectName ${projectName}, ID ${id}, Isfav ${isFavourite}`,
+    // console.log(
+    //   `Address ${address}, ProjectName ${projectName}, ID ${id}, Isfav ${isFavourite}`,
+    // );
+    router.push(
+      `/create?params=${encodeURIComponent(
+        JSON.stringify({
+          key: id,
+          passedProjectName: projectName,
+          intention: 'update',
+        }),
+      )}`,
     );
   };
   const [isFavoriteState, setIsFavoriteState] = useState(false);
