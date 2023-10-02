@@ -22,20 +22,20 @@ export default function ProjectSlider2() {
     setSelectedCards(filteredCards);
   };
   const favSelectedCards = (key: string) => {
-    // const card = selectedCards.filter((e) => e.key == key);
-    const filteredCards = selectedCards.filter((e) => e.key == key);
+    // optimistic update for sorting
+    let temp = [...selectedCards];
+    const filteredCards = temp.filter((e) => e.key == key);
     filteredCards[0].isFavorite = !filteredCards[0].isFavorite;
-    const restOfTheCards = selectedCards.filter((e) => e.key != key);
-    setSelectedCards([...restOfTheCards, ...filteredCards]);
-
-    selectedCards.sort((a, b) => {
+    const restOfTheCards = temp.filter((e) => e.key != key);
+    let sedondaryTemp = [...filteredCards, ...restOfTheCards];
+    sedondaryTemp.sort((a, b) => {
       if (a.isFavorite !== b.isFavorite) {
         return b.isFavorite - a.isFavorite;
       }
-      return a.updatedAt - b.updatedAt;
+      return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
     });
-    console.log('filter', filteredCards);
-    // setSelectedCards(filteredCards);
+
+    setSelectedCards([...sedondaryTemp]);
   };
   const fillCarousel = async () => {
     const projects = await getProjectsForCarousel('user3'); // TODO: get username from context
@@ -51,7 +51,7 @@ export default function ProjectSlider2() {
     if (a.isFavorite !== b.isFavorite) {
       return b.isFavorite - a.isFavorite;
     }
-    return a.updatedAt - b.updatedAt;
+    return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
   });
 
   return (
