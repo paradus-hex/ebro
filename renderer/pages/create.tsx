@@ -22,9 +22,10 @@ import ImageUpload from '../components/imageUpload';
 import { FormPopOver } from '../components/formPopOver';
 import { Textarea } from '../components/ui/Textarea';
 import { architecturalStyles, outbuildings } from '../lib/constants';
-import { useState } from 'react';
+import { ReactElement, useState } from 'react';
 import { useCreatePageStore } from '../stores/createPageStore';
 import { setProjects } from '../lib/firebasedb';
+import Layout from '../components/Layout';
 
 export const formSchema = z.object({
   address: z
@@ -65,7 +66,7 @@ export const formSchema = z.object({
   nearbyAmenities: z.string(),
 });
 
-export default function Create() {
+function Create() {
   const router = useRouter();
   const {
     setValues,
@@ -523,3 +524,8 @@ export default function Create() {
     </div>
   );
 }
+Create.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>;
+};
+
+export default Create;

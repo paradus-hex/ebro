@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import EditModal from '../components/finalpageModal';
 import { Button } from '../components/ui/Button';
 import { useCreatePageStore } from '../stores/createPageStore';
 import { useRouter } from 'next/router';
 import { useChat } from 'ai/react';
 import { setProjects } from '../lib/firebasedb';
+import Layout from '../components/Layout';
+import { NextPageWithLayout } from './_app';
 
-const FinalPage = () => {
+const FinalPage: NextPageWithLayout = () => {
   const router = useRouter();
   const [text, setText] = useState<string>('Initial text');
   const [cloudSaveDisabled, setCloudSaveDisabled] = useState<boolean>(false);
@@ -156,6 +158,10 @@ const FinalPage = () => {
       )}
     </div>
   );
+};
+
+FinalPage.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>;
 };
 
 export default FinalPage;
