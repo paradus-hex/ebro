@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
-import { AiOutlineStar } from 'react-icons/ai';
+import { AiOutlineStar, AiOutlineArrowRight } from 'react-icons/ai';
 import { BsHouse } from 'react-icons/bs';
 import { RiDeleteBin2Line } from 'react-icons/ri';
 import { BsStarFill } from 'react-icons/bs';
 
 export default function MyProjectCard({
-  name,
+  projectName,
   address,
   id,
 }: {
-  name: string;
+  projectName: string;
   address: string;
   id: string;
 }) {
+  const handleProjectArrowClick = () => {
+    console.log(`Address ${address}, ProjectName ${projectName}, ID ${id}`);
+  };
   const [isFavorite, setIsFavorite] = useState(false);
   return (
     <div
@@ -21,7 +24,7 @@ export default function MyProjectCard({
     >
       <div className="w-[90%]   ">
         <BsHouse className="text-gray-700 w-[50px] h-[50px] mb-5"></BsHouse>
-        <h1 className="text-white font-bold ">{name}</h1>
+        <h1 className="text-white font-bold ">{projectName}</h1>
         <p className="text-gray font-bold text-sm">{address}</p>
       </div>
       <div className="w-[10%] h-[120px] flex flex-col justify-between ">
@@ -36,7 +39,10 @@ export default function MyProjectCard({
             <AiOutlineStar className=" hover:text-yellow-300  transition-colors ease-in-out delay-200"></AiOutlineStar>
           )}
         </div>
-
+        <AiOutlineArrowRight
+          onClick={handleProjectArrowClick}
+          className=" hover:text-white transition-colors ease-in-out delay-200"
+        ></AiOutlineArrowRight>
         <RiDeleteBin2Line className=" hover:text-red-500 transition-colors ease-in-out delay-200"></RiDeleteBin2Line>
       </div>
     </div>

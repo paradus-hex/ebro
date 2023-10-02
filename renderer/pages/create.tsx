@@ -102,8 +102,8 @@ export default function Create() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setValues({
       ...values,
-      userName: 'user3',
-      projectName: 'project5',
+      projectName: 'project5', //Change these to test...........
+      userName: 'user3', //TODO: get userName and projectName from context
       updatedAt: new Date().toISOString(),
     });
     // console.log(setProjects(values));

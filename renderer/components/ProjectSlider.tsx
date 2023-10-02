@@ -48,7 +48,7 @@ export default function ProjectSlider2() {
           >
             <MyProjectCard
               id={selectedCards[index].key}
-              name={selectedCards[index].projectName}
+              projectName={selectedCards[index].projectName}
               address={selectedCards[index].address}
             />
           </SplideSlide>
