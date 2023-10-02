@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/router';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { DevTool } from '@hookform/devtools';
@@ -16,15 +16,15 @@ import {
   FormLabel,
   FormMessage,
 } from '../components/ui/Form';
-import { Input } from '../components/ui/Input';
+import { Input } from '../components/ui/input';
 import { MultiSelect } from '../components/MultiSelect';
 import ImageUpload from '../components/imageUpload';
 import { FormPopOver } from '../components/formPopOver';
-import { Textarea } from '../components/ui/Textarea';
+import { Textarea } from '../components/ui/textarea';
 import { architecturalStyles, outbuildings } from '../lib/constants';
 import { useState } from 'react';
 import { useCreatePageStore } from '../stores/createPageStore';
-import { setBooks } from '../lib/firebasedb';
+import { setProjects } from '../lib/firebasedb';
 
 export const formSchema = z.object({
   address: z
@@ -88,7 +88,6 @@ export default function Create() {
     defaultValues: getStoredValues(),
   });
   const textAlreadyExists = getStoredResponse().length !== 0;
-  console.log('textAlreadyExists:', textAlreadyExists);
   const { append, isLoading, setMessages } = useChat({
     onFinish: (message) => {
       setResponse(message.content.slice(1, -1));
@@ -101,8 +100,13 @@ export default function Create() {
   const values = watch();
   const { errors } = formState;
   function onSubmit(values: z.infer<typeof formSchema>) {
-    setValues(values);
-    console.log(setBooks(values));
+    setValues({
+      ...values,
+      userName: 'user3',
+      projectName: 'project5',
+      updatedAt: new Date().toISOString(),
+    });
+    // console.log(setProjects(values));
     append({ role: 'user', content: JSON.stringify(values) });
     setLoading(isLoading);
   }

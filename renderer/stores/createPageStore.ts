@@ -7,7 +7,7 @@ interface CreatePageStoreState {
   values: z.infer<typeof formSchema>;
   response: string;
   note: string;
-  setValues: (values: z.infer<typeof formSchema>) => void;
+  setValues: (values: { userName: string; projectName: string, updatedAt: string } & z.infer<typeof formSchema>) => void;
   setResponse: (response: string) => void;
   getValues: () => z.infer<typeof formSchema>;
   getResponse: () => string;
@@ -16,6 +16,8 @@ interface CreatePageStoreState {
 export const useCreatePageStore = create(
   immer<CreatePageStoreState>((set, get) => ({
     values: {
+      userName: 'dev',
+      projectName: 'dev',
       address: '325/A',
       zipCode: '1217',
       city: 'Dhaka',
@@ -31,6 +33,7 @@ export const useCreatePageStore = create(
       localAttractions: 'Local slums to get daily reality checks',
       geographicalFeatures: 'Mountain for views and also to jump off of',
       nearbyAmenities: 'Psychiatrist office, Swimming pool full of sharks',
+      updatedAt: new Date().toISOString(),
     },
     response: "",
     note: "",
