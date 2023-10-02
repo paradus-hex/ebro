@@ -1,12 +1,18 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import EditModal from '../components/finalpageModal';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import { useCreatePageStore } from '../stores/createPageStore';
 import { useRouter } from 'next/router';
 import { useChat } from 'ai/react';
-import { setProjects } from '../lib/firebasedb';
+import { setProjects, updateProjectDetails } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
+
+interface Params {
+  key: string;
+  projectName: string;
+  intention: string;
+}
 
 const FinalPage: NextPageWithLayout = () => {
   const router = useRouter();
@@ -22,8 +28,19 @@ const FinalPage: NextPageWithLayout = () => {
     },
   });
 
+  const { params } = router.query;
+  const parsedParams: Params = params
+    ? JSON.parse(decodeURIComponent(params as string))
+    : {};
+  const { key, projectName, intention } = parsedParams;
+  // console.log(key);
+
   const handleGoBack = () => {
-    router.push('/create');
+    router.push(
+      `/create?params=${encodeURIComponent(
+        JSON.stringify({ passedProjectName: projectName, intention }),
+      )}`,
+    );
   };
 
   const handleEditClick = () => {
@@ -53,8 +70,17 @@ const FinalPage: NextPageWithLayout = () => {
   };
 
   const handleSaveToCloudClick = () => {
-    setProjects({ ...getValues(), response: getResponse() });
+    if (intention === 'create') {
+      setProjects({ ...getValues(), response: getResponse(), projectName });
+    } else {
+      updateProjectDetails(key, {
+        ...getValues(),
+        response: getResponse(),
+        projectName,
+      });
+    }
     setCloudSaveDisabled(true);
+    router.push('/home');
   };
 
   const handleAIButtonClick = () => {
@@ -78,7 +104,7 @@ const FinalPage: NextPageWithLayout = () => {
       >
         Go back
       </Button>
-      <h1 className="font-extrabold mb-10">Project Name</h1>
+      <h1 className="font-extrabold mb-10">{projectName || 'Project Name'}</h1>
       <div className="grid grid-cols-12 w-full gap-2 mx-2 h-screen">
         <div className="col-span-8 bg-transparent rounded">
           {isEditing ? (

@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/router';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { DevTool } from '@hookform/devtools';
@@ -16,16 +16,22 @@ import {
   FormLabel,
   FormMessage,
 } from '../components/ui/Form';
-import { Input } from '../components/ui/Input';
+import { Input } from '../components/ui/input';
 import { MultiSelect } from '../components/MultiSelect';
 import ImageUpload from '../components/imageUpload';
 import { FormPopOver } from '../components/formPopOver';
-import { Textarea } from '../components/ui/Textarea';
+import { Textarea } from '../components/ui/textarea';
 import { architecturalStyles, outbuildings } from '../lib/constants';
-import { ReactElement, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { useCreatePageStore } from '../stores/createPageStore';
-import { setProjects } from '../lib/firebasedb';
+import { setProjects, getProjectDetails } from '../lib/firebasedb';
 import Layout from '../components/Layout';
+
+interface Params {
+  key: string;
+  passedProjectName: string;
+  intention: string;
+}
 
 export const formSchema = z.object({
   address: z
@@ -68,6 +74,11 @@ export const formSchema = z.object({
 
 function Create() {
   const router = useRouter();
+  const { params } = router.query;
+  const parsedParams: Params = params
+    ? JSON.parse(decodeURIComponent(params as string))
+    : {};
+  const { key, passedProjectName, intention } = parsedParams;
   const {
     setValues,
     setResponse,
@@ -75,24 +86,51 @@ function Create() {
     getResponse: getStoredResponse,
   } = useCreatePageStore();
 
+  const { projectName: loadedProjectName, ...defaultValues } =
+    getStoredValues();
+
+  const prevProjectDetails = async () => {
+    if (key === undefined) return;
+    const data = key && (await getProjectDetails(key));
+    form.reset(data);
+    setResponse(data.response);
+    setValues(data);
+  };
+
   const handleGenerateClick = () => {
-    router.push('/finalpage');
+    router.push(
+      `/finalpage?params=${encodeURIComponent(
+        JSON.stringify({ projectName: passedProjectName, intention, key }),
+      )}`,
+    );
   };
   const handleGoBackClick = () => {
     router.push('/home');
   };
-  const handleNextPageClick = () => {
-    router.push('/finalpage');
-  };
+  // console.log(key, key && getProjectDetails(key));
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: getStoredValues(),
+    defaultValues,
   });
+
+  const handleNextPageClick = () => {
+    router.push(
+      `/finalpage?params=${encodeURIComponent(
+        JSON.stringify({ projectName: passedProjectName, intention, key }),
+      )}`,
+    );
+  };
+
   const textAlreadyExists = getStoredResponse().length !== 0;
-  const { append, isLoading, setMessages } = useChat({
+  const { append, isLoading } = useChat({
     onFinish: (message) => {
       setResponse(message.content.slice(1, -1));
-      router.push('/finalpage');
+      router.push(
+        `/finalpage?params=${encodeURIComponent(
+          JSON.stringify({ projectName: passedProjectName, intention, key }),
+        )}`,
+      );
     },
   });
   const [loading, setLoading] = useState(false);
@@ -103,8 +141,8 @@ function Create() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setValues({
       ...values,
-      projectName: 'project5', //Change these to test...........
-      userName: 'user3', //TODO: get userName and projectName from context
+      projectName: passedProjectName, //Change these to test...........
+      userName: 'user1', //TODO: get userName and projectName from context
       updatedAt: new Date().toISOString(),
       isFavorite: false,
     });
@@ -113,6 +151,10 @@ function Create() {
     setLoading(isLoading);
   }
 
+  useEffect(() => {
+    prevProjectDetails();
+  }, []);
+
   return (
     <div className="flex">
       <div className="w-full flex-col gap-10 justify-center px-auto mx-auto">
@@ -120,7 +162,9 @@ function Create() {
           <Button disabled={isLoading} onClick={handleGoBackClick}>
             Go Back
           </Button>
-          <h1 className="font-extrabold">Project Name</h1>
+          <h1 className="font-extrabold">
+            {passedProjectName || 'Project Name'}
+          </h1>
           <Button
             disabled={!textAlreadyExists || isLoading}
             onClick={handleNextPageClick}

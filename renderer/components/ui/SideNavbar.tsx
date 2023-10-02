@@ -13,7 +13,7 @@ import { FaRegComments } from 'react-icons/fa';
 import { BiMessageSquareDots } from 'react-icons/bi';
 import { useRouter } from 'next/router';
 import LiveClock from '../LiveClock';
-import { Button } from './Button';
+import { Button } from './button';
 import { logout } from '../../lib/firebasedb';
 import Link from 'next/link';
 export default function SideNavbar({ open }) {

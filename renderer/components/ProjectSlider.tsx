@@ -38,7 +38,7 @@ export default function ProjectSlider2() {
     setSelectedCards([...sedondaryTemp]);
   };
   const fillCarousel = async () => {
-    const projects = await getProjectsForCarousel('user3'); // TODO: get username from context
+    const projects = await getProjectsForCarousel('user1'); // TODO: get username from context
     console.log('Projects: ', projects);
     setSelectedCards(projects);
   };
