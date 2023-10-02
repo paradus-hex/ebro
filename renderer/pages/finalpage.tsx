@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import EditModal from '../components/finalpageModal';
-import { Button } from '../components/ui/button';
+import { Button } from '../components/ui/Button';
 import { useCreatePageStore } from '../stores/createPageStore';
 import { useRouter } from 'next/router';
 import { useChat } from 'ai/react';

@@ -1,22 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineStar, AiOutlineArrowRight } from 'react-icons/ai';
 import { BsHouse } from 'react-icons/bs';
 import { RiDeleteBin2Line } from 'react-icons/ri';
 import { BsStarFill } from 'react-icons/bs';
+import { isFav, isNotFav } from '../lib/firebasedb';
 
 export default function MyProjectCard({
   projectName,
   address,
   id,
+  isFavourite,
 }: {
   projectName: string;
   address: string;
   id: string;
+  isFavourite: boolean;
 }) {
-  const handleProjectArrowClick = () => {
-    console.log(`Address ${address}, ProjectName ${projectName}, ID ${id}`);
+  const setFav = (id: string) => {
+    console.log('is fav', id);
   };
-  const [isFavorite, setIsFavorite] = useState(false);
+  const setNotFave = (id: string) => {
+    console.log('is not fav', id);
+  };
+  const handleProjectArrowClick = () => {
+    console.log(
+      `Address ${address}, ProjectName ${projectName}, ID ${id}, Isfav ${isFavourite}`,
+    );
+  };
+  const [isFavoriteState, setIsFavoriteState] = useState(false);
+  useEffect(() => {
+    setIsFavoriteState(isFavourite);
+  }, []);
+
   return (
     <div
       key={id}
@@ -30,13 +45,25 @@ export default function MyProjectCard({
       <div className="w-[10%] h-[120px] flex flex-col justify-between ">
         <div
           onClick={() => {
-            setIsFavorite((prev) => !prev);
+            setIsFavoriteState((prev) => !prev);
           }}
         >
-          {isFavorite ? (
-            <BsStarFill className="text-yellow-300 hover:text-yellow-300  transition-colors ease-in-out delay-200" />
+          {isFavoriteState ? (
+            <BsStarFill
+              onClick={(e) => {
+                setNotFave(id);
+                isFav(id, false);
+              }}
+              className="text-yellow-300 hover:text-yellow-300  transition-colors ease-in-out delay-200"
+            />
           ) : (
-            <AiOutlineStar className=" hover:text-yellow-300  transition-colors ease-in-out delay-200"></AiOutlineStar>
+            <AiOutlineStar
+              onClick={(e) => {
+                setFav(id);
+                isFav(id, true);
+              }}
+              className=" hover:text-yellow-300  transition-colors ease-in-out delay-200"
+            ></AiOutlineStar>
           )}
         </div>
         <AiOutlineArrowRight
