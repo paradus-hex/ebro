@@ -6,6 +6,9 @@ import {
   addDoc,
   query,
   where,
+  doc,
+  updateDoc,
+  deleteDoc,
 } from 'firebase/firestore/lite';
 import { firebaseConfig } from '../firebase-constants';
 
@@ -45,12 +48,24 @@ export async function getProjectsForCarousel(userName: string, col = projects) {
   );
   const projectsList = projectsSnapshot.docs.map((doc) => {
     const key = doc.id;
-    const { projectName, address, updatedAt } = doc.data();
-    return { key, projectName, address, updatedAt };
+    const { projectName, address, updatedAt, isFavorite } = doc.data();
+    return { key, projectName, address, updatedAt, isFavorite };
   });
   return projectsList;
 }
 
 export async function setProjects(data: any, col = projects) {
   addDoc(col, data);
+}
+
+export async function isFav(id: string, fav: boolean) {
+  const docRef = doc(db, 'projects', id);
+  updateDoc(docRef, { isFavorite: fav }).then((e) => {
+    console.log(id, 'has been set as favorite =', fav);
+  });
+}
+
+export async function deleteProject(id: string) {
+  const docRef = doc(db, 'projects', id);
+  deleteDoc(docRef).then((e) => console.log(id, 'has been deleted'));
 }

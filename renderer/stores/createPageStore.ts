@@ -7,7 +7,7 @@ interface CreatePageStoreState {
   values: z.infer<typeof formSchema>;
   response: string;
   note: string;
-  setValues: (values: { userName: string; projectName: string, updatedAt: string } & z.infer<typeof formSchema>) => void;
+  setValues: (values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>) => void;
   setResponse: (response: string) => void;
   getValues: () => z.infer<typeof formSchema>;
   getResponse: () => string;
@@ -34,6 +34,7 @@ export const useCreatePageStore = create(
       geographicalFeatures: 'Mountain for views and also to jump off of',
       nearbyAmenities: 'Psychiatrist office, Swimming pool full of sharks',
       updatedAt: new Date().toISOString(),
+      isFavorite: false,
     },
     response: "",
     note: "",
