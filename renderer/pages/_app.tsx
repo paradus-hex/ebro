@@ -1,13 +1,11 @@
-import React, { ReactElement, ReactNode, useState } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
+import Router from 'next/router';
 import type { AppProps } from 'next/app';
-import Script from 'next/script';
 import '../styles/globals.css';
-import SideNavbar from '../components/ui/SideNavbar';
-import { RxAvatar } from 'react-icons/rx';
-import Layout from '../components/Layout';
-import { firebaseConfig as firebaseConstant } from '../firebase-constants';
+import { useSignedInStoreState } from '../stores/createPageStore';
 
 import type { NextPage } from 'next';
+
 // import type { AppProps } from 'next/app';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {

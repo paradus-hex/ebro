@@ -4,6 +4,17 @@ import Script from 'next/script';
 // import '../styles/globals.css';
 import SideNavbar from './ui/SideNavbar';
 import { RxAvatar } from 'react-icons/rx';
+import { useSignedInStoreState } from '../stores/createPageStore';
+import { Router } from 'next/router';
+
+// const { getValues, setValues } = useSignedInStoreState();
+
+// const signedIn = getValues().signedIn;
+
+// if (!signedIn) {
+//   Router.push('/login');
+// }
+
 export default function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   // console.log(getCities(db));
