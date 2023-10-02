@@ -1,17 +1,17 @@
 import React from 'react';
 import Head from 'next/head';
 import ProjectSlider from '../components/ProjectSlider';
-import { Button } from '../components/ui/Button';
+import { Button } from '../components/ui/button';
 import { useRouter } from 'next/router';
 import Search from '../components/search';
-import { getBooks } from '../lib/firebasedb';
+import { getProjects, getProjectsUsingUsername } from '../lib/firebasedb';
 
 function Home() {
   const router = useRouter();
   const handleCreateClick = () => {
     router.push('/create');
   };
-  console.log(getBooks());
+  // console.log(getProjectsUsingUsername('user3'));
   return (
     <React.Fragment>
       <Head>

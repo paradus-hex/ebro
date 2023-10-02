@@ -2,27 +2,30 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import MyProjectCard from './ProjectCard';
 import '@splidejs/react-splide/css';
-import { Splide, SplideSlide, SplideTrack } from '@splidejs/react-splide';
+import { Splide, SplideSlide } from '@splidejs/react-splide';
+import { getProjectsForCarousel } from '../lib/firebasedb';
 export default function ProjectSlider2() {
-  const [selectedCards, setselectedCards] = useState<
+  const [selectedCards, setSelectedCards] = useState<
     {
-      key: string;
-      name: string;
-      address: string;
+      projectName: any;
+      address: any;
+      key: any;
+      updatedAt: any;
     }[]
-  >([
-    { name: 'project name1', address: 'project address', key: '10' },
-    { name: 'project name2', address: 'project address', key: '20' },
-    { name: 'project name3', address: 'project address', key: '30' },
-    { name: 'project name4', address: 'project address', key: '40' },
-    { name: 'project name5', address: 'project address', key: '50' },
-    { name: 'project name6', address: 'project address', key: '60' },
-    { name: 'project name7', address: 'project address', key: '70' },
-    { name: 'project name8', address: 'project address', key: '80' },
-    { name: 'project name9', address: 'project address', key: '90' },
-  ]);
-  const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
-  useEffect(() => {}, [currentCardIndex]);
+  >([]);
+  const fillCarousel = async () => {
+    const projects = await getProjectsForCarousel('user1'); // TODO: get username from context
+    setSelectedCards(projects);
+  };
+  useEffect(() => {
+    fillCarousel();
+  }, []);
+
+  selectedCards.sort((a, b) => {
+    const dateA = new Date(a.updatedAt);
+    const dateB = new Date(b.updatedAt);
+    return dateA > dateB ? 1 : -1;
+  });
 
   return (
     <div className="pt-9 ">
@@ -45,7 +48,7 @@ export default function ProjectSlider2() {
           >
             <MyProjectCard
               id={selectedCards[index].key}
-              name={selectedCards[index].name}
+              projectName={selectedCards[index].projectName}
               address={selectedCards[index].address}
             />
           </SplideSlide>

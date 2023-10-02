@@ -6,6 +6,7 @@ import OpenAI from 'openai';
 import { z } from "zod";
 import { formSchema } from "../create";
 import { NextApiRequest, NextApiResponse } from "next";
+import { openAiApiKey } from "../../firebase-constants";
 
 
 // TODO: Add your better system prompt here
@@ -15,7 +16,7 @@ const systemPrompt = {
 } as const;
 
 const openai = new OpenAI({
-  apiKey: ""
+  apiKey: openAiApiKey
 });
 
 export const runtime = "edge";

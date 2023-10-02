@@ -60,7 +60,7 @@ export default function Search() {
             }}
             onChange={(e) => check(e)}
             type="text"
-            placeholder="Search for elixir..."
+            placeholder="Search for project..."
             className="pl-16 pr-4 py-4 rounded-xl bg-white border-0 w-full outline-none shadow-md shadow-gray-300"
           />
         </div>

@@ -4,27 +4,53 @@ import {
   collection,
   getDocs,
   addDoc,
-  // getAnalytics,
+  query,
+  where,
 } from 'firebase/firestore/lite';
-// Follow this pattern to import other Firebase services
-// import { } from 'firebase/<service>';
-import { firebaseConfig as firebaseConstant } from '../firebase-constants';
-
-// TODO: Replace the following with your app's Firebase project configuration
-const firebaseConfig = firebaseConstant;
+import { firebaseConfig } from '../firebase-constants';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const booksCol = collection(db, 'books');
+const projects = collection(db, 'projects');
 
-// Get a list of cities from your databas
-export async function getBooks(col = booksCol) {
-  const citiesCol = col;
-  const citySnapshot = await getDocs(citiesCol);
-  const cityList = citySnapshot.docs.map((doc) => doc.data());
-  return cityList;
+export async function getProjects(col = projects) {
+  const projectsCol = col;
+  const projectsSnapshot = await getDocs(projectsCol);
+  const projectsList = projectsSnapshot.docs.map((doc) => ({
+    key: doc.id,
+    ...doc.data(),
+  }));
+  return projectsList;
 }
 
-export async function setBooks(data: any, col = booksCol) {
+export async function getProjectsUsingUsername(
+  userName: string,
+  col = projects,
+) {
+  const projectsCol = col;
+  const projectsSnapshot = await getDocs(
+    query(projectsCol, where('userName', '==', userName)),
+  );
+  const projectsList = projectsSnapshot.docs.map((doc) => ({
+    key: doc.id,
+    ...doc.data(),
+  }));
+  return projectsList;
+}
+
+export async function getProjectsForCarousel(userName: string, col = projects) {
+  const projectsCol = col;
+  const projectsSnapshot = await getDocs(
+    query(projectsCol, where('userName', '==', userName)),
+  );
+  const projectsList = projectsSnapshot.docs.map((doc) => {
+    const key = doc.id;
+    const { projectName, address, updatedAt } = doc.data();
+    return { key, projectName, address, updatedAt };
+  });
+  return projectsList;
+}
+
+export async function setProjects(data: any, col = projects) {
   addDoc(col, data);
 }
