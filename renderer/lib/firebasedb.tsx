@@ -9,8 +9,32 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  getDoc,
 } from 'firebase/firestore/lite';
 import { firebaseConfig } from '../firebase-constants';
+
+export interface ProjectData {
+  address: string;
+  zipCode: string;
+  city: string;
+  yearOfConstruction: number;
+  sizeOfProperty: number;
+  sizeOfHome: number;
+  numberOfBedRooms: number;
+  numberOfBathRooms: number;
+  architecturalStyle: string[];
+  outbuildings: string[];
+  uniqueSellingPoints: string;
+  interiorFeatures: string;
+  localAttractions: string;
+  geographicalFeatures: string;
+  nearbyAmenities: string;
+  projectName: string;
+  userName: string;
+  updatedAt: string;
+  isFavorite: boolean;
+  response: string;
+}
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -39,6 +63,26 @@ export async function getProjectsUsingUsername(
     ...doc.data(),
   }));
   return projectsList;
+}
+
+export async function getProjectDetails(id: string) {
+  const docRef = doc(db, 'projects', id);
+  const projectDetails = getDoc(docRef).then((docSnap) => {
+    // const key = docSnap.id;
+    const data = docSnap.data() as ProjectData;
+    return data;
+  });
+  return projectDetails;
+}
+
+export async function updateProjectDetails(id: string, data: any) {
+  const docRef = doc(db, 'projects', id);
+  try {
+    await updateDoc(docRef, data);
+    console.log('Document updated successfully! ', id);
+  } catch (e) {
+    console.log('Error updating document: ', e);
+  }
 }
 
 export async function getProjectsForCarousel(userName: string, col = projects) {

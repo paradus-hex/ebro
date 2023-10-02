@@ -4,12 +4,19 @@ import ProjectSlider from '../components/ProjectSlider';
 import { Button } from '../components/ui/button';
 import { useRouter } from 'next/router';
 import Search from '../components/search';
-import { getProjects, getProjectsUsingUsername } from '../lib/firebasedb';
 
 function Home() {
   const router = useRouter();
+  const [projectName, setProjectName] = React.useState<string>('');
+  const handleProjectNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProjectName(e.target.value);
+  };
   const handleCreateClick = () => {
-    router.push('/create');
+    router.push(
+      `/create?params=${encodeURIComponent(
+        JSON.stringify({ passedProjectName: projectName, intention: 'create' }),
+      )}`,
+    );
   };
   // console.log(getProjectsUsingUsername('user3'));
   return (
@@ -42,12 +49,14 @@ function Home() {
         <input
           type="text"
           placeholder="Project Name"
+          onChange={handleProjectNameChange}
           className="w-[300px] bg-white rounded-md shadow p-2 input"
         />
 
         <Button
-          className="mt-20 text-xl rounded-md px-8 py-6 tracking-wider w-[300px]"
+          className="mt-10 text-xl rounded-md px-8 py-6 tracking-wider w-[300px]"
           onClick={handleCreateClick}
+          disabled={projectName.length === 0}
         >
           Create New
         </Button>

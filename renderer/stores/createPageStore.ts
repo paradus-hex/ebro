@@ -4,12 +4,12 @@ import { formSchema } from "../pages/create";
 import { immer } from 'zustand/middleware/immer'
 
 interface CreatePageStoreState {
-  values: z.infer<typeof formSchema>;
+  values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>;
   response: string;
   note: string;
   setValues: (values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>) => void;
   setResponse: (response: string) => void;
-  getValues: () => z.infer<typeof formSchema>;
+  getValues: () => { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>;
   getResponse: () => string;
 }
 
