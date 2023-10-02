@@ -13,8 +13,8 @@ import {
 } from '../components/ui/Form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '../components/ui/Button';
-import { Input } from '../components/ui/Input';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
 
 export const signInformSchema = z.object({
   email: z.string().min(2, { message: 'A valid email must be provided' }),

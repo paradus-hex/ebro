@@ -4,7 +4,6 @@ import ProjectSlider from '../components/ProjectSlider';
 import { Button } from '../components/ui/button';
 import { useRouter } from 'next/router';
 import Search from '../components/search';
-import { getProjects, getProjectsUsingUsername } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 
 function Home() {
