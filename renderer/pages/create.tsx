@@ -22,10 +22,11 @@ import ImageUpload from '../components/imageUpload';
 import { FormPopOver } from '../components/formPopOver';
 import { Textarea } from '../components/ui/textarea';
 import { architecturalStyles, outbuildings } from '../lib/constants';
-import { useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { useCreatePageStore } from '../stores/createPageStore';
-import { getProjectDetails } from '../lib/firebasedb';
-
+import { setProjects, getProjectDetails } from '../lib/firebasedb';
+import Layout from '../components/Layout';
+        
 interface Params {
   key: string;
   passedProjectName: string;
@@ -71,7 +72,7 @@ export const formSchema = z.object({
   nearbyAmenities: z.string(),
 });
 
-export default function Create() {
+function Create() {
   const router = useRouter();
   const { params } = router.query;
   const parsedParams: Params = params
@@ -567,3 +568,8 @@ export default function Create() {
     </div>
   );
 }
+Create.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>;
+};
+
+export default Create;
