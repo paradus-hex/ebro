@@ -4,6 +4,7 @@ import MyProjectCard from './ProjectCard';
 import '@splidejs/react-splide/css';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { getProjectsForCarousel } from '../lib/firebasedb';
+import { set } from 'zod';
 export default function ProjectSlider2() {
   const [selectedCards, setSelectedCards] = useState<
     {
@@ -11,8 +12,13 @@ export default function ProjectSlider2() {
       address: any;
       key: any;
       updatedAt: any;
+      isFavorite: any;
     }[]
   >([]);
+  const delFromSelectedCards = (key: string) => {
+    const filteredCards = selectedCards.filter((e) => e.key != key);
+    setSelectedCards(filteredCards);
+  };
   const fillCarousel = async () => {
     const projects = await getProjectsForCarousel('user3'); // TODO: get username from context
     console.log('Projects: ', projects);
@@ -52,6 +58,7 @@ export default function ProjectSlider2() {
               projectName={selectedCards[index].projectName}
               address={selectedCards[index].address}
               isFavourite={selectedCards[index].isFavorite}
+              delFromSelectedCards={delFromSelectedCards}
             />
           </SplideSlide>
         ))}

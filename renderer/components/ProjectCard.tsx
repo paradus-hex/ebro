@@ -3,18 +3,20 @@ import { AiOutlineStar, AiOutlineArrowRight } from 'react-icons/ai';
 import { BsHouse } from 'react-icons/bs';
 import { RiDeleteBin2Line } from 'react-icons/ri';
 import { BsStarFill } from 'react-icons/bs';
-import { isFav, isNotFav } from '../lib/firebasedb';
+import { isFav, deleteProject } from '../lib/firebasedb';
 
 export default function MyProjectCard({
   projectName,
   address,
   id,
   isFavourite,
+  delFromSelectedCards,
 }: {
   projectName: string;
   address: string;
   id: string;
   isFavourite: boolean;
+  delFromSelectedCards: (key: string) => void;
 }) {
   const setFav = (id: string) => {
     console.log('is fav', id);
@@ -70,7 +72,13 @@ export default function MyProjectCard({
           onClick={handleProjectArrowClick}
           className=" hover:text-white transition-colors ease-in-out delay-200"
         ></AiOutlineArrowRight>
-        <RiDeleteBin2Line className=" hover:text-red-500 transition-colors ease-in-out delay-200"></RiDeleteBin2Line>
+        <RiDeleteBin2Line
+          onClick={(e) => {
+            delFromSelectedCards(id);
+            deleteProject(id);
+          }}
+          className=" hover:text-red-500 transition-colors ease-in-out delay-200"
+        ></RiDeleteBin2Line>
       </div>
     </div>
   );
