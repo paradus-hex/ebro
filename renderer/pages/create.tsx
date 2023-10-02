@@ -26,7 +26,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import { useCreatePageStore } from '../stores/createPageStore';
 import { setProjects, getProjectDetails } from '../lib/firebasedb';
 import Layout from '../components/Layout';
-        
+
 interface Params {
   key: string;
   passedProjectName: string;
@@ -111,7 +111,7 @@ function Create() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    // defaultValues, -------------------------Uncomment to use the default/last globally stored values-------------
+    defaultValues,
   });
 
   const handleNextPageClick = () => {
