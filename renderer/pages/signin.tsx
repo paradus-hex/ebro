@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { newUser, signInUser } from '../lib/firebasedb';
+import { getAccountDetails, newUser, signInUser } from '../lib/firebasedb';
 import z from 'zod';
 import {
   Form,
@@ -16,6 +16,7 @@ import { useRouter } from 'next/router';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { useSignInPageStore } from '../stores/signInPageStore';
+import { createAcc } from '../lib/firebasedb';
 // import { set } from 'lodash';
 
 export const signInformSchema = z.object({
@@ -32,13 +33,20 @@ export const signInformSchema = z.object({
 export default function signin() {
   const router = useRouter();
   const [login, setLogin] = useState<boolean>(true);
-  const { setValues, getValues: getStoredValues } = useSignInPageStore();
-  const { setSignedIn } = useSignInPageStore();
+  const {
+    setValues,
+    getValues: getStoredValues,
+    setSignedIn,
+    setUser_id,
+    setAccount_type,
+    getAccount_type,
+  } = useSignInPageStore();
+
   const [showPassLogin, setShowPassLogin] = useState<boolean>(false);
   const [showPassSignUp, setShowPassSignUp] = useState<boolean>(false);
   const [showPassSignUp2, setShowPassSignUp2] = useState<boolean>(false);
-  const [repeatPass, setRepeatPass] = useState<string>('');
   const [repeatPassError, setRepeatPassError] = useState<boolean>(false);
+
   const form = useForm<z.infer<typeof signInformSchema>>({
     resolver: zodResolver(signInformSchema),
     defaultValues: getStoredValues(),
@@ -51,26 +59,28 @@ export default function signin() {
     {
       login
         ? signInUser(values.email, values.password)
-            .then((e) => {
-              console.log(e);
+            .then((cred) => {
               setSignedIn(true);
-              router.push('/home');
-              console.log('eita koj kore');
+              setUser_id(cred.user.uid);
+              getAccountDetails(cred.user.uid)
+                .then((account) => {
+                  setAccount_type(account.account_tier);
+                })
+                .then(() => router.push('/home'));
             })
             .catch((err) => console.log(err))
         : values.password == values.repeatPassword
         ? newUser(values.email, values.password)
-            .then((e) => {
+            .then((cred) => {
               setSignedIn(true);
-              router.push('/home');
-
-              console.log('eita koj kore 2');
+              setUser_id(cred.user.uid);
+              setAccount_type('free');
+              createAcc({ user_id: cred.user.uid, account_tier: 'free' });
             })
+            .then(() => router.push('/home'))
             .catch((err) => console.log(err))
         : setRepeatPassError(true);
     }
-
-    // console.log(setProjects(values));
   }
 
   return login ? (
@@ -260,40 +270,8 @@ export default function signin() {
                   </FormItem>
                 )}
               />
-
-              {/* <div className="w-[80%] flex flex-col items-left">
-                <p className="text-xl">Repeat Password</p>
-                <div className="flex flex-col">
-                  <Input
-                    className="max-w-[920px] bg-white rounded-xl border focus:border-1 focus:border-slate-400"
-                    type={showPassSignUp2 ? 'text' : 'password'}
-                    placeholder="Password"
-                  />
-                  <div className="flex flex-row">
-                    <input
-                      className="w-[30px] mt-5"
-                      onChange={(e) => {
-                        setRepeatPass(e.target.value);
-                      }}
-                      onClick={(e) => {
-                        setShowPassSignUp2((prev) => !prev);
-                      }}
-                      type="checkbox"
-                    />
-
-                    <p className="mt-5"> Show Password</p>
-                    {repeatPassError && (
-                      <p className="text-sm p-3 text-red-700">
-                        {' '}
-                        The repeat password must match the initial password
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div> */}
             </div>
             <Button type="submit">Submit</Button>
-            {/* <Button type="submit">Submit</Button> */}
           </form>
         </Form>
         {/* <!-- Sign up  Link --> */}
