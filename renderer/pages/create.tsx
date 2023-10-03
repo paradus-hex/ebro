@@ -4,7 +4,7 @@ import { Button } from '../components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { DevTool } from '@hookform/devtools';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { useChat } from 'ai/react';
 import { Loader2 } from 'lucide-react';
 import {
@@ -21,10 +21,14 @@ import { MultiSelect } from '../components/MultiSelect';
 import ImageUpload from '../components/imageUpload';
 import { FormPopOver } from '../components/formPopOver';
 import { Textarea } from '../components/ui/textarea';
-import { architecturalStyles, outbuildings } from '../lib/constants';
+import {
+  architecturalStyles,
+  emptyProjectLocalStorage,
+  outbuildings,
+} from '../lib/constants';
 import { ReactElement, useEffect, useState } from 'react';
 import { useCreatePageStore } from '../stores/createPageStore';
-import { setProjects, getProjectDetails } from '../lib/firebasedb';
+import { getProjectDetails } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 
 interface Params {
@@ -150,6 +154,11 @@ function Create() {
     append({ role: 'user', content: JSON.stringify(values) });
     setLoading(isLoading);
   }
+
+  // if (intention === 'create') {
+  //   setValues(emptyProjectLocalStorage);
+  //   setResponse('');
+  // }
 
   useEffect(() => {
     prevProjectDetails();

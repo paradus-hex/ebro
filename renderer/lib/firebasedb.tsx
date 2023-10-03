@@ -19,7 +19,8 @@ import {
   signOut,
 } from 'firebase/auth';
 import { firebaseConfig } from '../firebase-constants';
-import { getStorage } from 'firebase/storage';
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { useCreatePageStore } from '../stores/createPageStore';
 
 export interface ProjectData {
   address: string;
@@ -43,8 +44,6 @@ export interface ProjectData {
   isFavorite: boolean;
   response: string;
 }
-
-//Something
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -149,4 +148,14 @@ export async function getAccountDetails(id: string) {
   return (
     await getDocs(query(accounts, where('user_id', '==', id)))
   ).docs[0].data();
+}
+
+export async function saveImagesToCloud(projectName: string, images: File[]) {
+  if (images.length === 0) return;
+  await Promise.all(
+    images.map(async (image) => {
+      const storageRef = ref(storage, `images/${projectName}/${image.name}`);
+      await uploadBytes(storageRef, image);
+    }),
+  );
 }

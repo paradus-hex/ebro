@@ -96,3 +96,27 @@ export const outbuildings = [
     label: 'Storage Unit',
   },
 ];
+
+export const emptyProjectLocalStorage = {
+  userName: '',
+  projectName: '',
+  updatedAt: new Date().toISOString(),
+  isFavorite: false,
+  values: {
+    address: '',
+    zipCode: '',
+    city: '',
+    yearOfConstruction: Number(''),
+    sizeOfProperty: Number(''),
+    sizeOfHome: Number(''),
+    numberOfBedRooms: Number(''),
+    numberOfBathRooms: Number(''),
+    architecturalStyle: [],
+    outbuildings: [],
+    uniqueSellingPoints: '',
+    interiorFeatures: '',
+    localAttractions: '',
+    geographicalFeatures: '',
+    nearbyAmenities: '',
+  },
+};
