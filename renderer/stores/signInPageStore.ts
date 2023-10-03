@@ -18,7 +18,7 @@ export const useSignInPageStore = create(
       email: '',
       password: '',
     },
-    signedIn: false,
+    signedIn: true,
     setValues: (values) => set({ values }),
     getValues: () => get().values,
     getSignedIn: () => get().signedIn,

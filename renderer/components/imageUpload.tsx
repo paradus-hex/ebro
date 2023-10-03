@@ -1,15 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import '@splidejs/react-splide/css';
-import { Splide, SplideSlide, SplideTrack } from '@splidejs/react-splide';
+import { Splide, SplideSlide } from '@splidejs/react-splide';
+import { useCreatePageStore } from '../stores/createPageStore';
 
 const ImageUpload = () => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const { getImages, setImages } = useCreatePageStore();
+
+  const loadImages = async () => {
+    const images = await getImages();
+    const imageUrls = images.map((file) => URL.createObjectURL(file));
+    setSelectedImages(imageUrls);
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files);
-
+    setImages(getImages().concat(files));
     if (files.length > 0) {
       const imageUrls = files.map((file) => URL.createObjectURL(file));
       setSelectedImages([...selectedImages, ...imageUrls]);
@@ -29,10 +37,14 @@ const ImageUpload = () => {
     );
   };
 
+  useEffect(() => {
+    loadImages();
+  }, []);
+
   return (
     <div className="mx-5 mt-7 max-w-xs">
       {selectedImages.length === 0 ? (
-        <div className="flex flex-col items-center h-[295px]">
+        <div className="flex flex-col items-center h-[295px] cursor-pointer">
           <form>
             <label>
               <input
@@ -43,6 +55,7 @@ const ImageUpload = () => {
               />
               <div>
                 <Image
+                  className="cursor-pointer"
                   src="/images/upload_image.svg"
                   height={100}
                   width={100}
@@ -55,28 +68,6 @@ const ImageUpload = () => {
         </div>
       ) : (
         <div className="flex flex-col items-center">
-          {/* <div className="flex flex-row gap-3">
-            <button
-              className=" bg-gray-200 hover:bg-gray-300 p-2 rounded-full"
-              onClick={handlePrevImage}
-            >
-              &larr;
-            </button>
-            <div>
-              <img
-                src={selectedImages[currentImageIndex]}
-                alt="Preview"
-                className="object-cover"
-                style={{ width: '250px', height: '200px' }}
-              />
-            </div>
-            <button
-              className=" bg-gray-200 hover:bg-gray-300 p-2 rounded-full"
-              onClick={handleNextImage}
-            >
-              &rarr;
-            </button>
-          </div> */}
           <Splide
             hasTrack={true}
             options={{
@@ -87,7 +78,7 @@ const ImageUpload = () => {
             }}
             aria-label="My Favorite Images"
           >
-            {selectedImages.map((image, index) => (
+            {selectedImages.map((image) => (
               <SplideSlide key={image} className="m-5 shadow-md rounded-xl">
                 <img
                   src={image}
@@ -118,7 +109,8 @@ const ImageUpload = () => {
             </label>
             <button
               onClick={() => {
-                setSelectedImages([]); // Clear all selected images
+                setSelectedImages([]);
+                setImages([]);
                 setCurrentImageIndex(0);
               }}
             >

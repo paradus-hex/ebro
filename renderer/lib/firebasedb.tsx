@@ -19,6 +19,7 @@ import {
   signOut,
 } from 'firebase/auth';
 import { firebaseConfig } from '../firebase-constants';
+import { getStorage } from 'firebase/storage';
 // import { useSignedInStoreState } from '../stores/createPageStore';
 
 // const { getValues, setValues } = useSignedInStoreState();
@@ -48,8 +49,9 @@ export interface ProjectData {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const auth = getAuth(app);
 const projects = collection(db, 'projects');
+const auth = getAuth(app);
+export const storage = getStorage(app);
 
 export async function getProjects(col = projects) {
   const projectsCol = col;
