@@ -1,16 +1,11 @@
 import React from 'react';
-import { GiHamburgerMenu } from 'react-icons/gi';
 import {
   MdOutlineSpaceDashboard,
-  MdOutlineAnalytics,
-  MdOutlineIntegrationInstructions,
   MdOutlineMoreHoriz,
   MdOutlineSettings,
   MdOutlineLogout,
 } from 'react-icons/md';
 import { CgProfile } from 'react-icons/cg';
-import { FaRegComments } from 'react-icons/fa';
-import { BiMessageSquareDots } from 'react-icons/bi';
 import { useRouter } from 'next/router';
 import LiveClock from '../LiveClock';
 import { Button } from './button';
@@ -78,7 +73,9 @@ export default function SideNavbar({ open }) {
           <div className="my-4">
             <Button
               onClick={(e) => {
-                logout();
+                logout().then((e) => {
+                  router.push('/signin');
+                });
               }}
               className="flex my-4 mb-2 justify-start gap-1 lg:gap-4 -translate-x-2 lg:translate-x-0 border border-gray-200 hover:border-none  hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto hover:bg-red-700"
             >

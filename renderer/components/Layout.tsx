@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { AppProps } from 'next/app';
 import Script from 'next/script';
 // import '../styles/globals.css';
@@ -21,9 +21,11 @@ export default function Layout({ children }) {
   const signedIn = getValues().signedIn;
   console.log(signedIn, 'signedIn');
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  if (!signedIn) {
-    router.push('/signin');
-  }
+  useEffect(() => {
+    if (!signedIn) {
+      router.push('/signin');
+    }
+  }, [signedIn]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
