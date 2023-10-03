@@ -137,11 +137,10 @@ export async function newUser(email: string, password: string) {
 export async function signInUser(email: string, password: string) {
   signInWithEmailAndPassword(auth, email, password)
     .then((cred) => {
-      // console.log(cred);
-      // setValues({ signedIn: true });
+      console.log(cred);
       console.log('User signed in', cred.user);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => err);
 }
 
 export async function signIn(email: string, password: string) {}
