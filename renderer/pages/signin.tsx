@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
-import { newUser, signIn, signInUser } from '../lib/firebasedb';
+import { newUser, signInUser } from '../lib/firebasedb';
 import z from 'zod';
-import {
-  useSignInPageStore,
-  useSignedInStoreState,
-} from '../stores/createPageStore';
 import {
   Form,
   FormControl,
@@ -19,17 +15,20 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import { useSignInPageStore } from '../stores/signInPageStore';
 
 export const signInformSchema = z.object({
-  email: z.string().min(2, { message: 'A valid email must be provided' }),
-  password: z.string().min(2, { message: 'Valid password must be provided' }),
+  email: z.string().email({ message: 'A valid email must be provided' }),
+  password: z
+    .string()
+    .min(8, { message: 'The password must be at least 8 characters long' }),
 });
 
 export default function signin() {
   const router = useRouter();
   const [login, setLogin] = useState<boolean>(true);
   const { setValues, getValues: getStoredValues } = useSignInPageStore();
-  const { setValues: setSignedInStatus } = useSignedInStoreState();
+  const { setSignedIn } = useSignInPageStore();
   const [showPassLogin, setShowPassLogin] = useState<boolean>(false);
   const [showPassSignUp, setShowPassSignUp] = useState<boolean>(false);
   const [showPassSignUp2, setShowPassSignUp2] = useState<boolean>(false);
@@ -44,16 +43,22 @@ export default function signin() {
     });
     {
       login
-        ? signInUser(values.email, values.password).then((e) => {
-            setSignedInStatus({ signedIn: true });
-            router.push('/home');
-            // console.log('eita koj kore');
-          })
-        : newUser(values.email, values.password).then((e) => {
-            setSignedInStatus({ signedIn: true });
-            router.push('/home');
-            // console.log('eita koj kore 2');
-          });
+        ? signInUser(values.email, values.password)
+            .then((e) => {
+              console.log(e);
+              setSignedIn(true);
+              router.push('/home');
+              console.log('eita koj kore');
+            })
+            .catch((err) => console.log(err))
+        : newUser(values.email, values.password)
+            .then((e) => {
+              setSignedIn(true);
+              router.push('/home');
+
+              console.log('eita koj kore 2');
+            })
+            .catch((err) => console.log(err));
     }
 
     // console.log(setProjects(values));
@@ -119,7 +124,6 @@ export default function signin() {
                             }}
                             type="checkbox"
                           />
-
                           <p className="mt-5"> Show Password</p>
                         </div>
                       </div>
@@ -156,7 +160,7 @@ export default function signin() {
       </div>
       {/* <!-- Right: Login Form --> */}
       <div className="lg:p-36 md:p-52 sm:20 p-8 w-full lg:w-1/2">
-        <h1 className="text-4xl font-semibold mb-9">Sign Up</h1>
+        <h1 className="text-4xl font-semibold mb-9">Sign up</h1>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="grid grid-cols-1 gap-4 gap-y-14 place-items-left">

@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import type { AppProps } from 'next/app';
 import Script from 'next/script';
-// import '../styles/globals.css';
 import SideNavbar from './ui/SideNavbar';
 import { RxAvatar } from 'react-icons/rx';
-import { useSignedInStoreState } from '../stores/createPageStore';
 import { useRouter } from 'next/router';
+import { useSignInPageStore } from '../stores/signInPageStore';
 
 // const { getValues, setValues } = useSignedInStoreState();
 
@@ -16,10 +14,9 @@ import { useRouter } from 'next/router';
 // }
 
 export default function Layout({ children }) {
+  const { getSignedIn, setSignedIn } = useSignInPageStore();
+  const signedIn = getSignedIn();
   const router = useRouter();
-  const { getValues, setValues } = useSignedInStoreState();
-  const signedIn = getValues().signedIn;
-  console.log(signedIn, 'signedIn');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   useEffect(() => {
     if (!signedIn) {

@@ -2,7 +2,6 @@ import React, { ReactElement, ReactNode } from 'react';
 import Router from 'next/router';
 import type { AppProps } from 'next/app';
 import '../styles/globals.css';
-import { useSignedInStoreState } from '../stores/createPageStore';
 
 import type { NextPage } from 'next';
 

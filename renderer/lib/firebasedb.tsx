@@ -19,9 +19,6 @@ import {
   signOut,
 } from 'firebase/auth';
 import { firebaseConfig } from '../firebase-constants';
-// import { useSignedInStoreState } from '../stores/createPageStore';
-
-// const { getValues, setValues } = useSignedInStoreState();
 
 export interface ProjectData {
   address: string;
@@ -127,21 +124,9 @@ export async function deleteProject(id: string) {
 
 export async function newUser(email: string, password: string) {
   return createUserWithEmailAndPassword(auth, email, password);
-  // .then((cred) => {
-  //   // console.log(cred);
-  //   // setValues({ signedIn: true });
-  //   console.log('User created', cred.user);
-  // })
-  // .catch((err) => console.log(err));
 }
 export async function signInUser(email: string, password: string) {
   return signInWithEmailAndPassword(auth, email, password);
-  // .then((cred) => {
-  //   // console.log(cred);
-  //   // setValues({ signedIn: true });
-  //   console.log('User signed in', cred.user);
-  // })
-  // .catch((err) => console.log(err));
 }
 
 export async function logout() {
