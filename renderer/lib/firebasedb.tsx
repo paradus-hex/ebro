@@ -44,6 +44,8 @@ export interface ProjectData {
   response: string;
 }
 
+//Something
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const projects = collection(db, 'projects');
