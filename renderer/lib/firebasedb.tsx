@@ -20,9 +20,7 @@ import {
 } from 'firebase/auth';
 import { firebaseConfig } from '../firebase-constants';
 import { getStorage } from 'firebase/storage';
-// import { useSignedInStoreState } from '../stores/createPageStore';
 
-// const { getValues, setValues } = useSignedInStoreState();
 
 export interface ProjectData {
   address: string;
@@ -52,6 +50,7 @@ const db = getFirestore(app);
 const projects = collection(db, 'projects');
 const auth = getAuth(app);
 export const storage = getStorage(app);
+const accounts = collection(db, 'accounts');
 
 export async function getProjects(col = projects) {
   const projectsCol = col;
@@ -127,28 +126,26 @@ export async function deleteProject(id: string) {
   deleteDoc(docRef).then((e) => console.log(id, 'has been deleted'));
 }
 
-export async function newUser(email: string, password: string) {
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((cred) => {
-      // console.log(cred);
-      // setValues({ signedIn: true });
-      console.log('User created', cred.user);
-    })
-    .catch((err) => console.log(err));
-}
-export async function signInUser(email: string, password: string) {
-  signInWithEmailAndPassword(auth, email, password)
-    .then((cred) => {
-      console.log(cred);
-      console.log('User signed in', cred.user);
-    })
-    .catch((err) => err);
+export async function createAcc(data: {
+  account_tier: string;
+  user_id: string;
+}) {
+  addDoc(accounts, data).then((e) => console.log('Account created'));
 }
 
-export async function signIn(email: string, password: string) {}
+export async function newUser(email: string, password: string) {
+  return createUserWithEmailAndPassword(auth, email, password);
+}
+export async function signInUser(email: string, password: string) {
+  return signInWithEmailAndPassword(auth, email, password);
+}
+
 export async function logout() {
-  signOut(auth).then(() => {
-    // setValues({ signedIn: true });
-    console.log('User signed out');
-  });
+  return signOut(auth);
+}
+
+export async function getAccountDetails(id: string) {
+  return (
+    await getDocs(query(accounts, where('user_id', '==', id)))
+  ).docs[0].data();
 }
