@@ -26,7 +26,7 @@ function Home() {
         <title>Ebro App</title>
       </Head>
       <div className="w-full flex flex-col justify-center items-center">
-        <div className="mt-10 flex flex-row ">
+        <div className="mt-10 flex flex-row justify-between w-[80%]">
           <Search />
           <div>
             <div className="bg-white w-full p-4 rounded-lg shadow-md shadow-gray-300">
