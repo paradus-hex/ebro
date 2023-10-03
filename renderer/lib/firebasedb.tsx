@@ -47,6 +47,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 const projects = collection(db, 'projects');
+const accounts = collection(db, 'accounts');
 
 export async function getProjects(col = projects) {
   const projectsCol = col;
@@ -122,6 +123,13 @@ export async function deleteProject(id: string) {
   deleteDoc(docRef).then((e) => console.log(id, 'has been deleted'));
 }
 
+export async function createAcc(data: {
+  account_tier: string;
+  user_id: string;
+}) {
+  addDoc(accounts, data).then((e) => console.log('Account created'));
+}
+
 export async function newUser(email: string, password: string) {
   return createUserWithEmailAndPassword(auth, email, password);
 }
@@ -131,4 +139,10 @@ export async function signInUser(email: string, password: string) {
 
 export async function logout() {
   return signOut(auth);
+}
+
+export async function getAccountDetails(id: string) {
+  return (
+    await getDocs(query(accounts, where('user_id', '==', id)))
+  ).docs[0].data();
 }
