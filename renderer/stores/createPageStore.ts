@@ -17,6 +17,7 @@ interface CreatePageStoreState {
   setNote: (note: string) => void;
   getImageUrls: () => string[];
   setImageUrls: (imageUrls: string[]) => void;
+  delImageUrls: (index: number) => void;
   getImages: () => File[];
   setImages: (images: File[]) => void;
 }
@@ -56,6 +57,7 @@ export const useCreatePageStore = create(
     getNote: () => get().note,
     getImageUrls: () => get().imageUrls,
     setImageUrls: (imageUrls) => set({ imageUrls }),
+    delImageUrls: (index) => set({ imageUrls: get().imageUrls.filter((_, i) => i !== index) }),
     getImages: () => get().images,
     setImages: (images) => set({ images }),
   })));

@@ -11,6 +11,9 @@ import {
 } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
+import { get } from 'http';
+
+import ImageUpload from '../components/imageUpload';
 
 interface Params {
   key: string;
@@ -24,7 +27,8 @@ const FinalPage: NextPageWithLayout = () => {
   const [cloudSaveDisabled, setCloudSaveDisabled] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const { getResponse, setResponse, getValues, getImages } =
+  // const getImages = useCreatePageStore((state) => state.getImages);
+  const { getResponse, setResponse, getValues, getImages, getImageUrls } =
     useCreatePageStore();
   const [feedback, setFeedback] = useState<string>('');
   const { append, isLoading } = useChat({
@@ -32,7 +36,8 @@ const FinalPage: NextPageWithLayout = () => {
       setResponse(message.content.slice(1, -1));
     },
   });
-
+  const [imagesFiles, setImagesFiles] = useState<string[]>(getImageUrls());
+  // console.log('images files:', imagesFiles);
   const { params } = router.query;
   const parsedParams: Params = params
     ? JSON.parse(decodeURIComponent(params as string))
@@ -148,7 +153,9 @@ const FinalPage: NextPageWithLayout = () => {
           )}
         </div>
         <div className="col-span-4 ">
-          <div className="h-[600px] m-2 bg-white rounded mr-5">Image</div>
+          <div className="h-[600px] m-2 bg-white rounded mr-5 flex overflow-auto flex-col space-y-5 items-center justify-center">
+            <ImageUpload projectName="" prev="" intention="" />
+          </div>
           <Button
             disabled={isLoading || text.length === 0 || cloudSaveDisabled}
             className="mt-3 w-full"

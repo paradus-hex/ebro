@@ -5,6 +5,13 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { useCreatePageStore } from '../stores/createPageStore';
 import { getImageUrlsFromCloud } from '../lib/firebasedb';
 import { set } from 'zod';
+import { Button } from './ui/button';
+import { Carousel } from 'flowbite';
+import type {
+  CarouselItem,
+  CarouselOptions,
+  CarouselInterface,
+} from 'flowbite';
 
 const ImageUpload = ({
   projectName,
@@ -17,7 +24,7 @@ const ImageUpload = ({
 }) => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
-  const { getImageUrls, setImageUrls, getImages, setImages } =
+  const { getImageUrls, setImageUrls, getImages, setImages, delImageUrls } =
     useCreatePageStore();
 
   const loadImages = async () => {
@@ -36,6 +43,12 @@ const ImageUpload = ({
   };
 
   console.log(selectedImages);
+  const deleteImageFromState = (index) => {
+    const newImages = [...selectedImages];
+    newImages.splice(index, 1);
+    setSelectedImages(newImages);
+    setImageUrls(newImages);
+  };
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files);
     setImages(getImages().concat(files));
@@ -98,17 +111,38 @@ const ImageUpload = ({
               autoWidth: true,
               arrows: false,
             }}
+            // getIndexOfFirstSlide={() => currentImageIndex}
+            // onChange={(e) => {
+            //   console.log(e);
+            // }}
             aria-label="My Favorite Images"
           >
-            {selectedImages.map((image) => (
-              <SplideSlide key={image} className="m-5 shadow-md rounded-xl">
-                <img
-                  src={image}
-                  alt="Preview"
-                  className="object-cover"
-                  style={{ width: '250px', height: '200px' }}
-                />
-              </SplideSlide>
+            {selectedImages.map((image, index) => (
+              <>
+                <SplideSlide key={image} className="m-5 shadow-md rounded-xl">
+                  <div className="relative">
+                    <div>
+                      <button
+                        onClick={(e) => {
+                          delImageUrls(index);
+                          deleteImageFromState(index);
+                        }}
+                        className="absolute top-2 text-center right-2 bg-red-800 hover:bg-red-500 text-white hover:scale-105 text-sm h-[20px] w-[20px] "
+                      >
+                        x
+                      </button>
+                      <img
+                        src={image}
+                        alt="Preview"
+                        className="object-cover"
+                        style={{ width: '250px', height: '200px' }}
+                      />
+
+                      {/* <p>ki oboshta</p> */}
+                    </div>
+                  </div>
+                </SplideSlide>
+              </>
             ))}
           </Splide>
           <div>
