@@ -16,6 +16,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { get } from 'http';
 import { set } from 'zod';
+import React from 'react';
 // import Splide from '@splidejs/splide';
 const ImageUpload = ({
   projectName,
@@ -28,7 +29,7 @@ const ImageUpload = ({
 }) => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
-
+  const swiperRef = React.useRef(null);
   const {
     getImageUrls,
     setImageUrls,
@@ -59,12 +60,22 @@ const ImageUpload = ({
   const deleteImageFromState = (index: number) => {
     const newImages = [...selectedImages];
     newImages.splice(index, 1);
-    const imageDescElement = document.getElementById(
-      'imageDesc',
-    ) as HTMLInputElement;
-    imageDescElement.value = getImageDesc()[currentImageIndex]?.desc
-      ? getImageDesc()[currentImageIndex]?.desc
-      : '';
+    if (swiperRef.current) {
+      swiperRef.current.update();
+    }
+    console.log(swiperRef.current.activeIndex, 'delete hoche');
+    swiperRef.current.activeIndex != 0 &&
+    swiperRef.current.activeIndex != selectedImages.length - 1
+      ? (document.getElementById('imageDesc').value =
+          getImageDesc()[swiperRef.current.activeIndex + 1].desc)
+      : swiperRef.current.activeIndex != 0
+      ? (document.getElementById('imageDesc').value =
+          getImageDesc()[swiperRef.current.activeIndex - 1].desc)
+      : selectedImages.length > 1
+      ? (document.getElementById('imageDesc').value =
+          getImageDesc()[swiperRef.current.activeIndex + 1].desc)
+      : ' ';
+
     delImageDesc(index);
     setSelectedImages(newImages);
     setImageUrls(newImages);
@@ -128,6 +139,9 @@ const ImageUpload = ({
             slidesPerView={1}
             centeredSlides={true}
             spaceBetween={10}
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper;
+            }}
             pagination={{
               clickable: true,
             }}
