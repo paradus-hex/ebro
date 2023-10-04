@@ -98,13 +98,13 @@ const ImageUpload = ({
   };
 
   useEffect(() => {
-    if (intention === 'create') {
-      setImages([]);
-      setSelectedImages([]);
-      setImageUrls([]);
-      setCurrentImageIndex(0);
-      setImageDesc([]);
-    }
+    // if (intention === 'create') {
+    //   setImages([]);
+    //   setSelectedImages([]);
+    //   setImageUrls([]);
+    //   setCurrentImageIndex(0);
+    //   setImageDesc([]);
+    // }
     loadImages();
   }, []);
 
