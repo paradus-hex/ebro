@@ -27,6 +27,7 @@ const FinalPage: NextPageWithLayout = () => {
   const [cloudSaveDisabled, setCloudSaveDisabled] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
   // const getImages = useCreatePageStore((state) => state.getImages);
   const { getResponse, setResponse, getValues, getImages, getImageUrls } =
     useCreatePageStore();
@@ -36,7 +37,7 @@ const FinalPage: NextPageWithLayout = () => {
       setResponse(message.content.slice(1, -1));
     },
   });
-  const [imagesFiles, setImagesFiles] = useState<string[]>(getImageUrls());
+  const [imagesUrls, setImagesUrls] = useState<string[]>(getImageUrls());
   // console.log('images files:', imagesFiles);
   const { params } = router.query;
   const parsedParams: Params = params
@@ -153,9 +154,35 @@ const FinalPage: NextPageWithLayout = () => {
           )}
         </div>
         <div className="col-span-4 ">
-          <div className="h-[600px] m-2 bg-white rounded mr-5 flex overflow-auto flex-col space-y-5 items-center justify-center">
-            <ImageUpload projectName="" prev="" intention="" />
+          <div>
+            <div className="max-w-screen-2xl mx-auto px-4 py-16 lg:py-24 relative bg-white h-[600px] m-2 bg-white rounded mr-5 flex overflow-auto flex-col space-y-5 items-center justify-center">
+              <div className="flex flex-col md:flex-row gap-2">
+                {/* <div className="flex flex-1 flex-col">
+                  <div className="flex flex-1 flex-col">
+                
+                    <img
+                      className="object-cover h-full"
+                      src="https://images.unsplash.com/photo-1664764119004-999a3f80a1b8?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NjY2NDEzMDc&ixlib=rb-4.0.3&q=80"
+                      alt=""
+                    />
+                  </div>
+                </div> */}
+                <div className="flex flex-1">
+                  <div className="grid grid-cols-2 gap-2 overflow-auto">
+                    {imagesUrls.map((url) => (
+                      <div className="border-red-700">
+                        {/* <!-- img_02 --> */}
+                        <img className="object-cover h-full" src={url} alt="" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+          {/* <div className="h-[600px] m-2 bg-white rounded mr-5 flex overflow-auto flex-col space-y-5 items-center justify-center">
+            <ImageUpload projectName="" prev="" intention="" />
+          </div> */}
           <Button
             disabled={isLoading || text.length === 0 || cloudSaveDisabled}
             className="mt-3 w-full"
