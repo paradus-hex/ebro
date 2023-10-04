@@ -7,6 +7,7 @@ interface CreatePageStoreState {
   values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>;
   response: string;
   note: string;
+  imageUrls: string[];
   images: File[];
   setValues: (values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>) => void;
   setResponse: (response: string) => void;
@@ -14,6 +15,8 @@ interface CreatePageStoreState {
   getResponse: () => string;
   getNote: () => string;
   setNote: (note: string) => void;
+  getImageUrls: () => string[];
+  setImageUrls: (imageUrls: string[]) => void;
   getImages: () => File[];
   setImages: (images: File[]) => void;
 }
@@ -43,6 +46,7 @@ export const useCreatePageStore = create(
     },
     response: "",
     note: "",
+    imageUrls: [],
     images: [],
     setValues: (values) => set({ values }),
     setResponse: (response) => set({ response }),
@@ -50,6 +54,8 @@ export const useCreatePageStore = create(
     getValues: () => get().values,
     getResponse: () => get().response,
     getNote: () => get().note,
+    getImageUrls: () => get().imageUrls,
+    setImageUrls: (imageUrls) => set({ imageUrls }),
     getImages: () => get().images,
     setImages: (images) => set({ images }),
   })));

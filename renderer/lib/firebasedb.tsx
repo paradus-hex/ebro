@@ -19,7 +19,13 @@ import {
   signOut,
 } from 'firebase/auth';
 import { firebaseConfig } from '../firebase-constants';
-import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import {
+  getDownloadURL,
+  getStorage,
+  listAll,
+  ref,
+  uploadBytes,
+} from 'firebase/storage';
 import { useCreatePageStore } from '../stores/createPageStore';
 
 export interface ProjectData {
@@ -158,4 +164,22 @@ export async function saveImagesToCloud(projectName: string, images: File[]) {
       await uploadBytes(storageRef, image);
     }),
   );
+}
+
+export async function getImageUrlsFromCloud(folderPath: string) {
+  const folderRef = ref(storage, folderPath);
+  const items = await listAll(folderRef);
+  const downloadURLs: string[] = [];
+  try {
+    await Promise.all(
+      items.items.map(async (itemRef) => {
+        const url = await getDownloadURL(itemRef);
+        downloadURLs.push(url);
+      }),
+    );
+    return downloadURLs;
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
 }

@@ -15,7 +15,11 @@ function Home() {
   const handleCreateClick = () => {
     router.push(
       `/create?params=${encodeURIComponent(
-        JSON.stringify({ passedProjectName: projectName, intention: 'create' }),
+        JSON.stringify({
+          passedProjectName: projectName,
+          intention: 'create',
+          prev: 'home',
+        }),
       )}`,
     );
   };

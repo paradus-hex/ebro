@@ -97,11 +97,7 @@ export const outbuildings = [
   },
 ];
 
-export const emptyProjectLocalStorage = {
-  userName: '',
-  projectName: '',
-  updatedAt: new Date().toISOString(),
-  isFavorite: false,
+export const emptyProjectForm = {
   values: {
     address: '',
     zipCode: '',
@@ -119,4 +115,27 @@ export const emptyProjectLocalStorage = {
     geographicalFeatures: '',
     nearbyAmenities: '',
   },
+};
+
+export const emptyProjectData = {
+  address: '',
+  zipCode: '',
+  city: '',
+  projectName: '',
+  yearOfConstruction: 0,
+  sizeOfProperty: 0,
+  sizeOfHome: 0,
+  numberOfBedRooms: 0,
+  numberOfBathRooms: 0,
+  architecturalStyle: [],
+  outbuildings: [],
+  uniqueSellingPoints: '',
+  interiorFeatures: '',
+  localAttractions: '',
+  geographicalFeatures: '',
+  nearbyAmenities: '',
+  userName: '',
+  updatedAt: new Date().toISOString(),
+  isFavorite: false,
+  response: '',
 };

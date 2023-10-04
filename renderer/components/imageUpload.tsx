@@ -3,24 +3,46 @@ import Image from 'next/image';
 import '@splidejs/react-splide/css';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { useCreatePageStore } from '../stores/createPageStore';
+import { getImageUrlsFromCloud } from '../lib/firebasedb';
+import { set } from 'zod';
 
-const ImageUpload = () => {
+const ImageUpload = ({
+  projectName,
+  prev,
+  intention,
+}: {
+  projectName: string;
+  prev: string;
+  intention: string;
+}) => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
-  const { getImages, setImages } = useCreatePageStore();
+  const { getImageUrls, setImageUrls, getImages, setImages } =
+    useCreatePageStore();
 
   const loadImages = async () => {
-    const images = await getImages();
-    const imageUrls = images.map((file) => URL.createObjectURL(file));
-    setSelectedImages(imageUrls);
+    if (prev === 'home' && intention === 'update') {
+      await getImageUrlsFromCloud(`images/${projectName}`).then((urls) => {
+        setSelectedImages(urls);
+        setImageUrls(urls);
+      });
+    } else {
+      if (intention === 'create' && prev === 'home') setImageUrls([]);
+      else {
+        const imageUrls = await getImageUrls();
+        setSelectedImages(imageUrls);
+      }
+    }
   };
 
+  console.log(selectedImages);
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files);
     setImages(getImages().concat(files));
     if (files.length > 0) {
       const imageUrls = files.map((file) => URL.createObjectURL(file));
       setSelectedImages([...selectedImages, ...imageUrls]);
+      setImageUrls([...selectedImages, ...imageUrls]);
       setCurrentImageIndex(selectedImages.length);
     }
   };
@@ -110,7 +132,7 @@ const ImageUpload = () => {
             <button
               onClick={() => {
                 setSelectedImages([]);
-                setImages([]);
+                setImageUrls([]);
                 setCurrentImageIndex(0);
               }}
             >

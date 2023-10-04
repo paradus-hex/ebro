@@ -38,6 +38,7 @@ export default function MyProjectCard({
           key: id,
           passedProjectName: projectName,
           intention: 'update',
+          prev: 'home',
         }),
       )}`,
     );
