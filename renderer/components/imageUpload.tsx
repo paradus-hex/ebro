@@ -30,6 +30,9 @@ const ImageUpload = ({
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const swiperRef = React.useRef(null);
+  const inputElement = document.getElementById(
+    'imageDesc',
+  ) as HTMLTextAreaElement;
   const {
     getImageUrls,
     setImageUrls,
@@ -64,17 +67,20 @@ const ImageUpload = ({
       swiperRef.current.update();
     }
     console.log(swiperRef.current.activeIndex, 'delete hoche');
-    swiperRef.current.activeIndex != 0 &&
-    swiperRef.current.activeIndex != selectedImages.length - 1
-      ? (document.getElementById('imageDesc').value =
-          getImageDesc()[swiperRef.current.activeIndex + 1].desc)
-      : swiperRef.current.activeIndex != 0
-      ? (document.getElementById('imageDesc').value =
-          getImageDesc()[swiperRef.current.activeIndex - 1].desc)
-      : selectedImages.length > 1
-      ? (document.getElementById('imageDesc').value =
-          getImageDesc()[swiperRef.current.activeIndex + 1].desc)
-      : ' ';
+
+    if (
+      swiperRef.current.activeIndex != 0 &&
+      swiperRef.current.activeIndex != selectedImages.length - 1
+    ) {
+      inputElement.value =
+        getImageDesc()[swiperRef.current.activeIndex + 1].desc;
+    } else if (swiperRef.current.activeIndex != 0) {
+      inputElement.value =
+        getImageDesc()[swiperRef.current.activeIndex - 1].desc;
+    } else if (selectedImages.length > 1) {
+      inputElement.value =
+        getImageDesc()[swiperRef.current.activeIndex + 1].desc;
+    }
 
     delImageDesc(index);
     setSelectedImages(newImages);
@@ -150,8 +156,7 @@ const ImageUpload = ({
             onSlideChange={(swiper) => {
               setCurrentImageIndex(swiper.activeIndex);
               console.log(swiper.activeIndex);
-              document.getElementById('imageDesc').value =
-                getImageDesc()[swiper.activeIndex].desc;
+              inputElement.value = getImageDesc()[swiper.activeIndex].desc;
               console.log(getImageDesc());
               // console.log(swiper.activeIndex);
             }}
