@@ -22,6 +22,7 @@ interface CreatePageStoreState {
   delImageUrls: (index: number) => void;
   getImages: () => File[];
   setImages: (images: File[]) => void;
+  delImageDesc: (index: number) => void;
   setImageDesc: (imageDesc: { desc: string }[]) => void;
   getImageDesc: () => { desc: string }[];
 
