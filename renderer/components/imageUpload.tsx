@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import '@splidejs/react-splide/css';
-import { Splide, SplideSlide } from '@splidejs/react-splide';
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { useCreatePageStore } from '../stores/createPageStore';
 import { getImageUrlsFromCloud } from '../lib/firebasedb';
-import { set } from 'zod';
-import { Button } from './ui/button';
-import { Carousel } from 'flowbite';
-import type {
-  CarouselItem,
-  CarouselOptions,
-  CarouselInterface,
-} from 'flowbite';
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
 
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+// import { Pagination } from 'swiper/modules';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+// import Splide from '@splidejs/splide';
 const ImageUpload = ({
   projectName,
   prev,
@@ -71,9 +73,12 @@ const ImageUpload = ({
       prevIndex === selectedImages.length - 1 ? 0 : prevIndex + 1,
     );
   };
+  // var splide = new Splide('.splide');
+  // splide.mount();
 
   useEffect(() => {
     loadImages();
+    // console.log(splide.index());
   }, []);
 
   return (
@@ -102,49 +107,43 @@ const ImageUpload = ({
           </form>
         </div>
       ) : (
-        <div className="flex flex-col items-center">
-          <Splide
-            hasTrack={true}
-            options={{
-              perPage: 1,
-              gap: '1rem',
-              autoWidth: true,
-              arrows: false,
+        <div className="flex flex-col items-center justify-center w-full overflow-visible image-uploader">
+          <Swiper
+            slidesPerView={1}
+            centeredSlides={true}
+            spaceBetween={10}
+            pagination={{
+              clickable: true,
             }}
-            // getIndexOfFirstSlide={() => currentImageIndex}
-            // onChange={(e) => {
-            //   console.log(e);
-            // }}
-            aria-label="My Favorite Images"
+            modules={[Pagination]}
+            className="mySwiper"
           >
             {selectedImages.map((image, index) => (
-              <>
-                <SplideSlide key={image} className="m-5 shadow-md rounded-xl">
-                  <div className="relative">
-                    <div>
-                      <button
-                        onClick={(e) => {
-                          delImageUrls(index);
-                          deleteImageFromState(index);
-                        }}
-                        className="absolute top-2 text-center right-2 bg-red-800 hover:bg-red-500 text-white hover:scale-105 text-sm h-[20px] w-[20px] "
-                      >
-                        x
-                      </button>
-                      <img
-                        src={image}
-                        alt="Preview"
-                        className="object-cover"
-                        style={{ width: '250px', height: '200px' }}
-                      />
-
-                      {/* <p>ki oboshta</p> */}
-                    </div>
-                  </div>
-                </SplideSlide>
-              </>
+              <SwiperSlide
+                key={image}
+                // className="m-5 shadow-md rounded-xl w-[250px] h-[200px] swipte_slide_test"
+              >
+                <div className=" relative w-[320px] h-[200px]">
+                  <button
+                    onClick={(e) => {
+                      delImageUrls(index);
+                      deleteImageFromState(index);
+                    }}
+                    className="absolute top-2 text-center right-2 bg-red-800 hover:bg-red-500 text-white hover:scale-105 text-sm h-[20px] w-[20px] "
+                  >
+                    x
+                  </button>
+                  <img
+                    src={image}
+                    alt="Preview"
+                    className="object-cover"
+                    style={{ width: '320px', height: '200px' }}
+                  />
+                </div>
+              </SwiperSlide>
             ))}
-          </Splide>
+          </Swiper>
+          <input type="text" className="mt-8" />
           <div>
             <label>
               <input
