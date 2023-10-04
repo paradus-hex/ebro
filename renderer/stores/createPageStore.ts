@@ -1,3 +1,4 @@
+import { get } from 'http';
 import { z } from "zod";
 import { create } from "zustand";
 import { formSchema } from "../pages/create";
@@ -9,6 +10,7 @@ interface CreatePageStoreState {
   note: string;
   imageUrls: string[];
   images: File[];
+  imageDesc: { desc: string }[];
   setValues: (values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>) => void;
   setResponse: (response: string) => void;
   getValues: () => { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>;
@@ -20,6 +22,10 @@ interface CreatePageStoreState {
   delImageUrls: (index: number) => void;
   getImages: () => File[];
   setImages: (images: File[]) => void;
+  setImageDesc: (imageDesc: { desc: string }[]) => void;
+  getImageDesc: () => { desc: string }[];
+
+
 }
 
 export const useCreatePageStore = create(
@@ -49,6 +55,7 @@ export const useCreatePageStore = create(
     note: "",
     imageUrls: [],
     images: [],
+    imageDesc: [],
     setValues: (values) => set({ values }),
     setResponse: (response) => set({ response }),
     setNote: (note) => set({ note }),
@@ -57,9 +64,24 @@ export const useCreatePageStore = create(
     getNote: () => get().note,
     getImageUrls: () => get().imageUrls,
     setImageUrls: (imageUrls) => set({ imageUrls }),
-    delImageUrls: (index) => set({ imageUrls: get().imageUrls.filter((_, i) => i !== index) }),
+    delImageUrls: (index) => {
+      let urlArr = [...get().imageUrls];
+      urlArr.splice(index, 1);
+      set({ imageUrls: urlArr })
+    },
     getImages: () => get().images,
     setImages: (images) => set({ images }),
-  })));
+    setImageDesc: (imageDesc) => set({ imageDesc }),
+    getImageDesc: () => get().imageDesc,
+    delImageDesc: (index) => {
+      let arrDesc = [...get().imageDesc];
+      arrDesc.splice(index, 1);
+      set({
+        imageDesc: arrDesc,
+      });
+    },
+  })),
+
+);
 
 
