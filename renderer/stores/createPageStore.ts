@@ -2,16 +2,23 @@ import { z } from "zod";
 import { create } from "zustand";
 import { formSchema } from "../pages/create";
 import { immer } from 'zustand/middleware/immer'
-import { signInformSchema } from "../pages/signin";
 
 interface CreatePageStoreState {
   values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>;
   response: string;
   note: string;
+  imageUrls: string[];
+  images: File[];
   setValues: (values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>) => void;
   setResponse: (response: string) => void;
   getValues: () => { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>;
   getResponse: () => string;
+  getNote: () => string;
+  setNote: (note: string) => void;
+  getImageUrls: () => string[];
+  setImageUrls: (imageUrls: string[]) => void;
+  getImages: () => File[];
+  setImages: (images: File[]) => void;
 }
 
 export const useCreatePageStore = create(
@@ -39,12 +46,18 @@ export const useCreatePageStore = create(
     },
     response: "",
     note: "",
+    imageUrls: [],
+    images: [],
     setValues: (values) => set({ values }),
     setResponse: (response) => set({ response }),
     setNote: (note) => set({ note }),
     getValues: () => get().values,
     getResponse: () => get().response,
     getNote: () => get().note,
+    getImageUrls: () => get().imageUrls,
+    setImageUrls: (imageUrls) => set({ imageUrls }),
+    getImages: () => get().images,
+    setImages: (images) => set({ images }),
   })));
 
 

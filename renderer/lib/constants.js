@@ -13,38 +13,129 @@ export const projects = [
 
 export const architecturalStyles = [
   {
-    value: 'colonial',
+    value: 'Colonial',
     label: 'Colonial',
   },
   {
-    value: 'modern',
+    value: 'Modern',
     label: 'Modern',
   },
   {
-    value: 'victorian',
+    value: 'Victorian',
     label: 'Victorian',
   },
   {
-    value: 'craftsman',
+    value: 'Craftsman',
     label: 'Craftsman',
+  },
+  {
+    value: 'Mediterranean',
+    label: 'Mediterranean',
+  },
+  {
+    value: 'Cape Cod',
+    label: 'Cape Cod',
+  },
+  {
+    value: 'Tudor',
+    label: 'Tudor',
+  },
+  {
+    value: 'Ranch',
+    label: 'Ranch',
+  },
+  {
+    value: 'Contemporary',
+    label: 'Contemporary',
+  },
+  {
+    value: 'French Country',
+    label: 'French Country',
   },
 ];
 
 export const outbuildings = [
   {
-    value: 'garage',
+    value: 'Garage',
     label: 'Garage',
   },
   {
-    value: 'guestHouse',
+    value: 'Guest House',
     label: 'Guest House',
   },
   {
-    value: 'barn',
+    value: 'Barn',
     label: 'Barn',
   },
   {
-    value: 'shed',
+    value: 'Shed',
     label: 'Shed',
   },
+  {
+    value: 'Pool House',
+    label: 'Pool House',
+  },
+  {
+    value: 'Workshop',
+    label: 'Workshop',
+  },
+  {
+    value: 'Greenhouse',
+    label: 'Greenhouse',
+  },
+  {
+    value: 'Studio',
+    label: 'Studio',
+  },
+  {
+    value: 'Playhouse',
+    label: 'Playhouse',
+  },
+  {
+    value: 'Storage Unit',
+    label: 'Storage Unit',
+  },
 ];
+
+export const emptyProjectForm = {
+  values: {
+    address: '',
+    zipCode: '',
+    city: '',
+    yearOfConstruction: Number(''),
+    sizeOfProperty: Number(''),
+    sizeOfHome: Number(''),
+    numberOfBedRooms: Number(''),
+    numberOfBathRooms: Number(''),
+    architecturalStyle: [],
+    outbuildings: [],
+    uniqueSellingPoints: '',
+    interiorFeatures: '',
+    localAttractions: '',
+    geographicalFeatures: '',
+    nearbyAmenities: '',
+  },
+};
+
+export const emptyProjectData = {
+  address: '',
+  zipCode: '',
+  city: '',
+  projectName: '',
+  yearOfConstruction: 0,
+  sizeOfProperty: 0,
+  sizeOfHome: 0,
+  numberOfBedRooms: 0,
+  numberOfBathRooms: 0,
+  architecturalStyle: [],
+  outbuildings: [],
+  uniqueSellingPoints: '',
+  interiorFeatures: '',
+  localAttractions: '',
+  geographicalFeatures: '',
+  nearbyAmenities: '',
+  userName: '',
+  updatedAt: new Date().toISOString(),
+  isFavorite: false,
+  response: '',
+};

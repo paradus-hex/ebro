@@ -1,4 +1,3 @@
-// ./app/api/chat/route.ts
 import {
   ChatCompletionRequestMessageRoleEnum,
 } from "openai-edge";

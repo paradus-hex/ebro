@@ -19,6 +19,14 @@ import {
   signOut,
 } from 'firebase/auth';
 import { firebaseConfig } from '../firebase-constants';
+import {
+  getDownloadURL,
+  getStorage,
+  listAll,
+  ref,
+  uploadBytes,
+} from 'firebase/storage';
+import { useCreatePageStore } from '../stores/createPageStore';
 
 export interface ProjectData {
   address: string;
@@ -45,9 +53,10 @@ export interface ProjectData {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const auth = getAuth(app);
 const projects = collection(db, 'projects');
 const accounts = collection(db, 'accounts');
+const auth = getAuth(app);
+export const storage = getStorage(app);
 
 export async function getProjects(col = projects) {
   const projectsCol = col;
@@ -145,4 +154,32 @@ export async function getAccountDetails(id: string) {
   return (
     await getDocs(query(accounts, where('user_id', '==', id)))
   ).docs[0].data();
+}
+
+export async function saveImagesToCloud(projectName: string, images: File[]) {
+  if (images.length === 0) return;
+  await Promise.all(
+    images.map(async (image) => {
+      const storageRef = ref(storage, `images/${projectName}/${image.name}`);
+      await uploadBytes(storageRef, image);
+    }),
+  );
+}
+
+export async function getImageUrlsFromCloud(folderPath: string) {
+  const folderRef = ref(storage, folderPath);
+  const items = await listAll(folderRef);
+  const downloadURLs: string[] = [];
+  try {
+    await Promise.all(
+      items.items.map(async (itemRef) => {
+        const url = await getDownloadURL(itemRef);
+        downloadURLs.push(url);
+      }),
+    );
+    return downloadURLs;
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
 }

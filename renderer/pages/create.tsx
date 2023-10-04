@@ -21,16 +21,21 @@ import { MultiSelect } from '../components/MultiSelect';
 import ImageUpload from '../components/imageUpload';
 import { FormPopOver } from '../components/formPopOver';
 import { Textarea } from '../components/ui/textarea';
-import { architecturalStyles, outbuildings } from '../lib/constants';
+import {
+  architecturalStyles,
+  emptyProjectData,
+  outbuildings,
+} from '../lib/constants';
 import { ReactElement, useEffect, useState } from 'react';
 import { useCreatePageStore } from '../stores/createPageStore';
-import { setProjects, getProjectDetails } from '../lib/firebasedb';
+import { getProjectDetails } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 
 interface Params {
   key: string;
   passedProjectName: string;
   intention: string;
+  prev: string;
 }
 
 export const formSchema = z.object({
@@ -78,7 +83,7 @@ function Create() {
   const parsedParams: Params = params
     ? JSON.parse(decodeURIComponent(params as string))
     : {};
-  const { key, passedProjectName, intention } = parsedParams;
+  const { key, passedProjectName, intention, prev } = parsedParams;
   const {
     setValues,
     setResponse,
@@ -90,7 +95,12 @@ function Create() {
     getStoredValues();
 
   const prevProjectDetails = async () => {
-    if (key === undefined) return;
+    if (key === undefined && prev === 'home') {
+      form.reset(emptyProjectData);
+      setResponse('');
+      setValues({ ...emptyProjectData, projectName: passedProjectName });
+      return;
+    }
     const data = key && (await getProjectDetails(key));
     form.reset(data);
     setResponse(data.response);
@@ -537,7 +547,11 @@ function Create() {
         <DevTool control={control} />
       </div>
       <div className="flex flex-col justify-start bg-slate-200/50 w-[30%] min-h-screen">
-        <ImageUpload></ImageUpload>
+        <ImageUpload
+          projectName={passedProjectName}
+          prev={prev}
+          intention={intention}
+        ></ImageUpload>
         <div
           className="flex
         flex-col justify-center items-center"

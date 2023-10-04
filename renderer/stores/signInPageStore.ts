@@ -27,7 +27,7 @@ export const useSignInPageStore = create(
       email: '',
       password: '',
     },
-    signedIn: false,
+    signedIn: true,
     user_id: '',
     account_type: '',
     account_id: '',
