@@ -60,8 +60,6 @@ const ImageUpload = () =>
       prev: string,
     ) => {
       if (prev === 'home' && intention === 'update') {
-        // console.log('key', key);
-        // console.log(`images/user1/${projectName}_${key}`);
         await getImageUrlsFromCloud(
           `images/user1/${passedProjectName}_${getProjectKey()}`,
         ).then((urls) => {
@@ -80,22 +78,18 @@ const ImageUpload = () =>
       if (intention == 'update' && (prev === 'home' || prev === 'finalpage')) {
         console.log('inside update');
         getImageDescFromCloud(getProjectKey()).then((desc) => {
-          // console.log('desc', desc);
           setImageDesc(desc);
           inputElement.current.value = getImageDesc()[0].desc;
         });
       }
     };
-    // console.log('inside load image');
-    // console.log('key', key);
-    // console.log(selectedImages);
+
     const deleteImageFromState = (index: number) => {
       const newImages = [...selectedImages];
       newImages.splice(index, 1);
       if (swiperRef.current) {
         swiperRef.current.update();
       }
-      // console.log(swiperRef.current.activeIndex, 'delete hoche');
 
       if (
         swiperRef.current.activeIndex != 0 &&
@@ -114,10 +108,8 @@ const ImageUpload = () =>
       delImageDesc(index);
       setSelectedImages(newImages);
       setImageUrls(newImages);
-      // console.log(getImageDesc());
     };
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      // console.log(getImageDesc());
       const files = Array.from(e.target.files);
       setImages(getImages().concat(files));
       if (files.length > 0) {
@@ -183,10 +175,10 @@ const ImageUpload = () =>
               className="mySwiper"
               onSlideChange={(swiper) => {
                 setCurrentImageIndex(swiper.activeIndex);
-                // console.log(swiper.activeIndex);
+
                 inputElement.current.value =
                   getImageDesc()[swiper.activeIndex].desc;
-                // console.log(getImageDesc());
+
                 console.log(swiper.activeIndex);
               }}
             >
@@ -214,10 +206,9 @@ const ImageUpload = () =>
               ref={inputElement}
               onChange={(e) => {
                 const newImageDesc = [...getImageDesc()];
-                // console.log(currentImageIndex);
+
                 newImageDesc[currentImageIndex] = { desc: e.target.value };
                 setImageDesc(newImageDesc);
-                // console.log(getImageDesc());
               }}
             />
             <div>
