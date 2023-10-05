@@ -5,6 +5,7 @@ import { RiDeleteBin2Line } from 'react-icons/ri';
 import { BsStarFill } from 'react-icons/bs';
 import { isFav, deleteProject } from '../lib/firebasedb';
 import { useRouter } from 'next/router';
+import { useCreatePageStore } from '../stores/createPageStore';
 
 export default function MyProjectCard({
   projectName,
@@ -22,6 +23,7 @@ export default function MyProjectCard({
   favSelectedCards: (key: string) => void;
 }) {
   const router = useRouter();
+  const { setProjectKey } = useCreatePageStore();
   const setFav = (id: string) => {
     // console.log('is fav', id);
   };
@@ -32,6 +34,7 @@ export default function MyProjectCard({
     // console.log(
     //   `Address ${address}, ProjectName ${projectName}, ID ${id}, Isfav ${isFavourite}`,
     // );
+    setProjectKey(id);
     router.push(
       `/create?params=${encodeURIComponent(
         JSON.stringify({
