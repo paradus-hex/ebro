@@ -117,6 +117,37 @@ input::-moz-selection {
   /* background-color: #ff0000;
   color: #ffffff; */
 }
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.swipte_slide_test {
+  width: 150px; /* Adjust the width as needed */
+  height: 100px; /* Adjust the height as needed */
+}
+
+image-uploader > .swiper-slide {
+  width: 150px; /* Adjust the width as needed */
+  height: 100px; /* Adjust the height as needed */
+}
 
 ::-webkit-scrollbar {
   width: 5px;

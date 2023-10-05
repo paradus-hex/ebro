@@ -66,8 +66,6 @@ function Home() {
           Create New
         </Button>
       </div>
-
-      {/* <ImageUpload /> */}
     </React.Fragment>
   );
 }

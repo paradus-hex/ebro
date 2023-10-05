@@ -1,11 +1,23 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import '@splidejs/react-splide/css';
-import { Splide, SplideSlide } from '@splidejs/react-splide';
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { useCreatePageStore } from '../stores/createPageStore';
 import { getImageUrlsFromCloud } from '../lib/firebasedb';
-import { set } from 'zod';
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
 
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+// import { Pagination } from 'swiper/modules';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+import { get } from 'http';
+import { set } from 'zod';
+import React from 'react';
+// import Splide from '@splidejs/splide';
 const ImageUpload = ({
   projectName,
   prev,
@@ -17,8 +29,20 @@ const ImageUpload = ({
 }) => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
-  const { getImageUrls, setImageUrls, getImages, setImages } =
-    useCreatePageStore();
+  const swiperRef = React.useRef(null);
+  const inputElement = document.getElementById(
+    'imageDesc',
+  ) as HTMLTextAreaElement;
+  const {
+    getImageUrls,
+    setImageUrls,
+    getImages,
+    getImageDesc,
+    setImageDesc,
+    delImageDesc,
+    setImages,
+    delImageUrls,
+  } = useCreatePageStore();
 
   const loadImages = async () => {
     if (prev === 'home' && intention === 'update') {
@@ -36,6 +60,33 @@ const ImageUpload = ({
   };
 
   console.log(selectedImages);
+  const deleteImageFromState = (index: number) => {
+    const newImages = [...selectedImages];
+    newImages.splice(index, 1);
+    if (swiperRef.current) {
+      swiperRef.current.update();
+    }
+    console.log(swiperRef.current.activeIndex, 'delete hoche');
+
+    if (
+      swiperRef.current.activeIndex != 0 &&
+      swiperRef.current.activeIndex != selectedImages.length - 1
+    ) {
+      inputElement.value =
+        getImageDesc()[swiperRef.current.activeIndex + 1].desc;
+    } else if (swiperRef.current.activeIndex != 0) {
+      inputElement.value =
+        getImageDesc()[swiperRef.current.activeIndex - 1].desc;
+    } else if (selectedImages.length > 1) {
+      inputElement.value =
+        getImageDesc()[swiperRef.current.activeIndex + 1].desc;
+    }
+
+    delImageDesc(index);
+    setSelectedImages(newImages);
+    setImageUrls(newImages);
+    console.log(getImageDesc());
+  };
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files);
     setImages(getImages().concat(files));
@@ -43,23 +94,23 @@ const ImageUpload = ({
       const imageUrls = files.map((file) => URL.createObjectURL(file));
       setSelectedImages([...selectedImages, ...imageUrls]);
       setImageUrls([...selectedImages, ...imageUrls]);
-      setCurrentImageIndex(selectedImages.length);
+      setImageDesc([
+        ...getImageDesc(),
+        ...Array.from({ length: files.length }, (_, index) => ({
+          desc: '',
+        })),
+      ]);
     }
   };
 
-  const handlePrevImage = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === 0 ? selectedImages.length - 1 : prevIndex - 1,
-    );
-  };
-
-  const handleNextImage = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === selectedImages.length - 1 ? 0 : prevIndex + 1,
-    );
-  };
-
   useEffect(() => {
+    // if (intention === 'create') {
+    //   setImages([]);
+    //   setSelectedImages([]);
+    //   setImageUrls([]);
+    //   setCurrentImageIndex(0);
+    //   setImageDesc([]);
+    // }
     loadImages();
   }, []);
 
@@ -89,28 +140,56 @@ const ImageUpload = ({
           </form>
         </div>
       ) : (
-        <div className="flex flex-col items-center">
-          <Splide
-            hasTrack={true}
-            options={{
-              perPage: 1,
-              gap: '1rem',
-              autoWidth: true,
-              arrows: false,
+        <div className="flex flex-col items-center justify-center w-full overflow-visible image-uploader">
+          <Swiper
+            slidesPerView={1}
+            centeredSlides={true}
+            spaceBetween={10}
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper;
             }}
-            aria-label="My Favorite Images"
+            pagination={{
+              clickable: true,
+            }}
+            modules={[Pagination]}
+            className="mySwiper"
+            onSlideChange={(swiper) => {
+              setCurrentImageIndex(swiper.activeIndex);
+              console.log(swiper.activeIndex);
+              inputElement.value = getImageDesc()[swiper.activeIndex].desc;
+              console.log(getImageDesc());
+              // console.log(swiper.activeIndex);
+            }}
           >
-            {selectedImages.map((image) => (
-              <SplideSlide key={image} className="m-5 shadow-md rounded-xl">
-                <img
-                  src={image}
-                  alt="Preview"
-                  className="object-cover"
-                  style={{ width: '250px', height: '200px' }}
-                />
-              </SplideSlide>
+            {selectedImages.map((image, index) => (
+              <SwiperSlide key={image}>
+                <div className=" relative w-[320px] h-[200px]">
+                  <button
+                    onClick={(e) => {
+                      delImageUrls(index);
+                      deleteImageFromState(index);
+                    }}
+                    className="absolute top-2 text-center right-2 bg-red-800 hover:bg-red-500 text-white hover:scale-105 text-sm h-[20px] w-[20px] "
+                  >
+                    x
+                  </button>
+                  <img src={image} alt="Preview" className="object-cover" />
+                </div>
+              </SwiperSlide>
             ))}
-          </Splide>
+          </Swiper>
+          <input
+            type="text"
+            className="mt-8"
+            id="imageDesc"
+            onChange={(e) => {
+              const newImageDesc = [...getImageDesc()];
+              console.log(currentImageIndex);
+              newImageDesc[currentImageIndex] = { desc: e.target.value };
+              setImageDesc(newImageDesc);
+              console.log(getImageDesc());
+            }}
+          />
           <div>
             <label>
               <input
