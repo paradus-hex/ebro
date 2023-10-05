@@ -77,7 +77,7 @@ const ImageUpload = () =>
       }
       console.log('inside load image');
       console.log(intention, prev);
-      if (intention == 'update' && prev === 'home') {
+      if (intention == 'update' && (prev === 'home' || prev === 'finalpage')) {
         console.log('inside update');
         getImageDescFromCloud(getProjectKey()).then((desc) => {
           // console.log('desc', desc);
