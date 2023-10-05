@@ -85,6 +85,7 @@ function Create() {
     ? JSON.parse(decodeURIComponent(params as string))
     : {};
   const { key, passedProjectName, intention, prev } = parsedParams;
+  console.log(passedProjectName, 'ssssssssssss', key, intention, prev);
   const {
     setValues,
     setResponse,
@@ -556,12 +557,7 @@ function Create() {
         <DevTool control={control} />
       </div>
       <div className="flex flex-col justify-start items-center bg-slate-200/50 w-[50%] min-h-screen">
-        <ImageUpload
-          projectName={passedProjectName}
-          key={key}
-          prev={prev}
-          intention={intention}
-        ></ImageUpload>
+        <ImageUpload></ImageUpload>
         <div
           className="flex
         flex-col justify-center items-center"
