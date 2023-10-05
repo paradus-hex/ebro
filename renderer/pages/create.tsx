@@ -103,12 +103,12 @@ function Create() {
     if (prev !== 'home') {
       return;
     }
-    if (key === undefined && prev === 'home') {
-      form.reset(emptyProjectData);
-      setResponse('');
-      setValues({ ...emptyProjectData, projectName: passedProjectName });
-      return;
-    }
+    // if (key === undefined && prev === 'home') {
+    //   form.reset(emptyProjectData);
+    //   setResponse('');
+    //   setValues({ ...emptyProjectData, projectName: passedProjectName });
+    //   return;
+    // }
     key &&
       (await getProjectDetails(key).then((data) => {
         form.reset(data);
