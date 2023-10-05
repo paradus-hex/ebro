@@ -34,6 +34,7 @@ const FinalPage: NextPageWithLayout = () => {
     getImageUrls,
     getImageDesc,
     getImageDescObj,
+    // getImageDescObj
   } = useCreatePageStore();
   const [feedback, setFeedback] = useState<string>('');
   const { append, isLoading } = useChat({
@@ -92,7 +93,8 @@ const FinalPage: NextPageWithLayout = () => {
     if (intention === 'create') {
       await setProjects({
         ...getValues(),
-        imagesDesc: getImageDesc(),
+        // imagesDesc: getImageDesc(),
+        imagesDesc: getImageDescObj(),
         response: getResponse(),
         projectName,
       }).then((docRef) => {
