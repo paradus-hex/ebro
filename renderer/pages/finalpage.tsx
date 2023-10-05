@@ -96,6 +96,7 @@ const FinalPage: NextPageWithLayout = () => {
         projectName,
       }).then((docRef) => {
         console.log(docRef.id);
+
         saveImagesToCloud('user1', `${projectName}_${docRef.id}`, getImages());
       });
     } else {
@@ -105,7 +106,8 @@ const FinalPage: NextPageWithLayout = () => {
         response: getResponse(),
         projectName,
       });
-      saveImagesToCloud('user1', key, getImages());
+      saveImagesToCloud('user1', `${projectName}_${key}`, getImages());
+      // saveImagesToCloud('user1', key, getImages());
     }
     setCloudSaveDisabled(true);
     router.push('/home');

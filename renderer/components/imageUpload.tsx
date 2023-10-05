@@ -79,6 +79,7 @@ const ImageUpload = () =>
         console.log('inside update');
         getImageDescFromCloud(getProjectKey()).then((desc) => {
           setImageDesc(desc);
+          getImageDesc.length;
           inputElement.current.value = getImageDesc()[0].desc;
         });
       }
