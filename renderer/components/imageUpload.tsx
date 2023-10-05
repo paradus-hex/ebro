@@ -3,7 +3,10 @@ import Image from 'next/image';
 import '@splidejs/react-splide/css';
 import { Pagination } from 'swiper/modules';
 import { useCreatePageStore } from '../stores/createPageStore';
-import { getImageUrlsFromCloud } from '../lib/firebasedb';
+import {
+  getImageDescFromCloud,
+  getImageUrlsFromCloud,
+} from '../lib/firebasedb';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -57,7 +60,7 @@ const ImageUpload = ({
       }
     }
     if (intention == 'update' && prev === 'home') {
-      getImageDescFromCloud('TYMR5n6jul9bum7dOIQv').then((desc) => {
+      getImageDescFromCloud(getProjectKey()).then((desc) => {
         console.log('desc', desc);
         setImageDesc(desc);
         inputElement.current.value =
@@ -66,10 +69,7 @@ const ImageUpload = ({
     }
   };
 
-<<<<<<< HEAD
-=======
-  console.log('key', key);
->>>>>>> e863cbc63682cf772d26bcec98043b4938500652
+  // console.log('key', key);
   // console.log(selectedImages);
   const deleteImageFromState = (index: number) => {
     const newImages = [...selectedImages];
@@ -116,9 +116,6 @@ const ImageUpload = ({
   };
 
   useEffect(() => {
-    const prevProjectDetails = async () => {};
-    prevProjectDetails();
-
     loadImages();
   }, []);
 

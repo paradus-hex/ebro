@@ -557,13 +557,7 @@ function Create() {
         <DevTool control={control} />
       </div>
       <div className="flex flex-col justify-start items-center bg-slate-200/50 w-[50%] min-h-screen">
-        <ImageUpload
-          projectName={passedProjectName}
-          key={key}
-          prev={prev}
-          intention={intention}
-          key={key}
-        ></ImageUpload>
+        <ImageUpload></ImageUpload>
         <div
           className="flex
         flex-col justify-center items-center"
