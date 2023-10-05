@@ -15,6 +15,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import React from 'react';
+import { set } from 'zod';
 interface Params {
   key: string;
   projectName: string;
@@ -36,7 +37,11 @@ const ImageUpload = () =>
   // }
   {
     const [selectedImages, setSelectedImages] = useState<string[]>([]);
-    const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+
+    const [getImageDescObjState, setImageDescObjState] = useState<any>({});
+    const [getSwiperImageDescObjState, setSwiperImageDescObjState] =
+      useState<any>({});
+    const [imageKey, setKey] = useState<string>('0');
     const swiperRef = React.useRef(null);
     const inputElement = useRef(null);
     const router = useRouter();
@@ -51,6 +56,12 @@ const ImageUpload = () =>
       setImages,
       delImageUrls,
       getProjectKey,
+      getImageDescObj,
+      setImageDescObj,
+      delImageDescObj,
+      getSwiperImageDescObj,
+      setSwiperImageDescObj,
+      delSwiperImageDescObj,
     } = useCreatePageStore();
 
     const loadImages = async (
@@ -67,14 +78,16 @@ const ImageUpload = () =>
           setImageUrls(urls);
         });
       } else {
-        if (intention === 'create' && prev === 'home') setImageUrls([]);
-        else {
+        if (intention === 'create' && prev === 'home') {
+          setImageUrls([]);
+          delImageDescObj();
+          delSwiperImageDescObj();
+        } else {
           const imageUrls = await getImageUrls();
           setSelectedImages(imageUrls);
         }
       }
-      console.log('inside load image');
-      console.log(intention, prev);
+
       if (intention == 'update' && (prev === 'home' || prev === 'finalpage')) {
         console.log('inside update');
         getImageDescFromCloud(getProjectKey()).then((desc) => {
@@ -110,10 +123,16 @@ const ImageUpload = () =>
       setImageUrls(newImages);
     };
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      // e.target.files.map()
+
       const files = Array.from(e.target.files);
       setImages(getImages().concat(files));
       if (files.length > 0) {
         const imageUrls = files.map((file) => URL.createObjectURL(file));
+        imageUrls.forEach((url, index) => {
+          setImageDescObj(url, '');
+          setSwiperImageDescObj(index.toString(), url);
+        });
         setSelectedImages([...selectedImages, ...imageUrls]);
         setImageUrls([...selectedImages, ...imageUrls]);
         setImageDesc([
@@ -122,6 +141,9 @@ const ImageUpload = () =>
             desc: '',
           })),
         ]);
+        setImageDescObjState(getImageDescObj());
+        setSwiperImageDescObjState(getSwiperImageDescObj());
+        // getImageDescObj();
       }
     };
 
@@ -174,17 +196,26 @@ const ImageUpload = () =>
               modules={[Pagination]}
               className="mySwiper"
               onSlideChange={(swiper) => {
-                setCurrentImageIndex(swiper.activeIndex);
+                // setCurrentImageIndex(swiper.activeIndex);
 
+                console.log(getImageDescObj());
+                setKey(swiper.activeIndex.toString());
                 inputElement.current.value =
-                  getImageDesc()[swiper.activeIndex].desc;
+                  getImageDescObj()[
+                    getSwiperImageDescObj()[swiper.activeIndex.toString()]
+                  ];
+                // getImageDesc()[swiper.activeIndex].desc;
 
                 console.log(swiper.activeIndex);
+                console.log(
+                  'This should be the url',
+                  getSwiperImageDescObjState,
+                );
               }}
             >
-              {selectedImages.map((image, index) => (
-                <SwiperSlide key={image}>
-                  <div className=" relative w-[320px] h-[200px]">
+              {Object.keys(getImageDescObj()).map((image, index) => (
+                <SwiperSlide key={image as string}>
+                  <div className="relative w-[320px] h-[200px]">
                     <button
                       onClick={(e) => {
                         delImageUrls(index);
@@ -194,7 +225,11 @@ const ImageUpload = () =>
                     >
                       x
                     </button>
-                    <img src={image} alt="Preview" className="object-cover" />
+                    <img
+                      src={image as string}
+                      alt="Preview"
+                      className="object-cover"
+                    />
                   </div>
                 </SwiperSlide>
               ))}
@@ -206,9 +241,16 @@ const ImageUpload = () =>
               ref={inputElement}
               onChange={(e) => {
                 const newImageDesc = [...getImageDesc()];
+                getSwiperImageDescObjState[imageKey.toString()]
+                  ? setImageDescObj(
+                      getSwiperImageDescObjState[imageKey.toString()],
+                      e.target.value,
+                    )
+                  : ' ';
+                console.log(getImageDescObj());
 
-                newImageDesc[currentImageIndex] = { desc: e.target.value };
-                setImageDesc(newImageDesc);
+                // newImageDesc[currentImageIndex] = { desc: e.target.value };
+                // setImageDesc(newImageDesc);
               }}
             />
             <div>
@@ -231,9 +273,10 @@ const ImageUpload = () =>
               </label>
               <button
                 onClick={() => {
-                  setSelectedImages([]);
-                  setImageUrls([]);
-                  setCurrentImageIndex(0);
+                  setSwiperImageDescObjState({});
+                  setImageDescObjState({});
+                  delSwiperImageDescObj();
+                  delImageDescObj();
                 }}
               >
                 <div className="flex gap-2">

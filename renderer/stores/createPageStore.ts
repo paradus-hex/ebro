@@ -12,6 +12,8 @@ interface CreatePageStoreState {
   imageUrls: string[];
   images: File[];
   imageDesc: { desc: string }[];
+  imageDescObj: { [key: string]: string };
+  imageSwiperDescObj: { [key: string]: string };
   setValues: (values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>) => void;
   setProjectKey: (projectKey: string) => void;
   setResponse: (response: string) => void;
@@ -28,6 +30,12 @@ interface CreatePageStoreState {
   delImageDesc: (index: number) => void;
   setImageDesc: (imageDesc: { desc: string }[]) => void;
   getImageDesc: () => { desc: string }[];
+  getImageDescObj: () => { [key: string]: string };
+  setImageDescObj: (key: string, value: string) => void;
+  delImageDescObj: () => void;
+  getSwiperImageDescObj: () => { [key: string]: string };
+  setSwiperImageDescObj: (key: string, value: string) => void;
+  delSwiperImageDescObj: () => void;
 
 
 }
@@ -61,6 +69,8 @@ export const useCreatePageStore = create(
     imageUrls: [],
     images: [],
     imageDesc: [],
+    imageDescObj: {},
+    imageSwiperDescObj: {},
     setValues: (values) => set({ values }),
     setProjectKey: (projectKey) => set({ projectKey }),
     setResponse: (response) => set({ response }),
@@ -87,7 +97,36 @@ export const useCreatePageStore = create(
         imageDesc: arrDesc,
       });
     },
+    setImageDescObj: (key, value) => {
+      set((state) => ({
+        imageDescObj: {
+          ...state.imageDescObj,
+          [key]: value
+        }
+      }))
+    },
+    delImageDescObj: () => {
+      set((state) => ({
+        imageDescObj: {}
+      }))
+    },
+    getImageDescObj: () => { return get().imageDescObj },
+    setSwiperImageDescObj: (key, value) => {
+      set((state) => ({
+        imageSwiperDescObj: {
+          ...state.imageSwiperDescObj,
+          [key]: value
+        }
+      }))
+    },
+    delSwiperImageDescObj: () => {
+      set((state) => ({
+        imageSwiperDescObj: {}
+      }))
+    },
+    getSwiperImageDescObj: () => { return get().imageSwiperDescObj },
   })),
+
 
 );
 
