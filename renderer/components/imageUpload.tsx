@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import '@splidejs/react-splide/css';
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import { Pagination } from 'swiper/modules';
 import { useCreatePageStore } from '../stores/createPageStore';
 import { getImageUrlsFromCloud } from '../lib/firebasedb';
 // Import Swiper React components
@@ -14,9 +14,8 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { get } from 'http';
-import { set } from 'zod';
 import React from 'react';
+import { Textarea } from './ui/textarea';
 // import Splide from '@splidejs/splide';
 const ImageUpload = ({
   projectName,
@@ -115,7 +114,7 @@ const ImageUpload = ({
   }, []);
 
   return (
-    <div className="mx-5 mt-7 max-w-xs">
+    <div className="mx-5 mt-7 max-w-lg h-auto">
       {selectedImages.length === 0 ? (
         <div className="flex flex-col items-center h-[295px] cursor-pointer">
           <form>
@@ -140,7 +139,7 @@ const ImageUpload = ({
           </form>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center w-full overflow-visible image-uploader">
+        <div className="flex flex-col items-center justify-center h-auto w-full overflow-visible image-uploader">
           <Swiper
             slidesPerView={1}
             centeredSlides={true}
@@ -163,7 +162,7 @@ const ImageUpload = ({
           >
             {selectedImages.map((image, index) => (
               <SwiperSlide key={image}>
-                <div className=" relative w-[320px] h-[200px]">
+                <div className=" relative max-w-lg h-auto">
                   <button
                     onClick={(e) => {
                       delImageUrls(index);
@@ -178,10 +177,9 @@ const ImageUpload = ({
               </SwiperSlide>
             ))}
           </Swiper>
-          <input
-            type="text"
-            className="mt-8"
+          <Textarea
             id="imageDesc"
+            className="mt-8 w-[400px] focus:border-1 bg-white focus:border-slate-400"
             onChange={(e) => {
               const newImageDesc = [...getImageDesc()];
               console.log(currentImageIndex);
@@ -189,6 +187,7 @@ const ImageUpload = ({
               setImageDesc(newImageDesc);
               console.log(getImageDesc());
             }}
+            placeholder="Type your image description here."
           />
           <div>
             <label>

@@ -167,7 +167,7 @@ function Create() {
 
   return (
     <div className="flex">
-      <div className=" flex-col gap-10 justify-center w-[50%] px-auto mx-auto">
+      <div className=" flex-col gap-10 justify-center w-[55%] px-auto mx-auto">
         <div className="flex justify-between mt-10 mb-8">
           <Button disabled={isLoading} onClick={handleGoBackClick}>
             Go Back
@@ -546,7 +546,7 @@ function Create() {
         </Form>
         <DevTool control={control} />
       </div>
-      <div className="flex flex-col justify-start items-center bg-slate-200/50 w-[50%] min-h-screen">
+      <div className="flex flex-col justify-start items-center bg-slate-200/50 w-[45%] min-h-screen">
         <ImageUpload
           projectName={passedProjectName}
           prev={prev}
@@ -559,13 +559,13 @@ function Create() {
           <Button
             onClick={() => setNotes((prev) => !prev)}
             disabled={isLoading}
-            className="m-5 rounded-xl"
+            className="m-5 text-xl rounded-xl"
           >
             Notes
           </Button>
           {notes && (
             <Textarea
-              className="w-[80%] m-auto border focus:border-1 bg-white focus:border-slate-400"
+              className="w-[400px] h-[150px] m-auto border focus:border-1 bg-white focus:border-slate-400"
               placeholder="Type your notes here."
             />
           )}
