@@ -3,7 +3,11 @@ import { AiOutlineStar, AiOutlineArrowRight } from 'react-icons/ai';
 import { BsHouse } from 'react-icons/bs';
 import { RiDeleteBin2Line } from 'react-icons/ri';
 import { BsStarFill } from 'react-icons/bs';
-import { isFav, deleteProject } from '../lib/firebasedb';
+import {
+  isFav,
+  deleteProject,
+  deleteProjectPhotosFromCloud,
+} from '../lib/firebasedb';
 import { useRouter } from 'next/router';
 import { useCreatePageStore } from '../stores/createPageStore';
 
@@ -93,6 +97,7 @@ export default function MyProjectCard({
         ></AiOutlineArrowRight>
         <RiDeleteBin2Line
           onClick={(e) => {
+            console.log(deleteProjectPhotosFromCloud(`images/user1/${id}`));
             delFromSelectedCards(id);
             deleteProject(id);
           }}
