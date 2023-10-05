@@ -117,7 +117,7 @@ export async function getProjectsForCarousel(userName: string, col = projects) {
 }
 
 export async function setProjects(data: any, col = projects) {
-  addDoc(col, data);
+  return addDoc(col, data);
 }
 
 export async function isFav(id: string, fav: boolean) {
@@ -156,11 +156,15 @@ export async function getAccountDetails(id: string) {
   ).docs[0].data();
 }
 
-export async function saveImagesToCloud(projectName: string, images: File[]) {
+export async function saveImagesToCloud(
+  id: string,
+  project: string,
+  images: File[],
+) {
   if (images.length === 0) return;
   await Promise.all(
     images.map(async (image) => {
-      const storageRef = ref(storage, `images/${projectName}/${image.name}`);
+      const storageRef = ref(storage, `images/${id}/${project}/${image.name}`);
       await uploadBytes(storageRef, image);
     }),
   );

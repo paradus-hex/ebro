@@ -6,14 +6,17 @@ import { immer } from 'zustand/middleware/immer'
 
 interface CreatePageStoreState {
   values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>;
+  projectKey: string;
   response: string;
   note: string;
   imageUrls: string[];
   images: File[];
   imageDesc: { desc: string }[];
   setValues: (values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>) => void;
+  setProjectKey: (projectKey: string) => void;
   setResponse: (response: string) => void;
   getValues: () => { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>;
+  getProjectKey: () => string;
   getResponse: () => string;
   getNote: () => string;
   setNote: (note: string) => void;
@@ -52,15 +55,18 @@ export const useCreatePageStore = create(
       updatedAt: new Date().toISOString(),
       isFavorite: false,
     },
+    projectKey: '',
     response: "",
     note: "",
     imageUrls: [],
     images: [],
     imageDesc: [],
     setValues: (values) => set({ values }),
+    setProjectKey: (projectKey) => set({ projectKey }),
     setResponse: (response) => set({ response }),
     setNote: (note) => set({ note }),
     getValues: () => get().values,
+    getProjectKey: () => get().projectKey,
     getResponse: () => get().response,
     getNote: () => get().note,
     getImageUrls: () => get().imageUrls,
