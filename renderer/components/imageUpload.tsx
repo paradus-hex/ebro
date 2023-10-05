@@ -27,8 +27,7 @@ const ImageUpload = () => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
   const [getImageDescObjState, setImageDescObjState] = useState<any>({});
-  const [getSwiperImageDescObjState, setSwiperImageDescObjState] =
-    useState<any>({});
+
   const [imageKey, setKey] = useState<string>('0');
   const swiperRef = React.useRef(null);
   const inputElement = useRef(null);
@@ -97,6 +96,7 @@ const ImageUpload = () => {
     delIndiSwiperImageDescObj(index.toString());
 
     console.log(getSwiperImageDescObj());
+    console.log(getImageDescObj());
     console.log('length', Object.keys(getImageDescObj()).length);
     console.log('length', Object.keys(getImageDescObj()).length == 0);
     if (Object.keys(getImageDescObj()).length == 0) {
@@ -128,7 +128,6 @@ const ImageUpload = () => {
         })),
       ]);
       setImageDescObjState(getImageDescObj());
-      setSwiperImageDescObjState(getSwiperImageDescObj());
     }
   };
   const handleImageMoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -158,7 +157,6 @@ const ImageUpload = () => {
         })),
       ]);
       setImageDescObjState(getImageDescObj());
-      setSwiperImageDescObjState(getSwiperImageDescObj());
     }
   };
 
@@ -223,7 +221,7 @@ const ImageUpload = () => {
               // getImageDesc()[swiper.activeIndex].desc;
 
               console.log(swiper.activeIndex);
-              console.log('This should be the url', getSwiperImageDescObjState);
+              console.log('This should be the url', getSwiperImageDescObj());
             }}
           >
             {Object.values(getImageDescObj()).map((image, index) => (
@@ -251,13 +249,11 @@ const ImageUpload = () => {
             onChange={(e) => {
               const newImageDesc = [...getImageDesc()];
               console.log('inside ', getImageDescObj());
-              getSwiperImageDescObjState[imageKey.toString()]
+              getSwiperImageDescObj()[imageKey.toString()]
                 ? setImageDescObj(
-                    getSwiperImageDescObjState[imageKey.toString()],
+                    getSwiperImageDescObj()[imageKey.toString()],
                     {
-                      ...getImageDescObj()[
-                        getSwiperImageDescObjState[imageKey]
-                      ],
+                      ...getImageDescObj()[getSwiperImageDescObj()[imageKey]],
                       desc: e.target.value,
                     },
                   )
@@ -288,7 +284,6 @@ const ImageUpload = () => {
             </label>
             <button
               onClick={() => {
-                setSwiperImageDescObjState({});
                 setImageDescObjState({});
                 delSwiperImageDescObj();
                 delImageDescObj();

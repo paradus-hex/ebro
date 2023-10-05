@@ -135,7 +135,16 @@ export const useCreatePageStore = create(
     getSwiperImageDescObj: () => { return get().imageSwiperDescObj },
     delIndiSwiperImageDescObj: (key) => {
       set((state) => {
-        delete state.imageSwiperDescObj[key];
+        let obj = state.imageSwiperDescObj;
+        let keys = Object.keys(obj);
+        let values = Object.values(obj);
+        values.splice(parseInt(key), 1);
+        console.log("values", values);
+        let newObj = {};
+        for (let i = 0; i < values.length; i++) {
+          newObj[i.toString()] = values[i];
+        }
+        return { imageSwiperDescObj: newObj }
       })
     }
   })),
