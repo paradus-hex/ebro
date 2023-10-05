@@ -3,22 +3,14 @@ import Image from 'next/image';
 import '@splidejs/react-splide/css';
 import { Pagination } from 'swiper/modules';
 import { useCreatePageStore } from '../stores/createPageStore';
-import {
-  getImageDescFromCloud,
-  getImageUrlsFromCloud,
-} from '../lib/firebasedb';
-
+import { getImageUrlsFromCloud } from '../lib/firebasedb';
 import { Swiper, SwiperSlide } from 'swiper/react';
-
 import 'swiper/css';
 import 'swiper/css/pagination';
-
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-
 import React from 'react';
-
 const ImageUpload = ({
   projectName,
   prev,
@@ -28,7 +20,7 @@ const ImageUpload = ({
   projectName: string;
   prev: string;
   intention: string;
-  key?: string;
+  key: string;
 }) => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
@@ -44,11 +36,16 @@ const ImageUpload = ({
     delImageDesc,
     setImages,
     delImageUrls,
+    getProjectKey,
   } = useCreatePageStore();
 
   const loadImages = async () => {
     if (prev === 'home' && intention === 'update') {
-      await getImageUrlsFromCloud(`images/${projectName}`).then((urls) => {
+      console.log('key', key);
+      console.log(`images/user1/${projectName}_${key}`);
+      await getImageUrlsFromCloud(
+        `images/user1/${projectName}_${getProjectKey()}`,
+      ).then((urls) => {
         setSelectedImages(urls);
         setImageUrls(urls);
       });
@@ -69,6 +66,10 @@ const ImageUpload = ({
     }
   };
 
+<<<<<<< HEAD
+=======
+  console.log('key', key);
+>>>>>>> e863cbc63682cf772d26bcec98043b4938500652
   // console.log(selectedImages);
   const deleteImageFromState = (index: number) => {
     const newImages = [...selectedImages];

@@ -4,7 +4,6 @@ import MyProjectCard from './ProjectCard';
 import '@splidejs/react-splide/css';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { getProjectsForCarousel } from '../lib/firebasedb';
-import { set } from 'zod';
 export default function ProjectSlider2() {
   const [selectedCards, setSelectedCards] = useState<
     {
@@ -51,7 +50,7 @@ export default function ProjectSlider2() {
     if (a.isFavorite !== b.isFavorite) {
       return b.isFavorite - a.isFavorite;
     }
-    return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
+    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
   });
 
   return (

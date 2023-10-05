@@ -30,6 +30,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import { useCreatePageStore } from '../stores/createPageStore';
 import { getProjectDetails } from '../lib/firebasedb';
 import Layout from '../components/Layout';
+import { useSignInPageStore } from '../stores/signInPageStore';
 
 interface Params {
   key: string;
@@ -92,22 +93,28 @@ function Create() {
     getResponse: getStoredResponse,
   } = useCreatePageStore();
 
+  const { getUser_id } = useSignInPageStore();
+  // console.log(key);
+
   const { projectName: loadedProjectName, ...defaultValues } =
     getStoredValues();
 
-  const prevProjectDetails = async () => {
+  const prevProjectDetailsFromCloud = async () => {
+    if (prev !== 'home') {
+      return;
+    }
     if (key === undefined && prev === 'home') {
       form.reset(emptyProjectData);
       setResponse('');
       setValues({ ...emptyProjectData, projectName: passedProjectName });
       return;
     }
-    const data = key && (await getProjectDetails(key));
-    form.reset(data);
-    setImageDesc(data.imagesDesc);
-    // console.log('image desc', data.imagesDesc);
-    setResponse(data.response);
-    setValues(data);
+    key &&
+      (await getProjectDetails(key).then((data) => {
+        form.reset(data);
+        setResponse(data.response);
+        setValues(data);
+      }));
   };
 
   const handleGenerateClick = () => {
@@ -165,7 +172,7 @@ function Create() {
   }
 
   useEffect(() => {
-    prevProjectDetails();
+    prevProjectDetailsFromCloud();
   }, []);
 
   return (
@@ -552,6 +559,7 @@ function Create() {
       <div className="flex flex-col justify-start items-center bg-slate-200/50 w-[50%] min-h-screen">
         <ImageUpload
           projectName={passedProjectName}
+          key={key}
           prev={prev}
           intention={intention}
           key={key}

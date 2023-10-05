@@ -11,9 +11,6 @@ import {
 } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
-import { get } from 'http';
-
-import ImageUpload from '../components/imageUpload';
 
 interface Params {
   key: string;
@@ -55,7 +52,7 @@ const FinalPage: NextPageWithLayout = () => {
   const handleGoBack = () => {
     router.push(
       `/create?params=${encodeURIComponent(
-        JSON.stringify({ passedProjectName: projectName, intention }),
+        JSON.stringify({ passedProjectName: projectName, intention, key }),
       )}`,
     );
   };
@@ -86,22 +83,23 @@ const FinalPage: NextPageWithLayout = () => {
     setFeedback(e.target.value);
   };
 
-  const handleSaveToCloudClick = () => {
+  const handleSaveToCloudClick = async () => {
     if (intention === 'create') {
-      setProjects({
+      await setProjects({
         ...getValues(),
-        imagesDesc: getImageDesc(),
         response: getResponse(),
         projectName,
+      }).then((docRef) => {
+        console.log(docRef.id);
+        saveImagesToCloud('user1', `${projectName}_${docRef.id}`, getImages());
       });
-      saveImagesToCloud(projectName, getImages());
     } else {
       updateProjectDetails(key, {
         ...getValues(),
         response: getResponse(),
         projectName,
       });
-      saveImagesToCloud(projectName, getImages());
+      saveImagesToCloud('user1', key, getImages());
     }
     setCloudSaveDisabled(true);
     router.push('/home');
