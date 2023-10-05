@@ -29,8 +29,14 @@ const FinalPage: NextPageWithLayout = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   // const getImages = useCreatePageStore((state) => state.getImages);
-  const { getResponse, setResponse, getValues, getImages, getImageUrls } =
-    useCreatePageStore();
+  const {
+    getResponse,
+    setResponse,
+    getValues,
+    getImages,
+    getImageUrls,
+    getImageDesc,
+  } = useCreatePageStore();
   const [feedback, setFeedback] = useState<string>('');
   const { append, isLoading } = useChat({
     onFinish: (message) => {
@@ -82,7 +88,12 @@ const FinalPage: NextPageWithLayout = () => {
 
   const handleSaveToCloudClick = () => {
     if (intention === 'create') {
-      setProjects({ ...getValues(), response: getResponse(), projectName });
+      setProjects({
+        ...getValues(),
+        imagesDesc: getImageDesc(),
+        response: getResponse(),
+        projectName,
+      });
       saveImagesToCloud(projectName, getImages());
     } else {
       updateProjectDetails(key, {

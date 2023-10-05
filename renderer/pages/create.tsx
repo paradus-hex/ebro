@@ -84,6 +84,7 @@ function Create() {
     ? JSON.parse(decodeURIComponent(params as string))
     : {};
   const { key, passedProjectName, intention, prev } = parsedParams;
+  console.log(passedProjectName, 'ssssssssssss', key, intention, prev);
   const {
     setValues,
     setResponse,
@@ -103,6 +104,8 @@ function Create() {
     }
     const data = key && (await getProjectDetails(key));
     form.reset(data);
+    setImageDesc(data.imagesDesc);
+    // console.log('image desc', data.imagesDesc);
     setResponse(data.response);
     setValues(data);
   };
@@ -551,6 +554,7 @@ function Create() {
           projectName={passedProjectName}
           prev={prev}
           intention={intention}
+          key={key}
         ></ImageUpload>
         <div
           className="flex
@@ -587,3 +591,6 @@ Create.getLayout = function getLayout(page: ReactElement) {
 };
 
 export default Create;
+function setImageDesc(imageDesc: any) {
+  throw new Error('Function not implemented.');
+}

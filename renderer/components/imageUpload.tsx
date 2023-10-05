@@ -1,38 +1,40 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import '@splidejs/react-splide/css';
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import { Pagination } from 'swiper/modules';
 import { useCreatePageStore } from '../stores/createPageStore';
-import { getImageUrlsFromCloud } from '../lib/firebasedb';
-// Import Swiper React components
+import {
+  getImageDescFromCloud,
+  getImageUrlsFromCloud,
+} from '../lib/firebasedb';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
-// import { Pagination } from 'swiper/modules';
+
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { get } from 'http';
-import { set } from 'zod';
+
 import React from 'react';
-// import Splide from '@splidejs/splide';
+
 const ImageUpload = ({
   projectName,
   prev,
   intention,
+  key,
 }: {
   projectName: string;
   prev: string;
   intention: string;
+  key?: string;
 }) => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const swiperRef = React.useRef(null);
-  const inputElement = document.getElementById(
-    'imageDesc',
-  ) as HTMLTextAreaElement;
+  const inputElement = useRef(null);
+
   const {
     getImageUrls,
     setImageUrls,
@@ -57,9 +59,17 @@ const ImageUpload = ({
         setSelectedImages(imageUrls);
       }
     }
+    if (intention == 'update' && prev === 'home') {
+      getImageDescFromCloud('TYMR5n6jul9bum7dOIQv').then((desc) => {
+        console.log('desc', desc);
+        setImageDesc(desc);
+        inputElement.current.value =
+          getImageDesc()[swiperRef.current.activeIndex].desc;
+      });
+    }
   };
 
-  console.log(selectedImages);
+  // console.log(selectedImages);
   const deleteImageFromState = (index: number) => {
     const newImages = [...selectedImages];
     newImages.splice(index, 1);
@@ -72,13 +82,13 @@ const ImageUpload = ({
       swiperRef.current.activeIndex != 0 &&
       swiperRef.current.activeIndex != selectedImages.length - 1
     ) {
-      inputElement.value =
+      inputElement.current.value =
         getImageDesc()[swiperRef.current.activeIndex + 1].desc;
     } else if (swiperRef.current.activeIndex != 0) {
-      inputElement.value =
+      inputElement.current.value =
         getImageDesc()[swiperRef.current.activeIndex - 1].desc;
     } else if (selectedImages.length > 1) {
-      inputElement.value =
+      inputElement.current.value =
         getImageDesc()[swiperRef.current.activeIndex + 1].desc;
     }
 
@@ -88,6 +98,7 @@ const ImageUpload = ({
     console.log(getImageDesc());
   };
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(getImageDesc());
     const files = Array.from(e.target.files);
     setImages(getImages().concat(files));
     if (files.length > 0) {
@@ -104,13 +115,9 @@ const ImageUpload = ({
   };
 
   useEffect(() => {
-    // if (intention === 'create') {
-    //   setImages([]);
-    //   setSelectedImages([]);
-    //   setImageUrls([]);
-    //   setCurrentImageIndex(0);
-    //   setImageDesc([]);
-    // }
+    const prevProjectDetails = async () => {};
+    prevProjectDetails();
+
     loadImages();
   }, []);
 
@@ -156,7 +163,8 @@ const ImageUpload = ({
             onSlideChange={(swiper) => {
               setCurrentImageIndex(swiper.activeIndex);
               console.log(swiper.activeIndex);
-              inputElement.value = getImageDesc()[swiper.activeIndex].desc;
+              inputElement.current.value =
+                getImageDesc()[swiper.activeIndex].desc;
               console.log(getImageDesc());
               // console.log(swiper.activeIndex);
             }}
@@ -182,6 +190,7 @@ const ImageUpload = ({
             type="text"
             className="mt-8"
             id="imageDesc"
+            ref={inputElement}
             onChange={(e) => {
               const newImageDesc = [...getImageDesc()];
               console.log(currentImageIndex);

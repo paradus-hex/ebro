@@ -49,6 +49,7 @@ export interface ProjectData {
   updatedAt: string;
   isFavorite: boolean;
   response: string;
+  imagesDesc: string[];
 }
 
 const app = initializeApp(firebaseConfig);
@@ -164,6 +165,15 @@ export async function saveImagesToCloud(projectName: string, images: File[]) {
       await uploadBytes(storageRef, image);
     }),
   );
+}
+export async function getImageDescFromCloud(key: string) {
+  const docRef = doc(db, 'projects', key);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    const data = docSnap.data();
+    const specificField = data.imagesDesc;
+    return specificField;
+  }
 }
 
 export async function getImageUrlsFromCloud(folderPath: string) {
