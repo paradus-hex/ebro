@@ -12,7 +12,7 @@ interface CreatePageStoreState {
   imageUrls: string[];
   images: File[];
   imageDesc: { desc: string }[];
-  imageDescObj: { [key: string]: string };
+  imageDescObj: { [key: string]: { desc: string, name: string, url: string } };
   imageSwiperDescObj: { [key: string]: string };
   setValues: (values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>) => void;
   setProjectKey: (projectKey: string) => void;
@@ -30,8 +30,8 @@ interface CreatePageStoreState {
   delImageDesc: (index: number) => void;
   setImageDesc: (imageDesc: { desc: string }[]) => void;
   getImageDesc: () => { desc: string }[];
-  getImageDescObj: () => { [key: string]: string };
-  setImageDescObj: (key: string, value: string) => void;
+  getImageDescObj: () => { [key: string]: { desc: string, name: string, url: string } };
+  setImageDescObj: (key: string, value: { desc: string, name: string, url: string }) => void;
   delImageDescObj: () => void;
   delIndiImageDescObj: (key: string) => void;
   getSwiperImageDescObj: () => { [key: string]: string };
@@ -104,7 +104,7 @@ export const useCreatePageStore = create(
       set((state) => ({
         imageDescObj: {
           ...state.imageDescObj,
-          [key]: value
+          [key]: { ...value, desc: value.desc }
         }
       }))
     },

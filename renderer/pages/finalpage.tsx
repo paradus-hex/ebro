@@ -187,10 +187,14 @@ const FinalPage: NextPageWithLayout = () => {
                 </div> */}
                 <div className="flex flex-1">
                   <div className="grid grid-cols-2 gap-2 overflow-auto">
-                    {Object.keys(getImageDescObj()).map((url) => (
+                    {Object.values(getImageDescObj()).map((image) => (
                       <div className="border-red-700">
                         {/* <!-- img_02 --> */}
-                        <img className="object-cover h-full" src={url} alt="" />
+                        <img
+                          className="object-cover h-full"
+                          src={image.url}
+                          alt=""
+                        />
                       </div>
                     ))}
                   </div>
