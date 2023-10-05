@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import '@splidejs/react-splide/css';
 import { Pagination } from 'swiper/modules';
@@ -14,229 +15,251 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import React from 'react';
-const ImageUpload = ({
-  projectName,
-  prev,
-  intention,
-  key,
-}: {
-  projectName: string;
-  prev: string;
-  intention: string;
+interface Params {
   key: string;
-}) => {
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
-  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
-  const swiperRef = React.useRef(null);
-  const inputElement = useRef(null);
+  projectName: string;
+  intention: string;
+  prev: string;
+  passedProjectName: string;
+}
+const ImageUpload = () =>
+  //   {
+  //   projectName,
+  //   prev,
+  //   intention,
+  //   key,
+  // }: {
+  //   projectName: string;
+  //   prev: string;
+  //   intention: string;
+  //   key: string;
+  // }
+  {
+    const [selectedImages, setSelectedImages] = useState<string[]>([]);
+    const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+    const swiperRef = React.useRef(null);
+    const inputElement = useRef(null);
+    const router = useRouter();
 
-  const {
-    getImageUrls,
-    setImageUrls,
-    getImages,
-    getImageDesc,
-    setImageDesc,
-    delImageDesc,
-    setImages,
-    delImageUrls,
-    getProjectKey,
-  } = useCreatePageStore();
+    const {
+      getImageUrls,
+      setImageUrls,
+      getImages,
+      getImageDesc,
+      setImageDesc,
+      delImageDesc,
+      setImages,
+      delImageUrls,
+      getProjectKey,
+    } = useCreatePageStore();
 
-  const loadImages = async () => {
-    if (prev === 'home' && intention === 'update') {
-      console.log('key', key);
-      console.log(`images/user1/${projectName}_${key}`);
-      await getImageUrlsFromCloud(
-        `images/user1/${projectName}_${getProjectKey()}`,
-      ).then((urls) => {
-        setSelectedImages(urls);
-        setImageUrls(urls);
-      });
-    } else {
-      if (intention === 'create' && prev === 'home') setImageUrls([]);
-      else {
-        const imageUrls = await getImageUrls();
-        setSelectedImages(imageUrls);
+    const loadImages = async (
+      key: string,
+      passedProjectName: string,
+      intention: string,
+      prev: string,
+    ) => {
+      if (prev === 'home' && intention === 'update') {
+        // console.log('key', key);
+        // console.log(`images/user1/${projectName}_${key}`);
+        await getImageUrlsFromCloud(
+          `images/user1/${passedProjectName}_${getProjectKey()}`,
+        ).then((urls) => {
+          setSelectedImages(urls);
+          setImageUrls(urls);
+        });
+      } else {
+        if (intention === 'create' && prev === 'home') setImageUrls([]);
+        else {
+          const imageUrls = await getImageUrls();
+          setSelectedImages(imageUrls);
+        }
       }
-    }
-    if (intention == 'update' && prev === 'home') {
-      getImageDescFromCloud(getProjectKey()).then((desc) => {
-        console.log('desc', desc);
-        setImageDesc(desc);
+      console.log('inside load image');
+      console.log(intention, prev);
+      if (intention == 'update' && prev === 'home') {
+        console.log('inside update');
+        getImageDescFromCloud(getProjectKey()).then((desc) => {
+          // console.log('desc', desc);
+          setImageDesc(desc);
+          inputElement.current.value = getImageDesc()[0].desc;
+        });
+      }
+    };
+    // console.log('inside load image');
+    // console.log('key', key);
+    // console.log(selectedImages);
+    const deleteImageFromState = (index: number) => {
+      const newImages = [...selectedImages];
+      newImages.splice(index, 1);
+      if (swiperRef.current) {
+        swiperRef.current.update();
+      }
+      // console.log(swiperRef.current.activeIndex, 'delete hoche');
+
+      if (
+        swiperRef.current.activeIndex != 0 &&
+        swiperRef.current.activeIndex != selectedImages.length - 1
+      ) {
         inputElement.current.value =
-          getImageDesc()[swiperRef.current.activeIndex].desc;
-      });
-    }
-  };
+          getImageDesc()[swiperRef.current.activeIndex + 1].desc;
+      } else if (swiperRef.current.activeIndex != 0) {
+        inputElement.current.value =
+          getImageDesc()[swiperRef.current.activeIndex - 1].desc;
+      } else if (selectedImages.length > 1) {
+        inputElement.current.value =
+          getImageDesc()[swiperRef.current.activeIndex + 1].desc;
+      }
 
-  // console.log('key', key);
-  // console.log(selectedImages);
-  const deleteImageFromState = (index: number) => {
-    const newImages = [...selectedImages];
-    newImages.splice(index, 1);
-    if (swiperRef.current) {
-      swiperRef.current.update();
-    }
-    console.log(swiperRef.current.activeIndex, 'delete hoche');
+      delImageDesc(index);
+      setSelectedImages(newImages);
+      setImageUrls(newImages);
+      // console.log(getImageDesc());
+    };
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      // console.log(getImageDesc());
+      const files = Array.from(e.target.files);
+      setImages(getImages().concat(files));
+      if (files.length > 0) {
+        const imageUrls = files.map((file) => URL.createObjectURL(file));
+        setSelectedImages([...selectedImages, ...imageUrls]);
+        setImageUrls([...selectedImages, ...imageUrls]);
+        setImageDesc([
+          ...getImageDesc(),
+          ...Array.from({ length: files.length }, (_, index) => ({
+            desc: '',
+          })),
+        ]);
+      }
+    };
 
-    if (
-      swiperRef.current.activeIndex != 0 &&
-      swiperRef.current.activeIndex != selectedImages.length - 1
-    ) {
-      inputElement.current.value =
-        getImageDesc()[swiperRef.current.activeIndex + 1].desc;
-    } else if (swiperRef.current.activeIndex != 0) {
-      inputElement.current.value =
-        getImageDesc()[swiperRef.current.activeIndex - 1].desc;
-    } else if (selectedImages.length > 1) {
-      inputElement.current.value =
-        getImageDesc()[swiperRef.current.activeIndex + 1].desc;
-    }
+    useEffect(() => {
+      const { params } = router.query;
+      const parsedParams: Params = params
+        ? JSON.parse(decodeURIComponent(params as string))
+        : {};
+      const { key, passedProjectName, intention, prev } = parsedParams;
+      loadImages(key, passedProjectName, intention, prev);
+    }, []);
 
-    delImageDesc(index);
-    setSelectedImages(newImages);
-    setImageUrls(newImages);
-    console.log(getImageDesc());
-  };
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(getImageDesc());
-    const files = Array.from(e.target.files);
-    setImages(getImages().concat(files));
-    if (files.length > 0) {
-      const imageUrls = files.map((file) => URL.createObjectURL(file));
-      setSelectedImages([...selectedImages, ...imageUrls]);
-      setImageUrls([...selectedImages, ...imageUrls]);
-      setImageDesc([
-        ...getImageDesc(),
-        ...Array.from({ length: files.length }, (_, index) => ({
-          desc: '',
-        })),
-      ]);
-    }
-  };
-
-  useEffect(() => {
-    loadImages();
-  }, []);
-
-  return (
-    <div className="mx-5 mt-7 max-w-xs">
-      {selectedImages.length === 0 ? (
-        <div className="flex flex-col items-center h-[295px] cursor-pointer">
-          <form>
-            <label>
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleImageChange}
-              />
-              <div>
-                <Image
-                  className="cursor-pointer"
-                  src="/images/upload_image.svg"
-                  height={100}
-                  width={100}
-                  alt="upload image"
+    return (
+      <div className="mx-5 mt-7 max-w-xs">
+        {selectedImages.length === 0 ? (
+          <div className="flex flex-col items-center h-[295px] cursor-pointer">
+            <form>
+              <label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageChange}
                 />
-              </div>
-            </label>
-            <div>Upload Image</div>
-          </form>
-        </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center w-full overflow-visible image-uploader">
-          <Swiper
-            slidesPerView={1}
-            centeredSlides={true}
-            spaceBetween={10}
-            onSwiper={(swiper) => {
-              swiperRef.current = swiper;
-            }}
-            pagination={{
-              clickable: true,
-            }}
-            modules={[Pagination]}
-            className="mySwiper"
-            onSlideChange={(swiper) => {
-              setCurrentImageIndex(swiper.activeIndex);
-              console.log(swiper.activeIndex);
-              inputElement.current.value =
-                getImageDesc()[swiper.activeIndex].desc;
-              console.log(getImageDesc());
-              // console.log(swiper.activeIndex);
-            }}
-          >
-            {selectedImages.map((image, index) => (
-              <SwiperSlide key={image}>
-                <div className=" relative w-[320px] h-[200px]">
-                  <button
-                    onClick={(e) => {
-                      delImageUrls(index);
-                      deleteImageFromState(index);
-                    }}
-                    className="absolute top-2 text-center right-2 bg-red-800 hover:bg-red-500 text-white hover:scale-105 text-sm h-[20px] w-[20px] "
-                  >
-                    x
-                  </button>
-                  <img src={image} alt="Preview" className="object-cover" />
+                <div>
+                  <Image
+                    className="cursor-pointer"
+                    src="/images/upload_image.svg"
+                    height={100}
+                    width={100}
+                    alt="upload image"
+                  />
                 </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-          <input
-            type="text"
-            className="mt-8"
-            id="imageDesc"
-            ref={inputElement}
-            onChange={(e) => {
-              const newImageDesc = [...getImageDesc()];
-              console.log(currentImageIndex);
-              newImageDesc[currentImageIndex] = { desc: e.target.value };
-              setImageDesc(newImageDesc);
-              console.log(getImageDesc());
-            }}
-          />
-          <div>
-            <label>
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleImageChange}
-              />
-              <div className="flex gap-2">
-                <Image
-                  src="/images/upload_image.svg"
-                  height={22}
-                  width={22}
-                  alt="upload image"
-                />
-                <span className="text-lg"> Upload More</span>
-              </div>
-            </label>
-            <button
-              onClick={() => {
-                setSelectedImages([]);
-                setImageUrls([]);
-                setCurrentImageIndex(0);
+              </label>
+              <div>Upload Image</div>
+            </form>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center w-full overflow-visible image-uploader">
+            <Swiper
+              slidesPerView={1}
+              centeredSlides={true}
+              spaceBetween={10}
+              onSwiper={(swiper) => {
+                swiperRef.current = swiper;
+              }}
+              pagination={{
+                clickable: true,
+              }}
+              modules={[Pagination]}
+              className="mySwiper"
+              onSlideChange={(swiper) => {
+                setCurrentImageIndex(swiper.activeIndex);
+                // console.log(swiper.activeIndex);
+                inputElement.current.value =
+                  getImageDesc()[swiper.activeIndex].desc;
+                // console.log(getImageDesc());
+                console.log(swiper.activeIndex);
               }}
             >
-              <div className="flex gap-2">
-                <Image
-                  src="/images/reset.svg"
-                  height={22}
-                  width={22}
-                  alt="upload image"
+              {selectedImages.map((image, index) => (
+                <SwiperSlide key={image}>
+                  <div className=" relative w-[320px] h-[200px]">
+                    <button
+                      onClick={(e) => {
+                        delImageUrls(index);
+                        deleteImageFromState(index);
+                      }}
+                      className="absolute top-2 text-center right-2 bg-red-800 hover:bg-red-500 text-white hover:scale-105 text-sm h-[20px] w-[20px] "
+                    >
+                      x
+                    </button>
+                    <img src={image} alt="Preview" className="object-cover" />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+            <input
+              type="text"
+              className="mt-8"
+              id="imageDesc"
+              ref={inputElement}
+              onChange={(e) => {
+                const newImageDesc = [...getImageDesc()];
+                // console.log(currentImageIndex);
+                newImageDesc[currentImageIndex] = { desc: e.target.value };
+                setImageDesc(newImageDesc);
+                // console.log(getImageDesc());
+              }}
+            />
+            <div>
+              <label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageChange}
                 />
-                <span className="text-lg"> Reset</span>
-              </div>
-            </button>
+                <div className="flex gap-2">
+                  <Image
+                    src="/images/upload_image.svg"
+                    height={22}
+                    width={22}
+                    alt="upload image"
+                  />
+                  <span className="text-lg"> Upload More</span>
+                </div>
+              </label>
+              <button
+                onClick={() => {
+                  setSelectedImages([]);
+                  setImageUrls([]);
+                  setCurrentImageIndex(0);
+                }}
+              >
+                <div className="flex gap-2">
+                  <Image
+                    src="/images/reset.svg"
+                    height={22}
+                    width={22}
+                    alt="upload image"
+                  />
+                  <span className="text-lg"> Reset</span>
+                </div>
+              </button>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
-  );
-};
+        )}
+      </div>
+    );
+  };
 
 export default ImageUpload;
