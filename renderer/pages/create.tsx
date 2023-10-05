@@ -591,6 +591,3 @@ Create.getLayout = function getLayout(page: ReactElement) {
 };
 
 export default Create;
-function setImageDesc(imageDesc: any) {
-  throw new Error('Function not implemented.');
-}
