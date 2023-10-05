@@ -33,9 +33,12 @@ interface CreatePageStoreState {
   getImageDescObj: () => { [key: string]: string };
   setImageDescObj: (key: string, value: string) => void;
   delImageDescObj: () => void;
+  delIndiImageDescObj: (key: string) => void;
   getSwiperImageDescObj: () => { [key: string]: string };
   setSwiperImageDescObj: (key: string, value: string) => void;
   delSwiperImageDescObj: () => void;
+  delIndiSwiperImageDescObj: (key: string) => void;
+
 
 
 }
@@ -111,6 +114,11 @@ export const useCreatePageStore = create(
       }))
     },
     getImageDescObj: () => { return get().imageDescObj },
+    delIndiImageDescObj: (key) => {
+      set((state) => {
+        delete state.imageDescObj[key];
+      })
+    },
     setSwiperImageDescObj: (key, value) => {
       set((state) => ({
         imageSwiperDescObj: {
@@ -125,6 +133,11 @@ export const useCreatePageStore = create(
       }))
     },
     getSwiperImageDescObj: () => { return get().imageSwiperDescObj },
+    delIndiSwiperImageDescObj: (key) => {
+      set((state) => {
+        delete state.imageSwiperDescObj[key];
+      })
+    }
   })),
 
 

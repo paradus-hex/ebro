@@ -62,6 +62,8 @@ const ImageUpload = () =>
       getSwiperImageDescObj,
       setSwiperImageDescObj,
       delSwiperImageDescObj,
+      delIndiSwiperImageDescObj,
+      delIndiImageDescObj,
     } = useCreatePageStore();
 
     const loadImages = async (
@@ -74,6 +76,7 @@ const ImageUpload = () =>
         await getImageUrlsFromCloud(
           `images/user1/${passedProjectName}_${getProjectKey()}`,
         ).then((urls) => {
+          console.log(urls);
           setSelectedImages(urls);
           setImageUrls(urls);
         });
@@ -90,37 +93,60 @@ const ImageUpload = () =>
 
       if (intention == 'update' && (prev === 'home' || prev === 'finalpage')) {
         console.log('inside update');
-        getImageDescFromCloud(getProjectKey()).then((desc) => {
-          setImageDesc(desc);
-          inputElement.current.value = getImageDesc()[0].desc;
-        });
+        inputElement.current.value =
+          getImageDescObj()[getSwiperImageDescObj()['0']];
+        // getImageDescFromCloud(getProjectKey()).then((desc) => {
+        //   setImageDesc(desc);
+        //   inputElement.current.value = getImageDesc()[0].desc;
+        // });
+      }
+      if (intention == 'create' && prev === 'finalpage') {
+        console.log('inside update');
+        inputElement.current.value =
+          getImageDescObj()[getSwiperImageDescObj()['0']];
+        // getImageDescFromCloud(getProjectKey()).then((desc) => {
+        //   setImageDesc(desc);
+        //   inputElement.current.value = getImageDesc()[0].desc;
+        // });
       }
     };
 
     const deleteImageFromState = (index: number) => {
-      const newImages = [...selectedImages];
-      newImages.splice(index, 1);
-      if (swiperRef.current) {
-        swiperRef.current.update();
-      }
+      console.log('deleteImageFromState');
+      delIndiImageDescObj(getSwiperImageDescObj()[index.toString()]);
+      delIndiSwiperImageDescObj(index.toString());
 
-      if (
-        swiperRef.current.activeIndex != 0 &&
-        swiperRef.current.activeIndex != selectedImages.length - 1
-      ) {
-        inputElement.current.value =
-          getImageDesc()[swiperRef.current.activeIndex + 1].desc;
-      } else if (swiperRef.current.activeIndex != 0) {
-        inputElement.current.value =
-          getImageDesc()[swiperRef.current.activeIndex - 1].desc;
-      } else if (selectedImages.length > 1) {
-        inputElement.current.value =
-          getImageDesc()[swiperRef.current.activeIndex + 1].desc;
+      console.log(getSwiperImageDescObj());
+      console.log('length', Object.keys(getImageDescObj()).length);
+      console.log('length', Object.keys(getImageDescObj()).length == 0);
+      if (Object.keys(getImageDescObj()).length == 0) {
+        inputElement.current.value = '';
+        console.log('inside if');
+        setSelectedImages([]);
       }
+      // const newImages = [...selectedImages];
+      // newImages.splice(index, 1);
+      // if (swiperRef.current) {
+      //   swiperRef.current.update();
+      // }
 
-      delImageDesc(index);
-      setSelectedImages(newImages);
-      setImageUrls(newImages);
+      // if (
+      //   swiperRef.current.activeIndex != 0 &&
+      //   swiperRef.current.activeIndex != selectedImages.length - 1
+      // ) {
+      //   inputElement.current.value =
+      //     getImageDesc()[swiperRef.current.activeIndex + 1].desc;
+      // } else if (swiperRef.current.activeIndex != 0) {
+      //   inputElement.current.value =
+      //     getImageDesc()[swiperRef.current.activeIndex - 1].desc;
+      // } else if (selectedImages.length > 1) {
+      //   inputElement.current.value =
+      //     getImageDesc()[swiperRef.current.activeIndex + 1].desc;
+      // }
+
+      // delImageDesc(index);
+      // setSelectedImages(newImages);
+      // setImageUrls(newImages);
     };
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       // e.target.files.map()
