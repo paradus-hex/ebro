@@ -218,8 +218,8 @@ const ImageUpload = () => {
           files[index].name,
         );
       });
-      setSelectedImages([...selectedImages, ...imageUrls]);
-      setImageUrls([...selectedImages, ...imageUrls]);
+      // setSelectedImages([...selectedImages, ...imageUrls]);
+      // setImageUrls([...selectedImages, ...imageUrls]);
       setImageDesc([
         ...getImageDesc(),
         ...Array.from({ length: files.length }, (_, index) => ({
@@ -227,6 +227,7 @@ const ImageUpload = () => {
         })),
       ]);
       setImageDescObjState(getImageDescObj());
+      setSelectedImages(getImageDescObj());
     }
   };
 
