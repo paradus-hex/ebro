@@ -34,6 +34,8 @@ import {
 } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import { useSignInPageStore } from '../stores/signInPageStore';
+import useStore from '../stores/useStore';
+// import { useSignInPageStore } from '../stores/signInPageStore';
 
 interface Params {
   projectID: string;
@@ -83,6 +85,7 @@ export const formSchema = z.object({
 
 function Create() {
   const router = useRouter();
+
   const { params } = router.query;
   const parsedParams: Params = params
     ? JSON.parse(decodeURIComponent(params as string))
@@ -95,9 +98,6 @@ function Create() {
     getValues: getStoredValues,
     getResponse: getStoredResponse,
   } = useCreatePageStore();
-  
-
-
 
   const { getUser_id } = useSignInPageStore();
   // console.log(key);

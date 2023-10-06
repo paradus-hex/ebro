@@ -23,7 +23,16 @@ interface Params {
   prev: string;
   passedProjectName: string;
 }
+
+import useStore from '../stores/useStore';
+// import { useSignInPageStore } from '../stores/signInPageStore';
+
 const ImageUpload = () => {
+  const imageDescObj = useStore(
+    useCreatePageStore,
+    (state) => state.imageDescObj,
+  );
+
   const [selectedImages, setSelectedImages] = useState<any>([]);
 
   const [getImageDescObjState, setImageDescObjState] = useState<any>({});
@@ -251,7 +260,7 @@ const ImageUpload = () => {
 
   return (
     <div className="mx-5 mt-7 max-w-xs">
-      {selectedImages.length === 0 ? (
+      {Object.keys(imageDescObj).length === 0 ? (
         <div className="flex flex-col items-center h-[295px] cursor-pointer">
           <form>
             <label>
