@@ -15,7 +15,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import React from 'react';
-import { set } from 'zod';
+
 interface Params {
   key: string;
   projectName: string;
@@ -63,9 +63,49 @@ const ImageUpload = () => {
       await getImageUrlsFromCloud(
         `images/user1/${passedProjectName}_${getProjectKey()}`,
       ).then((urls) => {
-        console.log(urls);
+        console.log('urls', urls);
+
+        const getUrlFileName = (url) => {
+          const urlParts = url.split('/');
+
+          const lastPart = urlParts[urlParts.length - 1];
+          const fileName = lastPart.split('?')[0];
+
+          let temp = decodeURIComponent(fileName);
+          let name = temp.split('/');
+          let name1 = name[name.length - 1];
+
+          return name1;
+        };
+
+        urls.downloadURLs.forEach((url, index) => {
+          setImageDescObj(getUrlFileName(url), {
+            desc: index.toString(),
+            name: getUrlFileName(url),
+            url: url,
+          });
+          setSwiperImageDescObj(index.toString(), getUrlFileName(url));
+        });
+
+        console.log('mapping in progress');
+
+        getImageDescFromCloud(key).then((desc) => {
+          let keys = Object.keys(desc);
+          keys.forEach((element) => {
+            console.log('element', element);
+            console.log('desc', desc[element]);
+            setImageDescObj(element, {
+              ...getImageDescObj()[element],
+              desc: desc[element].desc,
+            });
+          });
+
+          console.log('desc', desc);
+        });
+        console.log('imageDescObj', getImageDescObj());
+        console.log('getSwiperImageDescObj', getSwiperImageDescObj());
         setSelectedImages(urls);
-        setImageUrls(urls);
+        // setImageUrls(urls);
       });
     } else {
       if (intention === 'create' && prev === 'home') {

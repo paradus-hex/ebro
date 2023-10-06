@@ -184,14 +184,16 @@ export async function getImageUrlsFromCloud(folderPath: string) {
   const folderRef = ref(storage, folderPath);
   const items = await listAll(folderRef);
   const downloadURLs: string[] = [];
+  const names: string[] = [];
   try {
     await Promise.all(
       items.items.map(async (itemRef) => {
         const url = await getDownloadURL(itemRef);
+        names.push(itemRef.name);
         downloadURLs.push(url);
       }),
     );
-    return downloadURLs;
+    return { downloadURLs, names };
   } catch (e) {
     console.log(e);
     return e;
