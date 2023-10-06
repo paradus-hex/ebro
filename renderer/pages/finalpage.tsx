@@ -98,11 +98,19 @@ const FinalPage: NextPageWithLayout = () => {
         imagesDesc: getImageDescObj(),
         response: getResponse(),
         projectName,
-      }).then((docRef) => {
-        console.log(docRef.id);
-
-        saveImagesToCloud('user1', `${projectName}_${docRef.id}`, getImages());
-      });
+      })
+        .then(async (docRef) => {
+          // console.log(docRef.id);
+          const downloadUrls = await saveImagesToCloud(
+            'user1',
+            `${projectName}_${docRef.id}`,
+            getImages(),
+          );
+          return downloadUrls;
+        })
+        .then((downloadURLs) =>
+          console.log('FireStorage Urls: ', downloadURLs),
+        );
     } else {
       updateProjectDetails(projectID, {
         ...getValues(),

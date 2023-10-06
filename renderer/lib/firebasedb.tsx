@@ -163,12 +163,15 @@ export async function saveImagesToCloud(
   images: File[],
 ) {
   if (images.length === 0) return;
-  await Promise.all(
+  const links = await Promise.all(
     images.map(async (image) => {
       const storageRef = ref(storage, `images/${id}/${project}/${image.name}`);
       await uploadBytes(storageRef, image);
+      const url = await getDownloadURL(storageRef);
+      return url;
     }),
   );
+  return links;
 }
 export async function getImageDescFromCloud(key: string) {
   const docRef = doc(db, 'projects', key);
