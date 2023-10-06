@@ -16,6 +16,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import React from 'react';
+import { set } from 'lodash';
 
 interface Params {
   projectID: string;
@@ -40,6 +41,7 @@ const ImageUpload = () => {
   // onAddDesc: (index: number, value: string) => void;
   // onDelete: (index: number) => void;
   const {
+    setImageArray,
     getImageArray,
     pushImageArray,
     pushImagesToDel,
@@ -67,7 +69,17 @@ const ImageUpload = () => {
     console.log('inside handle image change', getImageArray());
   };
 
-  const handleImageMoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {};
+  const handleImageMoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const url = URL.createObjectURL(file);
+        pushImageArray({ url, desc: '', file });
+      }
+    }
+    console.log('inside handle image change', getImageArray());
+  };
 
   useEffect(() => {
     const { params } = router.query;
@@ -179,6 +191,7 @@ const ImageUpload = () => {
                 // setImageDescObjState({});
                 // delSwiperImageDescObj();
                 // delImageDescObj();
+                setImageArray([]);
               }}
             >
               <div className="flex gap-2">

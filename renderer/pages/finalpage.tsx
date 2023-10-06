@@ -13,6 +13,7 @@ import {
 } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
+import { useImageStore } from '../stores/imageStore';
 
 interface Params {
   projectID: string;
@@ -39,6 +40,14 @@ const FinalPage: NextPageWithLayout = () => {
     getImageDescObj,
     // getImageDescObj
   } = useCreatePageStore();
+  const {
+    setImageArray,
+    getImageArray,
+    pushImageArray,
+    pushImagesToDel,
+    onAddDesc,
+    onDelete,
+  } = useImageStore();
   const [feedback, setFeedback] = useState<string>('');
   const { append, isLoading } = useChat({
     onFinish: (message) => {
@@ -114,7 +123,7 @@ const FinalPage: NextPageWithLayout = () => {
         .then(
           ({ downloadUrls, docRef }) => {
             console.log('FireStorage Urls: ', downloadUrls),
-              setImagesDescToCloud(docRef.id, getImageDescObj(), downloadUrls);
+              setImagesDescToCloud(docRef.id, getImageArray(), downloadUrls);
           },
           //////}
         );
@@ -132,7 +141,7 @@ const FinalPage: NextPageWithLayout = () => {
         `${projectName}_${projectID}`,
         getImages(),
       ).then(async (list) => {
-        updateImagesDescToCloud(projectID, getImageDescObj(), list);
+        updateImagesDescToCloud(projectID, getImageArray(), list);
       });
     }
     router.push('/home');
@@ -211,7 +220,7 @@ const FinalPage: NextPageWithLayout = () => {
                 </div> */}
                 <div className="flex flex-1">
                   <div className="grid grid-cols-2 gap-2 overflow-auto">
-                    {Object.values(getImageDescObj()).map((image) => (
+                    {getImageArray().map((image) => (
                       <div className="border-red-700">
                         {/* <!-- img_02 --> */}
                         <img
