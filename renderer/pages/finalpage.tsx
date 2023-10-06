@@ -35,7 +35,7 @@ const FinalPage: NextPageWithLayout = () => {
     getValues,
     getImages,
     getImageUrls,
-    getImageDesc,
+    getImagesToDelete,
     getImageDescObj,
     // getImageDescObj
   } = useCreatePageStore();
@@ -132,7 +132,12 @@ const FinalPage: NextPageWithLayout = () => {
         `${projectName}_${projectID}`,
         getImages(),
       ).then(async (list) => {
-        updateImagesDescToCloud(projectID, getImageDescObj(), list);
+        updateImagesDescToCloud(
+          projectID,
+          getImageDescObj(),
+          list,
+          getImagesToDelete(),
+        );
       });
     }
     router.push('/home');
