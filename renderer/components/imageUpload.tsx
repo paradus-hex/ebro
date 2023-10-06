@@ -40,8 +40,10 @@ const ImageUpload = () => {
     getImages,
     getImageDesc,
     setImageDesc,
+    delImageDesc,
     setImages,
     delImageUrls,
+    getProjectKey,
     getImageDescObj,
     setImageDescObj,
     delImageDescObj,
@@ -50,8 +52,6 @@ const ImageUpload = () => {
     delSwiperImageDescObj,
     delIndiSwiperImageDescObj,
     delIndiImageDescObj,
-    pushImagesToDelete,
-    getImagesToDelete,
   } = useCreatePageStore();
 
   const loadImages = async (
@@ -86,7 +86,6 @@ const ImageUpload = () => {
             name: getUrlFileName(url),
             url: url,
           });
-          // pushImagesToDelete(getImagesToDelete().includes(url) ? '' : url);
           setSwiperImageDescObj(index.toString(), getUrlFileName(url));
         });
 
@@ -157,19 +156,14 @@ const ImageUpload = () => {
   };
 
   const deleteImageFromState = (index: number) => {
-    // console.log('deleteImageFromState');
-    pushImagesToDelete(
-      getImageDescObj()[getSwiperImageDescObj()[index.toString()]].url,
-    );
+    console.log('deleteImageFromState');
     delIndiImageDescObj(getSwiperImageDescObj()[index.toString()]);
     delIndiSwiperImageDescObj(index.toString());
-    // console.log('getSwiperImageDescObj', getSwiperImageDescObj());
-    // console.log('delImages', getImagesToDelete());
-    // console.log(getSwiperImageDescObj());
-    // console.log(getImageDescObj());
-    // console.log('alu length', Object.keys(getImageDescObj()).length);
-    // console.log('length', Object.keys(getImageDescObj()).length == 0);
-    // console.log('imagesToDelete', getImagesToDelete());
+
+    console.log(getSwiperImageDescObj());
+    console.log(getImageDescObj());
+    console.log('length', Object.keys(getImageDescObj()).length);
+    console.log('length', Object.keys(getImageDescObj()).length == 0);
     if (Object.keys(getImageDescObj()).length == 0) {
       inputElement.current.value = '';
       console.log('inside if');
@@ -194,7 +188,6 @@ const ImageUpload = () => {
           url: url,
         });
         setSwiperImageDescObj(index.toString(), files[index].name);
-        // pushImagesToDelete(getImagesToDelete().includes(url) ? '' : url);
       });
       // setSelectedImages({ ...selectedImages, ...imageUrls });
       // setImageUrls([...selectedImages, ...imageUrls]);
@@ -221,7 +214,6 @@ const ImageUpload = () => {
           name: files[index].name,
           url: url,
         });
-        // pushImagesToDelete(getImagesToDelete().includes(url) ? '' : url);
         setSwiperImageDescObj(
           (index + filesIndex).toString(),
           files[index].name,
@@ -291,10 +283,10 @@ const ImageUpload = () => {
             onSlideChange={(swiper) => {
               // setCurrentImageIndex(swiper.activeIndex);
 
-              // console.log(getImageDescObj());
-              // console.log('inside swipper ', getSwiperImageDescObj());
+              console.log(getImageDescObj());
+              console.log('inside swipper ', getSwiperImageDescObj());
               setKey(swiper.activeIndex.toString());
-              // console.log('swiperIndex', swiper.activeIndex.toString());
+              console.log('swiperIndex', swiper.activeIndex.toString());
               inputElement.current.value =
                 getImageDescObj()[
                   getSwiperImageDescObj()[swiper.activeIndex.toString()]
@@ -310,9 +302,7 @@ const ImageUpload = () => {
                 <div className="relative w-[320px] h-[200px]">
                   <button
                     onClick={(e) => {
-                      // console.log('del', getImageDesc());
-                      // delImageUrls(index);
-                      // pushImagesToDelete(getImageUrls()[index]);
+                      delImageUrls(index);
                       deleteImageFromState(index);
                     }}
                     className="absolute top-2 text-center right-2 bg-red-800 hover:bg-red-500 text-white hover:scale-105 text-sm h-[20px] w-[20px] "
@@ -340,7 +330,7 @@ const ImageUpload = () => {
             ref={inputElement}
             onChange={(e) => {
               const newImageDesc = [...getImageDesc()];
-              // console.log('inside ', getImageDescObj());
+              console.log('inside ', getImageDescObj());
               getSwiperImageDescObj()[imageKey.toString()]
                 ? setImageDescObj(
                     getSwiperImageDescObj()[imageKey.toString()],

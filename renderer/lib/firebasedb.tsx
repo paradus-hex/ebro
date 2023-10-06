@@ -258,34 +258,17 @@ export async function setImagesDescToCloud(
 
 export async function updateImagesDescToCloud(
   key: string,
-  imagesDescObj: {
-    [key: string]: {
-      desc: string;
-      name: string;
-      url: string;
-    };
-  },
+  imagesDescObj: Object,
   sortedLinks: string[],
-  imagesToDelete: string[],
 ) {
-  if (imagesToDelete.length > 0) {
-    imagesToDelete.forEach((url) => {
-      deleteObject(ref(storage, url))
-        .then(() => {
-          console.log('File deleted successfully');
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    });
-  }
-
+  // console.log(sortedLinks);
   const docRef = doc(db, 'projects', key);
   const getUrlFileName = (url) => {
     const urlParts = url.split('/');
 
     const lastPart = urlParts[urlParts.length - 1];
     const fileName = lastPart.split('?')[0];
+
     let temp = decodeURIComponent(fileName);
     let name = temp.split('/');
     let name1 = name[name.length - 1];
@@ -294,9 +277,7 @@ export async function updateImagesDescToCloud(
   };
 
   let temp = { ...imagesDescObj };
-  console.log('imgObj', imagesDescObj);
-  console.log('curr', temp);
-  console.log('imagesToDel', [imagesToDelete]);
+  console.log('temp', temp);
 
   if (sortedLinks != undefined) {
     sortedLinks.forEach((url) => {
