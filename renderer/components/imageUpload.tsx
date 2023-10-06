@@ -157,8 +157,8 @@ const ImageUpload = () => {
 
   const deleteImageFromState = (index: number) => {
     console.log('deleteImageFromState');
-    delIndiImageDescObj(getSwiperImageDescObj()[index.toString()]);
-    delIndiSwiperImageDescObj(index.toString());
+    // delIndiImageDescObj(getSwiperImageDescObj()[index.toString()]);
+    // delIndiSwiperImageDescObj(index.toString());
 
     console.log(getSwiperImageDescObj());
     console.log(getImageDescObj());

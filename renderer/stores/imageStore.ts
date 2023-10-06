@@ -1,49 +1,6 @@
 
-import { z } from "zod";
 import { create } from "zustand";
-import { formSchema } from "../pages/create";
-
-
 import { devtools, persist, } from "zustand/middleware";
-import { set } from "lodash";
-
-interface CreatePageStoreState {
-  values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>;
-  projectKey: string;
-  response: string;
-  note: string;
-  imageUrls: string[];
-  images: File[];
-  imageDesc: { desc: string }[];
-  imageDescObj: { [key: string]: { desc: string, name: string, url: string } };
-  imageSwiperDescObj: { [key: string]: string };
-  setValues: (values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>) => void;
-  setProjectKey: (projectKey: string) => void;
-  setResponse: (response: string) => void;
-  getValues: () => { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>;
-  getProjectKey: () => string;
-  getResponse: () => string;
-  getNote: () => string;
-  setNote: (note: string) => void;
-  getImageUrls: () => string[];
-  setImageUrls: (imageUrls: string[]) => void;
-  delImageUrls: (index: number) => void;
-  getImages: () => File[];
-  setImages: (images: File[]) => void;
-  delImageDesc: (index: number) => void;
-  setImageDesc: (imageDesc: { desc: string }[]) => void;
-  getImageDesc: () => { desc: string }[];
-  getImageDescObj: () => { [key: string]: { desc: string, name: string, url: string } };
-  setImageDescObj: (key: string, value: { desc: string, name: string, url: string }) => void;
-  delImageDescObj: () => void;
-  delIndiImageDescObj: (key: string) => void;
-  getSwiperImageDescObj: () => { [key: string]: string };
-  setSwiperImageDescObj: (key: string, value: string) => void;
-  delSwiperImageDescObj: () => void;
-  delIndiSwiperImageDescObj: (key: string) => void;
-
-}
-
 
 
 interface CreateImageStoreState {
@@ -51,11 +8,11 @@ interface CreateImageStoreState {
   imageArray: { url: string, desc: string, file?: File }[];
 
   imagesToDel: { url: string, desc: string }[];
-  setImageArray: (item: { url: string, desc: string }) => void;
+  setImageArray: (imageArray: { url: string, desc: string, file?: File }[]) => void;
+  pushImageArray: (item: { url: string, desc: string, file?: File }) => void;
   pushImagesToDel: (item: { url: string, desc: string }) => void;
   getImageArray: () => { url: string, desc: string }[];
   getImagesToDel: () => { url: string, desc: string }[];
-
   onAddDesc: (index: number, value: string) => void;
   onDelete: (index: number) => void;
 
@@ -66,7 +23,8 @@ export const useImageStore = create<CreateImageStoreState>()(
       (set, get) => ({
         imageArray: [],
         imagesToDel: [],
-        setImageArray: (item) => {
+        setImageArray: (imageArray) => set({ imageArray }),
+        pushImageArray: (item) => {
           let temp = [...get().imageArray]
           temp.push(item)
           set({ imageArray: temp })
@@ -80,8 +38,10 @@ export const useImageStore = create<CreateImageStoreState>()(
         getImagesToDel: () => get().imagesToDel,
         onAddDesc: (index, value) => {
           let temp = [...get().imageArray]
-          temp[index].desc = value
-          set({ imageArray: temp })
+          if (temp[index]) {
+            temp[index].desc = value
+            set({ imageArray: temp })
+          }
         },
         onDelete: (index) => {
           let tem = [...get().imageArray]
@@ -98,7 +58,7 @@ export const useImageStore = create<CreateImageStoreState>()(
 
 // imageArray = { url: '', desc: '' }[]
 // imagesToDel = { url: '', desc: '' }[]
-// setImageArray()
+// pushImageArray()
 
 // // file input
 // onchange() {
@@ -106,27 +66,27 @@ export const useImageStore = create<CreateImageStoreState>()(
 //   fileFromPath.forEach((file) => {
 //     tem.push(file)
 //   }
-//   setImageArray(tem)
+//   pushImageArray(tem)
 // }
 
 // // desc input
 // onchange(){
 //   let tem = [...imageAyy]
 //   tem[index].desc = value
-//   setImageArray(tem)
+//   pushImageArray(tem)
 // }
 
 // onAdd({ url: '', desc: '' }){
 //   let tem = [...imageAyy]
 //   tem.push({ url: '', desc: '' })
-//   setImageArray(tem)
+//   pushImageArray(tem)
 // }
 
 // onDelete(imdex){
 //   let tem = [...imageAyy]
 //   setImagesToDel(tem[index])
 //   tem.splice(index, 1)
-//   setImageArray(tem)
+//   pushImageArray(tem)
 // }
 
 // [{ url: sdfm, des: sdfa }, { url: sdfm, des: sdfa }, { url: sdfm, des: sdfa }, { url: sdfm, des: sdfa }]

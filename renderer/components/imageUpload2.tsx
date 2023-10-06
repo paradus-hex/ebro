@@ -3,7 +3,8 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import '@splidejs/react-splide/css';
 import { Pagination } from 'swiper/modules';
-import { useCreatePageStore } from '../stores/createPageStore';
+import { useImageStore } from '../stores/imageStore';
+import useStore from '../stores/useStore';
 import {
   getImageDescFromCloud,
   getImageUrlsFromCloud,
@@ -23,213 +24,50 @@ interface Params {
   prev: string;
   passedProjectName: string;
 }
+
 const ImageUpload = () => {
-  const [selectedImages, setSelectedImages] = useState<any>([]);
-
-  const [getImageDescObjState, setImageDescObjState] = useState<any>({});
-
   const [imageKey, setKey] = useState<string>('0');
   const swiperRef = React.useRef(null);
   const inputElement = useRef(null);
-  const inputEl = useRef(null);
   const router = useRouter();
 
+  //getImageArray(): { url: string, desc: string, file?: File }[];
+
+  // imagesToDel: { url: string, desc: string }[];
+  // pushImageArray: (item: { url: string, desc: string }) => void;
+  // pushImagesToDel: (item: { url: string, desc: string }) => void;
+
+  // onAddDesc: (index: number, value: string) => void;
+  // onDelete: (index: number) => void;
   const {
-    getImageUrls,
-    setImageUrls,
-    getImages,
-    getImageDesc,
-    setImageDesc,
-    delImageDesc,
-    setImages,
-    delImageUrls,
-    getProjectKey,
-    getImageDescObj,
-    setImageDescObj,
-    delImageDescObj,
-    getSwiperImageDescObj,
-    setSwiperImageDescObj,
-    delSwiperImageDescObj,
-    delIndiSwiperImageDescObj,
-    delIndiImageDescObj,
-  } = useCreatePageStore();
+    getImageArray,
+    pushImageArray,
+    pushImagesToDel,
+    onAddDesc,
+    onDelete,
+  } = useImageStore();
 
   const loadImages = async (
     projectID: string,
     passedProjectName: string,
     intention: string,
     prev: string,
-  ) => {
-    if (prev === 'home' && intention === 'update') {
-      // console.log(projectID, passedProjectName, intention, prev);
-      await getImageUrlsFromCloud(
-        `images/user1/${passedProjectName}_${projectID}`,
-      ).then((urls) => {
-        console.log('urls', urls);
+  ) => {};
 
-        const getUrlFileName = (url) => {
-          const urlParts = url.split('/');
-          const lastPart = urlParts[urlParts.length - 1];
-          const fileName = lastPart.split('?')[0];
-
-          let temp = decodeURIComponent(fileName);
-          let name = temp.split('/');
-          let name1 = name[name.length - 1];
-
-          return name1;
-        };
-
-        urls.downloadURLs.forEach((url, index) => {
-          setImageDescObj(getUrlFileName(url), {
-            desc: index.toString(),
-            name: getUrlFileName(url),
-            url: url,
-          });
-          setSwiperImageDescObj(index.toString(), getUrlFileName(url));
-        });
-
-        console.log('mapping in progress');
-
-        getImageDescFromCloud(projectID).then((desc) => {
-          let keys = Object.keys(desc);
-          keys.forEach((element) => {
-            console.log('element', element);
-            console.log('desc', desc[element]);
-            setImageDescObj(element, {
-              ...getImageDescObj()[element],
-              desc: desc[element].desc,
-            });
-          });
-
-          console.log('desc', desc);
-        });
-        console.log('imageDescObj', getImageDescObj());
-        console.log('getSwiperImageDescObj', getSwiperImageDescObj());
-        setSelectedImages(urls);
-        // setImageUrls(urls);
-      });
-    } else {
-      if (intention === 'create' && prev === 'home') {
-        setImageUrls([]);
-        delImageDescObj();
-        delSwiperImageDescObj();
-      } else {
-        const imageUrls = await getImageUrls();
-        setSelectedImages(imageUrls);
-      }
-      if (intention === 'update' && prev === 'finalpage') {
-        setSelectedImages(getImageDescObj());
-      }
-      // console.log('inside load image');
-      // console.log(intention, prev);
-      // if (intention == 'update' && (prev === 'home' || prev === 'finalpage')) {
-      //   console.log('inside update');
-      //   getImageDescFromCloud(getProjectKey()).then((desc) => {
-      //     setImageDesc(desc);
-      //     getImageDesc.length;
-      //     inputElement.current.value = getImageDesc()[0].desc;
-      //   });
-      // }
-    }
-
-    if (intention == 'update' && (prev === 'home' || prev === 'finalpage')) {
-      console.log(
-        'inside input 1 .  update',
-        inputElement.current,
-        getImageDescObj()[getSwiperImageDescObj()['0']],
-      );
-      setTimeout(() => {
-        if (inputElement.current) {
-          console.log('input element is not null');
-          inputElement.current.value =
-            getImageDescObj()[getSwiperImageDescObj()['0']].desc;
-        }
-      }, 1000);
-    }
-    if (intention == 'create' && prev === 'finalpage') {
-      setTimeout(() => {
-        inputElement.current.value =
-          getImageDescObj()[getSwiperImageDescObj()['0']].desc;
-      }, 1000);
-    }
-  };
-
-  const deleteImageFromState = (index: number) => {
-    console.log('deleteImageFromState');
-    delIndiImageDescObj(getSwiperImageDescObj()[index.toString()]);
-    delIndiSwiperImageDescObj(index.toString());
-
-    console.log(getSwiperImageDescObj());
-    console.log(getImageDescObj());
-    console.log('length', Object.keys(getImageDescObj()).length);
-    console.log('length', Object.keys(getImageDescObj()).length == 0);
-    if (Object.keys(getImageDescObj()).length == 0) {
-      inputElement.current.value = '';
-      console.log('inside if');
-      setSelectedImages([]);
-    } else {
-      if (index != Object.keys(getImageDescObj()).length) {
-        inputElement.current.value =
-          getImageDescObj()[getSwiperImageDescObj()[index.toString()]].desc;
-      }
-    }
-  };
+  const deleteImageFromState = (index: number) => {};
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files);
-    console.log('files', files[0]);
-    setImages(getImages().concat(files));
-    if (files.length > 0) {
-      const imageUrls = files.map((file) => URL.createObjectURL(file));
-      imageUrls.forEach((url, index) => {
-        setImageDescObj(files[index].name, {
-          desc: '',
-          name: files[index].name,
-          url: url,
-        });
-        setSwiperImageDescObj(index.toString(), files[index].name);
-      });
-      // setSelectedImages({ ...selectedImages, ...imageUrls });
-      // setImageUrls([...selectedImages, ...imageUrls]);
-      setImageDesc([
-        ...getImageDesc(),
-        ...Array.from({ length: files.length }, (_, index) => ({
-          desc: '',
-        })),
-      ]);
-      setImageDescObjState(getImageDescObj());
-      setSelectedImages(getImageDescObj());
+    const files = e.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const url = URL.createObjectURL(file);
+        pushImageArray({ url, desc: '', file });
+      }
     }
+    console.log('inside handle image change', getImageArray());
   };
-  const handleImageMoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const filesIndex = Object.keys(getImageDescObj()).length;
-    const files = Array.from(e.target.files);
-    console.log('files', files[0]);
-    setImages(getImages().concat(files));
-    if (files.length > 0) {
-      const imageUrls = files.map((file) => URL.createObjectURL(file));
-      imageUrls.forEach((url, index) => {
-        setImageDescObj(files[index].name, {
-          desc: '',
-          name: files[index].name,
-          url: url,
-        });
-        setSwiperImageDescObj(
-          (index + filesIndex).toString(),
-          files[index].name,
-        );
-      });
-      // setSelectedImages([...selectedImages, ...imageUrls]);
-      // setImageUrls([...selectedImages, ...imageUrls]);
-      setImageDesc([
-        ...getImageDesc(),
-        ...Array.from({ length: files.length }, (_, index) => ({
-          desc: '',
-        })),
-      ]);
-      setImageDescObjState(getImageDescObj());
-      setSelectedImages(getImageDescObj());
-    }
-  };
+
+  const handleImageMoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {};
 
   useEffect(() => {
     const { params } = router.query;
@@ -237,12 +75,12 @@ const ImageUpload = () => {
       ? JSON.parse(decodeURIComponent(params as string))
       : {};
     const { projectID, passedProjectName, intention, prev } = parsedParams;
-    loadImages(projectID, passedProjectName, intention, prev);
+    // loadImages(projectID, passedProjectName, intention, prev);
   }, []);
-
+  console.log('image array', getImageArray());
   return (
     <div className="mx-5 mt-7 max-w-xs">
-      {selectedImages.length === 0 ? (
+      {getImageArray()?.length === 0 ? (
         <div className="flex flex-col items-center h-[295px] cursor-pointer">
           <form>
             <label>
@@ -280,43 +118,44 @@ const ImageUpload = () => {
             modules={[Pagination]}
             className="mySwiper"
             onSlideChange={(swiper) => {
-              // setCurrentImageIndex(swiper.activeIndex);
-
-              console.log(getImageDescObj());
-              console.log('inside swipper ', getSwiperImageDescObj());
-              setKey(swiper.activeIndex.toString());
-              console.log('swiperIndex', swiper.activeIndex.toString());
               inputElement.current.value =
-                getImageDescObj()[
-                  getSwiperImageDescObj()[swiper.activeIndex.toString()]
-                ].desc;
-              // getImageDesc()[swiper.activeIndex].desc;
-
-              console.log(swiper.activeIndex);
-              console.log('This should be the url', getSwiperImageDescObj());
+                getImageArray()[swiper.activeIndex].desc;
             }}
           >
-            {Object.values(getImageDescObj()).map((image, index) => (
+            {getImageArray().map((image, index) => (
               <SwiperSlide key={image.url}>
                 <div className="relative w-[320px] h-[200px]">
                   <button
                     onClick={(e) => {
-                      delImageUrls(index);
-                      deleteImageFromState(index);
+                      onDelete(swiperRef.current.activeIndex);
+                      // inputElement.current.value =
+                      //   'getImageArray()[index].desc';
+
+                      setTimeout(() => {
+                        if (getImageArray().length <= 1) {
+                          inputElement.current.value = '';
+                        } else if (
+                          getImageArray().length - 1 ===
+                          swiperRef.current.activeIndex + 1
+                        ) {
+                          inputElement.current.value =
+                            getImageArray()[swiperRef.current.activeIndex].desc;
+                        } else {
+                          inputElement.current.value =
+                            getImageArray()[
+                              swiperRef.current.activeIndex - 1
+                            ].desc;
+                        }
+
+                        // inputElement.current.value =
+                        //   'getImageArray()[index].desc';
+                      }, 500);
                     }}
                     className="absolute top-2 text-center right-2 bg-red-800 hover:bg-red-500 text-white hover:scale-105 text-sm h-[20px] w-[20px] "
                   >
                     x
                   </button>
-                  <img
-                    src={
-                      getImageDescObj()[
-                        getSwiperImageDescObj()[index.toString()]
-                      ].url
-                    }
-                    alt="Preview"
-                    className="object-cover"
-                  />
+                  <img src={image.url} alt="Preview" className="object-cover" />
                 </div>
               </SwiperSlide>
             ))}
@@ -328,18 +167,7 @@ const ImageUpload = () => {
             id="imageDesc"
             ref={inputElement}
             onChange={(e) => {
-              const newImageDesc = [...getImageDesc()];
-              console.log('inside ', getImageDescObj());
-              getSwiperImageDescObj()[imageKey.toString()]
-                ? setImageDescObj(
-                    getSwiperImageDescObj()[imageKey.toString()],
-                    {
-                      ...getImageDescObj()[getSwiperImageDescObj()[imageKey]],
-                      desc: e.target.value,
-                    },
-                  )
-                : ' ';
-              console.log(getImageDescObj());
+              onAddDesc(swiperRef.current.activeIndex, e.target.value);
             }}
           />
           <div>
@@ -362,9 +190,9 @@ const ImageUpload = () => {
             </label>
             <button
               onClick={() => {
-                setImageDescObjState({});
-                delSwiperImageDescObj();
-                delImageDescObj();
+                // setImageDescObjState({});
+                // delSwiperImageDescObj();
+                // delImageDescObj();
               }}
             >
               <div className="flex gap-2">
