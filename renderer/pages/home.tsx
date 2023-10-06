@@ -1,14 +1,16 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import Head from 'next/head';
 import ProjectSlider from '../components/ProjectSlider';
 import { Button } from '../components/ui/button';
 import { useRouter } from 'next/router';
 import Search from '../components/search';
 import Layout from '../components/Layout';
+import { useCreatePageStore } from '../stores/createPageStore';
 
 function Home() {
   const router = useRouter();
   const [projectName, setProjectName] = React.useState<string>('');
+  const { setImages, setImageUrls } = useCreatePageStore();
   const handleProjectNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProjectName(e.target.value);
   };
@@ -24,6 +26,10 @@ function Home() {
     );
   };
   // console.log(getProjectsUsingUsername('user3'));
+  useEffect(() => {
+    setImages([]);
+    setImageUrls([]);
+  }, []);
   return (
     <React.Fragment>
       <Head>

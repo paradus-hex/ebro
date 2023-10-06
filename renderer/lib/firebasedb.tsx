@@ -20,13 +20,13 @@ import {
 } from 'firebase/auth';
 import { firebaseConfig } from '../firebase-constants';
 import {
+  deleteObject,
   getDownloadURL,
   getStorage,
   listAll,
   ref,
   uploadBytes,
 } from 'firebase/storage';
-import { useCreatePageStore } from '../stores/createPageStore';
 
 export interface ProjectData {
   address: string;
@@ -198,4 +198,10 @@ export async function getImageUrlsFromCloud(folderPath: string) {
     console.log(e);
     return e;
   }
+}
+
+export async function deleteProjectPhotosFromCloud(folderPath: string) {
+  const folderRef = ref(storage, folderPath);
+  const items = await listAll(folderRef);
+  return await deleteObject(folderRef);
 }

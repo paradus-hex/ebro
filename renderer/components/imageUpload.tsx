@@ -116,6 +116,16 @@ const ImageUpload = () => {
         const imageUrls = await getImageUrls();
         setSelectedImages(imageUrls);
       }
+      // console.log('inside load image');
+      // console.log(intention, prev);
+      // if (intention == 'update' && (prev === 'home' || prev === 'finalpage')) {
+      //   console.log('inside update');
+      //   getImageDescFromCloud(getProjectKey()).then((desc) => {
+      //     setImageDesc(desc);
+      //     getImageDesc.length;
+      //     inputElement.current.value = getImageDesc()[0].desc;
+      //   });
+      // }
     }
 
     if (intention == 'update' && (prev === 'home' || prev === 'finalpage')) {
