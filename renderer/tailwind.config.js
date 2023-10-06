@@ -17,8 +17,8 @@ module.exports = {
     },
     extend: {
       colors: {
-        nav_color: '#282a36',
-        nav_primary: '#0530ad',
+        nav_color: '#06367A',
+        nav_primary: '#06367A',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
