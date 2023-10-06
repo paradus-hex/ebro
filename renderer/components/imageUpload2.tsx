@@ -128,28 +128,14 @@ const ImageUpload = () => {
                   <button
                     onClick={(e) => {
                       onDelete(swiperRef.current.activeIndex);
-                      // inputElement.current.value =
-                      //   'getImageArray()[index].desc';
-
-                      setTimeout(() => {
-                        if (getImageArray().length <= 1) {
-                          inputElement.current.value = '';
-                        } else if (
-                          getImageArray().length - 1 ===
-                          swiperRef.current.activeIndex + 1
-                        ) {
-                          inputElement.current.value =
-                            getImageArray()[swiperRef.current.activeIndex].desc;
-                        } else {
-                          inputElement.current.value =
-                            getImageArray()[
-                              swiperRef.current.activeIndex - 1
-                            ].desc;
-                        }
-
-                        // inputElement.current.value =
-                        //   'getImageArray()[index].desc';
-                      }, 500);
+                      if (
+                        swiperRef.current.activeIndex === 0 &&
+                        getImageArray().length > 1
+                      ) {
+                        swiperRef.current.slideNext();
+                      } else {
+                        swiperRef.current.slidePrev();
+                      }
                     }}
                     className="absolute top-2 text-center right-2 bg-red-800 hover:bg-red-500 text-white hover:scale-105 text-sm h-[20px] w-[20px] "
                   >
