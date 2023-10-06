@@ -1,4 +1,4 @@
-import { get } from 'http';
+import { set } from 'lodash';
 import { z } from "zod";
 import { create } from "zustand";
 import { formSchema } from "../pages/create";
@@ -13,6 +13,7 @@ interface CreatePageStoreState {
   images: File[];
   imageDesc: { desc: string }[];
   imageDescObj: { [key: string]: { desc: string, name: string, url: string } };
+  imagesToDelete: string[];
   imageSwiperDescObj: { [key: string]: string };
   setValues: (values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>) => void;
   setProjectKey: (projectKey: string) => void;
@@ -38,8 +39,9 @@ interface CreatePageStoreState {
   setSwiperImageDescObj: (key: string, value: string) => void;
   delSwiperImageDescObj: () => void;
   delIndiSwiperImageDescObj: (key: string) => void;
-
-
+  pushImagesToDelete: (url: string) => void;
+  getImagesToDelete: () => string[];
+  setImagesToDelete: (imagesToDelete: string[]) => void;
 
 }
 
@@ -74,6 +76,7 @@ export const useCreatePageStore = create(
     imageDesc: [],
     imageDescObj: {},
     imageSwiperDescObj: {},
+    imagesToDelete: [],
     setValues: (values) => set({ values }),
     setProjectKey: (projectKey) => set({ projectKey }),
     setResponse: (response) => set({ response }),
@@ -100,6 +103,13 @@ export const useCreatePageStore = create(
         imageDesc: arrDesc,
       });
     },
+    getImagesToDelete: () => get().imagesToDelete,
+    pushImagesToDelete: (url) => {
+      set((state) => ({
+        imagesToDelete: [...state.imagesToDelete, url]
+      }))
+    },
+    setImagesToDelete: (imagesToDelete) => set({ imagesToDelete }),
     setImageDescObj: (key, value) => {
       set((state) => ({
         imageDescObj: {
