@@ -88,7 +88,7 @@ function Create() {
     ? JSON.parse(decodeURIComponent(params as string))
     : {};
   const { key, passedProjectName, intention, prev } = parsedParams;
-  console.log(passedProjectName, 'ssssssssssss', key, intention, prev);
+  // console.log(passedProjectName, 'ssssssssssss', key, intention, prev);
   const {
     setValues,
     setResponse,
