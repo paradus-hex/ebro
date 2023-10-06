@@ -28,7 +28,10 @@ import {
 } from '../lib/constants';
 import { ReactElement, useEffect, useState } from 'react';
 import { useCreatePageStore } from '../stores/createPageStore';
-import { getProjectDetails } from '../lib/firebasedb';
+import {
+  deleteProjectPhotosFromCloud,
+  getProjectDetails,
+} from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import { useSignInPageStore } from '../stores/signInPageStore';
 
@@ -118,6 +121,9 @@ function Create() {
   };
 
   const handleGenerateClick = () => {
+    deleteProjectPhotosFromCloud(
+      `images/user1/project name test_6ft8UiHfusgYpnvyBYZL`,
+    );
     router.push(
       `/finalpage?params=${encodeURIComponent(
         JSON.stringify({ projectName: passedProjectName, intention, key }),

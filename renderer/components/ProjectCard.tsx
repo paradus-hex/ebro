@@ -97,7 +97,7 @@ export default function MyProjectCard({
         ></AiOutlineArrowRight>
         <RiDeleteBin2Line
           onClick={(e) => {
-            console.log(deleteProjectPhotosFromCloud(`images/user1/${id}`));
+            deleteProjectPhotosFromCloud(`images/user1/${projectName}_${id}`);
             delFromSelectedCards(id);
             deleteProject(id);
           }}
