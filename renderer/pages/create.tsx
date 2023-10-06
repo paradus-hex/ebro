@@ -34,6 +34,7 @@ import {
 } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import { useSignInPageStore } from '../stores/signInPageStore';
+import ImageUpload2 from '../components/imageUpload2';
 
 interface Params {
   projectID: string;
@@ -572,7 +573,8 @@ function Create() {
         <DevTool control={control} />
       </div>
       <div className="flex flex-col justify-start items-center bg-slate-200/50 w-[50%] min-h-screen">
-        <ImageUpload></ImageUpload>
+        {/* <ImageUpload></ImageUpload> */}
+        <ImageUpload2></ImageUpload2>
         <div
           className="flex
         flex-col justify-center items-center"

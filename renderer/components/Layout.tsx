@@ -7,14 +7,6 @@ import useStore from '../stores/useStore';
 import { useSignInPageStore } from '../stores/signInPageStore';
 import { set } from 'lodash';
 
-// const { getValues, setValues } = useSignedInStoreState();
-
-// const signedIn = getValues().signedIn;
-
-// if (!signedIn) {
-//   Router.push('/login');
-// }
-
 export default function Layout({ children }) {
   const { getSignedIn, setSignedIn } = useSignInPageStore();
   // const signedIn = getSignedIn();
