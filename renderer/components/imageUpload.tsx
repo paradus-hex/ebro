@@ -7,6 +7,9 @@ import { useCreatePageStore } from '../stores/createPageStore';
 import {
   getImageDescFromCloud,
   getImageUrlsFromCloud,
+  getProjectImageDesc,
+  updateProjectImageDesc,
+  createProjectImageDesc,
 } from '../lib/firebasedb';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -25,6 +28,10 @@ interface Params {
 }
 const ImageUpload = () => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [expriment, setExperiment] = useState<{
+    id: string;
+    data: { url: string; descArr: string }[];
+  }>();
 
   const [getImageDescObjState, setImageDescObjState] = useState<any>({});
 
@@ -61,6 +68,7 @@ const ImageUpload = () => {
   ) => {
     if (prev === 'home' && intention === 'update') {
       // console.log(projectID, passedProjectName, intention, prev);
+
       await getImageUrlsFromCloud(
         `images/user1/${passedProjectName}_${projectID}`,
       ).then((urls) => {

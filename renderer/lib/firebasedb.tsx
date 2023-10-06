@@ -56,8 +56,34 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const projects = collection(db, 'projects');
 const accounts = collection(db, 'accounts');
+const image_desc = collection(db, 'image_desc');
 const auth = getAuth(app);
 export const storage = getStorage(app);
+
+export async function createProjectImageDesc(
+  id: string,
+  data: { url: string; descArr: string }[],
+) {
+  await addDoc(image_desc, data);
+}
+
+export async function getProjectImageDesc(id: string, descArr: any[]) {
+  const projectsSnapshot = await getDocs(
+    query(image_desc, where('projectID', '==', id)),
+  );
+  return projectsSnapshot;
+}
+
+export async function updateProjectImageDesc(
+  id: string,
+  data: { id: string; descArr: string[] },
+) {
+  const projectsSnapshot = await getDocs(
+    query(image_desc, where('projectID', '==', id)),
+  );
+  const docRef = doc(db, 'image_desc', id);
+  await updateDoc(docRef, data);
+}
 
 export async function getProjects(col = projects) {
   const projectsCol = col;
