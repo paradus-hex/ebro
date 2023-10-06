@@ -12,6 +12,8 @@ interface CreatePageStoreState {
   imageUrls: string[];
   images: File[];
   imageDesc: { desc: string }[];
+  imageDescObj: { [key: string]: { desc: string, name: string, url: string } };
+  imageSwiperDescObj: { [key: string]: string };
   setValues: (values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>) => void;
   setProjectKey: (projectKey: string) => void;
   setResponse: (response: string) => void;
@@ -28,6 +30,15 @@ interface CreatePageStoreState {
   delImageDesc: (index: number) => void;
   setImageDesc: (imageDesc: { desc: string }[]) => void;
   getImageDesc: () => { desc: string }[];
+  getImageDescObj: () => { [key: string]: { desc: string, name: string, url: string } };
+  setImageDescObj: (key: string, value: { desc: string, name: string, url: string }) => void;
+  delImageDescObj: () => void;
+  delIndiImageDescObj: (key: string) => void;
+  getSwiperImageDescObj: () => { [key: string]: string };
+  setSwiperImageDescObj: (key: string, value: string) => void;
+  delSwiperImageDescObj: () => void;
+  delIndiSwiperImageDescObj: (key: string) => void;
+
 
 
 }
@@ -61,6 +72,8 @@ export const useCreatePageStore = create(
     imageUrls: [],
     images: [],
     imageDesc: [],
+    imageDescObj: {},
+    imageSwiperDescObj: {},
     setValues: (values) => set({ values }),
     setProjectKey: (projectKey) => set({ projectKey }),
     setResponse: (response) => set({ response }),
@@ -87,7 +100,55 @@ export const useCreatePageStore = create(
         imageDesc: arrDesc,
       });
     },
+    setImageDescObj: (key, value) => {
+      set((state) => ({
+        imageDescObj: {
+          ...state.imageDescObj,
+          [key]: { ...value, desc: value.desc }
+        }
+      }))
+    },
+    delImageDescObj: () => {
+      set((state) => ({
+        imageDescObj: {}
+      }))
+    },
+    getImageDescObj: () => { return get().imageDescObj },
+    delIndiImageDescObj: (key) => {
+      set((state) => {
+        delete state.imageDescObj[key];
+      })
+    },
+    setSwiperImageDescObj: (key, value) => {
+      set((state) => ({
+        imageSwiperDescObj: {
+          ...state.imageSwiperDescObj,
+          [key]: value
+        }
+      }))
+    },
+    delSwiperImageDescObj: () => {
+      set((state) => ({
+        imageSwiperDescObj: {}
+      }))
+    },
+    getSwiperImageDescObj: () => { return get().imageSwiperDescObj },
+    delIndiSwiperImageDescObj: (key) => {
+      set((state) => {
+        let obj = state.imageSwiperDescObj;
+        let keys = Object.keys(obj);
+        let values = Object.values(obj);
+        values.splice(parseInt(key), 1);
+        console.log("values", values);
+        let newObj = {};
+        for (let i = 0; i < values.length; i++) {
+          newObj[i.toString()] = values[i];
+        }
+        return { imageSwiperDescObj: newObj }
+      })
+    }
   })),
+
 
 );
 
