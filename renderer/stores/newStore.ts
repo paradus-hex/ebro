@@ -1,12 +1,14 @@
+// import { create } from 'zustand'
 import { z } from "zod";
 import { signInformSchema } from "../pages/signin";
 import { create, StateCreator } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import { devtools, persist, PersistOptions } from "zustand/middleware";
+import { devtools, persist } from 'zustand/middleware'
 
-
-
-
+interface BearState {
+  signIn: boolean
+  setSignIn: (by: boolean) => void
+}
 interface SignInPagePageStoreState {
   values: z.infer<typeof signInformSchema>;
   signedIn: boolean;
@@ -52,4 +54,3 @@ export const useSignInPageStore = create<SignInPagePageStoreState>()(
     )
   )
 )
-

@@ -6,9 +6,12 @@ import { useRouter } from 'next/router';
 import Search from '../components/search';
 import Layout from '../components/Layout';
 import { useCreatePageStore } from '../stores/createPageStore';
+import useStore from '../stores/useStore';
+// import { useCreatePageStore } from '../stores/createPageStore';
 
 function Home() {
   const router = useRouter();
+  // const delImageDescObj = useStore(useCreatePageStore, (state) => state.delImageDescObj);
   const [projectName, setProjectName] = React.useState<string>('');
   const {
     setImages,
