@@ -13,7 +13,8 @@ import Layout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
 
 interface Params {
-  key: string;
+  projectID: string;
+
   projectName: string;
   intention: string;
 }
@@ -47,8 +48,8 @@ const FinalPage: NextPageWithLayout = () => {
   const parsedParams: Params = params
     ? JSON.parse(decodeURIComponent(params as string))
     : {};
-  const { key, projectName, intention } = parsedParams;
-  // console.log(key);
+  const { projectID, projectName, intention } = parsedParams;
+  // console.log(projectID);
 
   const handleGoBack = () => {
     router.push(
@@ -56,7 +57,7 @@ const FinalPage: NextPageWithLayout = () => {
         JSON.stringify({
           passedProjectName: projectName,
           intention,
-          key,
+          projectID,
           prev: 'finalpage',
         }),
       )}`,
@@ -103,13 +104,13 @@ const FinalPage: NextPageWithLayout = () => {
         saveImagesToCloud('user1', `${projectName}_${docRef.id}`, getImages());
       });
     } else {
-      updateProjectDetails(key, {
+      updateProjectDetails(projectID, {
         ...getValues(),
         imagesDesc: getImageDesc(),
         response: getResponse(),
         projectName,
       });
-      saveImagesToCloud('user1', `${projectName}_${key}`, getImages());
+      saveImagesToCloud('user1', `${projectName}_${projectID}`, getImages());
     }
     setCloudSaveDisabled(true);
     router.push('/home');
