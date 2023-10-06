@@ -24,13 +24,14 @@ interface Params {
   passedProjectName: string;
 }
 const ImageUpload = () => {
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [selectedImages, setSelectedImages] = useState<any>([]);
 
   const [getImageDescObjState, setImageDescObjState] = useState<any>({});
 
   const [imageKey, setKey] = useState<string>('0');
   const swiperRef = React.useRef(null);
   const inputElement = useRef(null);
+  const inputEl = useRef(null);
   const router = useRouter();
 
   const {
@@ -117,6 +118,9 @@ const ImageUpload = () => {
         const imageUrls = await getImageUrls();
         setSelectedImages(imageUrls);
       }
+      if (intention === 'update' && prev === 'finalpage') {
+        setSelectedImages(getImageDescObj());
+      }
       // console.log('inside load image');
       // console.log(intention, prev);
       // if (intention == 'update' && (prev === 'home' || prev === 'finalpage')) {
@@ -130,14 +134,24 @@ const ImageUpload = () => {
     }
 
     if (intention == 'update' && (prev === 'home' || prev === 'finalpage')) {
-      console.log('inside update');
-      inputElement.current.value =
-        getImageDescObj()[getSwiperImageDescObj()['0']];
+      console.log(
+        'inside input 1 .  update',
+        inputElement.current,
+        getImageDescObj()[getSwiperImageDescObj()['0']],
+      );
+      setTimeout(() => {
+        if (inputElement.current) {
+          console.log('input element is not null');
+          inputElement.current.value =
+            getImageDescObj()[getSwiperImageDescObj()['0']].desc;
+        }
+      }, 1000);
     }
     if (intention == 'create' && prev === 'finalpage') {
-      console.log('inside update');
-      inputElement.current.value =
-        getImageDescObj()[getSwiperImageDescObj()['0']];
+      setTimeout(() => {
+        inputElement.current.value =
+          getImageDescObj()[getSwiperImageDescObj()['0']].desc;
+      }, 1000);
     }
   };
 
@@ -154,6 +168,11 @@ const ImageUpload = () => {
       inputElement.current.value = '';
       console.log('inside if');
       setSelectedImages([]);
+    } else {
+      if (index != Object.keys(getImageDescObj()).length) {
+        inputElement.current.value =
+          getImageDescObj()[getSwiperImageDescObj()[index.toString()]].desc;
+      }
     }
   };
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -170,8 +189,8 @@ const ImageUpload = () => {
         });
         setSwiperImageDescObj(index.toString(), files[index].name);
       });
-      setSelectedImages([...selectedImages, ...imageUrls]);
-      setImageUrls([...selectedImages, ...imageUrls]);
+      // setSelectedImages({ ...selectedImages, ...imageUrls });
+      // setImageUrls([...selectedImages, ...imageUrls]);
       setImageDesc([
         ...getImageDesc(),
         ...Array.from({ length: files.length }, (_, index) => ({
@@ -179,6 +198,7 @@ const ImageUpload = () => {
         })),
       ]);
       setImageDescObjState(getImageDescObj());
+      setSelectedImages(getImageDescObj());
     }
   };
   const handleImageMoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -199,8 +219,8 @@ const ImageUpload = () => {
           files[index].name,
         );
       });
-      setSelectedImages([...selectedImages, ...imageUrls]);
-      setImageUrls([...selectedImages, ...imageUrls]);
+      // setSelectedImages([...selectedImages, ...imageUrls]);
+      // setImageUrls([...selectedImages, ...imageUrls]);
       setImageDesc([
         ...getImageDesc(),
         ...Array.from({ length: files.length }, (_, index) => ({
@@ -208,6 +228,7 @@ const ImageUpload = () => {
         })),
       ]);
       setImageDescObjState(getImageDescObj());
+      setSelectedImages(getImageDescObj());
     }
   };
 
@@ -265,6 +286,7 @@ const ImageUpload = () => {
               console.log(getImageDescObj());
               console.log('inside swipper ', getSwiperImageDescObj());
               setKey(swiper.activeIndex.toString());
+              console.log('swiperIndex', swiper.activeIndex.toString());
               inputElement.current.value =
                 getImageDescObj()[
                   getSwiperImageDescObj()[swiper.activeIndex.toString()]
@@ -287,11 +309,20 @@ const ImageUpload = () => {
                   >
                     x
                   </button>
-                  <img src={image.url} alt="Preview" className="object-cover" />
+                  <img
+                    src={
+                      getImageDescObj()[
+                        getSwiperImageDescObj()[index.toString()]
+                      ].url
+                    }
+                    alt="Preview"
+                    className="object-cover"
+                  />
                 </div>
               </SwiperSlide>
             ))}
           </Swiper>
+
           <input
             type="text"
             className="mt-8"
@@ -310,9 +341,6 @@ const ImageUpload = () => {
                   )
                 : ' ';
               console.log(getImageDescObj());
-
-              // newImageDesc[currentImageIndex] = { desc: e.target.value };
-              // setImageDesc(newImageDesc);
             }}
           />
           <div>
