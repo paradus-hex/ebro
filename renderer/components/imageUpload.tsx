@@ -129,17 +129,15 @@ const ImageUpload = () => {
       // }
     }
 
-    if (intention == 'update' && prev === 'finalpage') {
+    if (intention == 'update' && (prev === 'home' || prev === 'finalpage')) {
       console.log('inside update');
-      inputElement.current.value = await getImageDescObj()[
-        getSwiperImageDescObj()['0']
-      ];
+      inputElement.current.value =
+        getImageDescObj()[getSwiperImageDescObj()['0']];
     }
     if (intention == 'create' && prev === 'finalpage') {
       console.log('inside update');
-      inputElement.current.value = await getImageDescObj()[
-        getSwiperImageDescObj()['0']
-      ];
+      inputElement.current.value =
+        getImageDescObj()[getSwiperImageDescObj()['0']];
     }
   };
 
