@@ -95,9 +95,6 @@ function Create() {
     getValues: getStoredValues,
     getResponse: getStoredResponse,
   } = useCreatePageStore();
-  
-
-
 
   const { getUser_id } = useSignInPageStore();
   // console.log(key);
