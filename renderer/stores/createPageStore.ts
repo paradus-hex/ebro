@@ -51,7 +51,7 @@ interface CreatePageStoreState {
 
 
 
-export const useSignInPageStore = create<CreatePageStoreState>()(
+export const useCreatePageStore = create<CreatePageStoreState>()(
   devtools(
     persist(
       (set, get) => ({
