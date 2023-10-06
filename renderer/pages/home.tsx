@@ -13,8 +13,13 @@ function Home() {
   const router = useRouter();
   // const delImageDescObj = useStore(useCreatePageStore, (state) => state.delImageDescObj);
   const [projectName, setProjectName] = React.useState<string>('');
-  const { setImages, setImageUrls, delImageDescObj, delSwiperImageDescObj } =
-    useCreatePageStore();
+  const {
+    setImages,
+    setImageUrls,
+    delImageDescObj,
+    delSwiperImageDescObj,
+    setImagesToDelete,
+  } = useCreatePageStore();
   const handleProjectNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProjectName(e.target.value);
   };
@@ -35,6 +40,7 @@ function Home() {
     setImageUrls([]);
     delImageDescObj();
     delSwiperImageDescObj();
+    setImagesToDelete([]);
   }, []);
   return (
     <React.Fragment>

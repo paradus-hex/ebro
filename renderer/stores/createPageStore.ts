@@ -15,6 +15,7 @@ interface CreatePageStoreState {
   images: File[];
   imageDesc: { desc: string }[];
   imageDescObj: { [key: string]: { desc: string, name: string, url: string } };
+  imagesToDelete: string[];
   imageSwiperDescObj: { [key: string]: string };
   setValues: (values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>) => void;
   setProjectKey: (projectKey: string) => void;
@@ -40,123 +41,17 @@ interface CreatePageStoreState {
   setSwiperImageDescObj: (key: string, value: string) => void;
   delSwiperImageDescObj: () => void;
   delIndiSwiperImageDescObj: (key: string) => void;
-
+  pushImagesToDelete: (url: string) => void;
+  getImagesToDelete: () => string[];
+  setImagesToDelete: (imagesToDelete: string[]) => void;
 
 
 }
 
-// export const useCreatePageStore = create(
-//   immer<CreatePageStoreState>((set, get) => ({
-//     values: {
-//       userName: 'dev',
-//       projectName: 'dev',
-//       address: '325/A',
-//       zipCode: '1217',
-//       city: 'Dhaka',
-//       yearOfConstruction: 2000,
-//       sizeOfProperty: 10,
-//       sizeOfHome: 10,
-//       numberOfBedRooms: 1,
-//       numberOfBathRooms: 69,
-//       architecturalStyle: ['Modern', 'Contemporary'],
-//       outbuildings: ['Garage', 'Guest House'],
-//       uniqueSellingPoints: 'Soundproof walls to stay safe from screaming wives',
-//       interiorFeatures: 'Cold floors to sleep on',
-//       localAttractions: 'Local slums to get daily reality checks',
-//       geographicalFeatures: 'Mountain for views and also to jump off of',
-//       nearbyAmenities: 'Psychiatrist office, Swimming pool full of sharks',
-//       updatedAt: new Date().toISOString(),
-//       isFavorite: false,
-//     },
-//     projectKey: '',
-//     response: "",
-//     note: "",
-//     imageUrls: [],
-//     images: [],
-//     imageDesc: [],
-//     imageDescObj: {},
-//     imageSwiperDescObj: {},
-//     setValues: (values) => set({ values }),
-//     setProjectKey: (projectKey) => set({ projectKey }),
-//     setResponse: (response) => set({ response }),
-//     setNote: (note) => set({ note }),
-//     getValues: () => get().values,
-//     getProjectKey: () => get().projectKey,
-//     getResponse: () => get().response,
-//     getNote: () => get().note,
-//     getImageUrls: () => get().imageUrls,
-//     setImageUrls: (imageUrls) => set({ imageUrls }),
-//     delImageUrls: (index) => {
-//       let urlArr = [...get().imageUrls];
-//       urlArr.splice(index, 1);
-//       set({ imageUrls: urlArr })
-//     },
-//     getImages: () => get().images,
-//     setImages: (images) => set({ images }),
-//     setImageDesc: (imageDesc) => set({ imageDesc }),
-//     getImageDesc: () => get().imageDesc,
-//     delImageDesc: (index) => {
-//       let arrDesc = [...get().imageDesc];
-//       arrDesc.splice(index, 1);
-//       set({
-//         imageDesc: arrDesc,
-//       });
-//     },
-//     setImageDescObj: (key, value) => {
-//       set((state) => ({
-//         imageDescObj: {
-//           ...state.imageDescObj,
-//           [key]: { ...value, desc: value.desc }
-//         }
-//       }))
-//     },
-//     delImageDescObj: () => {
-//       set((state) => ({
-//         imageDescObj: {}
-//       }))
-//     },
-//     getImageDescObj: () => { return get().imageDescObj },
-//     delIndiImageDescObj: (key) => {
-//       set((state) => {
-//         delete state.imageDescObj[key];
-//       })
-//     },
-//     setSwiperImageDescObj: (key, value) => {
-//       set((state) => ({
-//         imageSwiperDescObj: {
-//           ...state.imageSwiperDescObj,
-//           [key]: value
-//         }
-//       }))
-//     },
-//     delSwiperImageDescObj: () => {
-//       set((state) => ({
-//         imageSwiperDescObj: {}
-//       }))
-//     },
-//     getSwiperImageDescObj: () => { return get().imageSwiperDescObj },
-//     delIndiSwiperImageDescObj: (key) => {
-//       set((state) => {
-//         let obj = state.imageSwiperDescObj;
-//         let keys = Object.keys(obj);
-//         let values = Object.values(obj);
-//         values.splice(parseInt(key), 1);
-//         console.log("values", values);
-//         let newObj = {};
-//         for (let i = 0; i < values.length; i++) {
-//           newObj[i.toString()] = values[i];
-//         }
-//         return { imageSwiperDescObj: newObj }
-//       })
-//     }
-//   })),
-
-
-// );
 
 
 
-export const useCreatePageStore = create<CreatePageStoreState>()(
+export const useSignInPageStore = create<CreatePageStoreState>()(
   devtools(
     persist(
       (set, get) => ({
@@ -189,6 +84,7 @@ export const useCreatePageStore = create<CreatePageStoreState>()(
         imageDesc: [],
         imageDescObj: {},
         imageSwiperDescObj: {},
+        imagesToDelete: [],
         setValues: (values) => set({ values }),
         setProjectKey: (projectKey) => set({ projectKey }),
         setResponse: (response) => set({ response }),
@@ -215,6 +111,13 @@ export const useCreatePageStore = create<CreatePageStoreState>()(
             imageDesc: arrDesc,
           });
         },
+        getImagesToDelete: () => get().imagesToDelete,
+        pushImagesToDelete: (url) => {
+          set((state) => ({
+            imagesToDelete: [...state.imagesToDelete, url]
+          }))
+        },
+        setImagesToDelete: (imagesToDelete) => set({ imagesToDelete }),
         setImageDescObj: (key, value) => {
           set((state) => ({
             imageDescObj: {
@@ -232,7 +135,7 @@ export const useCreatePageStore = create<CreatePageStoreState>()(
         delIndiImageDescObj: (key) => {
           set((state) => {
             delete state.imageDescObj[key];
-            return state;
+            return state
           })
         },
         setSwiperImageDescObj: (key, value) => {
@@ -264,10 +167,9 @@ export const useCreatePageStore = create<CreatePageStoreState>()(
           })
         }
       }),
-      { name: 'createPageStore' }
+      { name: 'pageStore' }
     )
   )
 )
-
 
 
