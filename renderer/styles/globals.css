@@ -95,7 +95,7 @@
     @apply bg-gradient-to-r from-rose-600 to-rose-500 bg-clip-text text-transparent;
   }
   .primary_grad {
-    @apply bg-gradient-to-r from-blue-700 via-blue-800 to-blue-800;
+    @apply bg-gradient-to-r from-slate-900 via-slate-900 to-slate-800;
   }
 }
 .splide > ul {

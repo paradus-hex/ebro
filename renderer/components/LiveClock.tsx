@@ -19,7 +19,7 @@ function LiveClock({ className }) {
   const amPm = time.getHours() >= 12 ? 'PM' : 'AM';
 
   return (
-    <div className={`${className}`}>
+    <div className={`font-semibold tracking-wide ${className}`}>
       {hours}:{minutes}:{seconds} {amPm}
     </div>
   );
