@@ -8,6 +8,8 @@ import {
   saveImagesToCloud,
   setProjects,
   updateProjectDetails,
+  setImagesDescToCloud,
+  updateImagesDescToCloud,
 } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
@@ -96,7 +98,7 @@ const FinalPage: NextPageWithLayout = () => {
       await setProjects({
         ...getValues(),
         // imagesDesc: getImageDesc(),
-        imagesDesc: getImageDescObj(),
+        // imagesDesc: getImageDescObj(),
         response: getResponse(),
         projectName,
       })
@@ -107,19 +109,31 @@ const FinalPage: NextPageWithLayout = () => {
             `${projectName}_${docRef.id}`,
             getImages(),
           );
-          return downloadUrls;
+          return { downloadUrls, docRef };
         })
-        .then((downloadURLs) =>
-          console.log('FireStorage Urls: ', downloadURLs),
+        .then(
+          ({ downloadUrls, docRef }) => {
+            console.log('FireStorage Urls: ', downloadUrls),
+              setImagesDescToCloud(docRef.id, getImageDescObj(), downloadUrls);
+          },
+          //////}
         );
     } else {
       updateProjectDetails(projectID, {
         ...getValues(),
-        imagesDesc: getImageDesc(),
+
         response: getResponse(),
         projectName,
       });
-      saveImagesToCloud('user1', `${projectName}_${projectID}`, getImages());
+      // imagesDesc: getImageDesc(),
+
+      saveImagesToCloud(
+        'user1',
+        `${projectName}_${projectID}`,
+        getImages(),
+      ).then(async (list) => {
+        updateImagesDescToCloud(projectID, getImageDescObj(), list);
+      });
     }
     router.push('/home');
   };

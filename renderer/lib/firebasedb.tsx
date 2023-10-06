@@ -27,6 +27,7 @@ import {
   ref,
   uploadBytes,
 } from 'firebase/storage';
+import { forEach } from 'lodash';
 
 export interface ProjectData {
   address: string;
@@ -219,4 +220,73 @@ export async function deleteProjectPhotosFromCloud(folderPath: string) {
     console.log(e);
     return e;
   }
+}
+
+export async function setImagesDescToCloud(
+  key: string,
+  imagesDescObj: Object,
+  sortedLinks: string[],
+) {
+  const docRef = doc(db, 'projects', key);
+  const getUrlFileName = (url) => {
+    const urlParts = url.split('/');
+
+    const lastPart = urlParts[urlParts.length - 1];
+    const fileName = lastPart.split('?')[0];
+
+    let temp = decodeURIComponent(fileName);
+    let name = temp.split('/');
+    let name1 = name[name.length - 1];
+
+    return name1;
+  };
+
+  let temp = { ...imagesDescObj };
+  console.log('temp', temp);
+
+  sortedLinks.forEach((url) => {
+    let name = getUrlFileName(url);
+    console.log(name);
+
+    temp[name] = { ...imagesDescObj[name], desc: imagesDescObj[name].desc };
+    temp[name] = { ...imagesDescObj[name], url: url };
+  });
+  updateDoc(docRef, { imagesDesc: temp }).then((e) => {
+    console.log(key, 'has been updated');
+  });
+}
+
+export async function updateImagesDescToCloud(
+  key: string,
+  imagesDescObj: Object,
+  sortedLinks: string[],
+) {
+  // console.log(sortedLinks);
+  const docRef = doc(db, 'projects', key);
+  const getUrlFileName = (url) => {
+    const urlParts = url.split('/');
+
+    const lastPart = urlParts[urlParts.length - 1];
+    const fileName = lastPart.split('?')[0];
+
+    let temp = decodeURIComponent(fileName);
+    let name = temp.split('/');
+    let name1 = name[name.length - 1];
+
+    return name1;
+  };
+
+  let temp = { ...imagesDescObj };
+  console.log('temp', temp);
+
+  sortedLinks.forEach((url) => {
+    let name = getUrlFileName(url);
+    console.log(name);
+
+    temp[name] = { ...imagesDescObj[name], desc: imagesDescObj[name].desc };
+    temp[name] = { ...imagesDescObj[name], url: url };
+  });
+  updateDoc(docRef, { imagesDesc: temp }).then((e) => {
+    console.log(key, 'has been updated');
+  });
 }
