@@ -183,6 +183,7 @@ export async function getImageDescFromCloud(key: string) {
 export async function getImageUrlsFromCloud(folderPath: string) {
   const folderRef = ref(storage, folderPath);
   const items = await listAll(folderRef);
+  console.log(items);
   const downloadURLs: string[] = [];
   const names: string[] = [];
   try {
@@ -201,7 +202,18 @@ export async function getImageUrlsFromCloud(folderPath: string) {
 }
 
 export async function deleteProjectPhotosFromCloud(folderPath: string) {
+  console.log(folderPath);
   const folderRef = ref(storage, folderPath);
   const items = await listAll(folderRef);
-  return await deleteObject(folderRef);
+  console.log(items);
+  try {
+    await Promise.all(
+      items.items.map(async (itemRef) => {
+        await deleteObject(itemRef);
+      }),
+    );
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
 }

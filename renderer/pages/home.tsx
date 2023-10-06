@@ -10,7 +10,8 @@ import { useCreatePageStore } from '../stores/createPageStore';
 function Home() {
   const router = useRouter();
   const [projectName, setProjectName] = React.useState<string>('');
-  const { setImages, setImageUrls } = useCreatePageStore();
+  const { setImages, setImageUrls, delImageDescObj, delSwiperImageDescObj } =
+    useCreatePageStore();
   const handleProjectNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProjectName(e.target.value);
   };
@@ -29,6 +30,8 @@ function Home() {
   useEffect(() => {
     setImages([]);
     setImageUrls([]);
+    delImageDescObj();
+    delSwiperImageDescObj();
   }, []);
   return (
     <React.Fragment>

@@ -42,7 +42,7 @@ export default function MyProjectCard({
     router.push(
       `/create?params=${encodeURIComponent(
         JSON.stringify({
-          key: id,
+          projectID: id,
           passedProjectName: projectName,
           intention: 'update',
           prev: 'home',
@@ -97,7 +97,7 @@ export default function MyProjectCard({
         ></AiOutlineArrowRight>
         <RiDeleteBin2Line
           onClick={(e) => {
-            console.log(deleteProjectPhotosFromCloud(`images/user1/${id}`));
+            deleteProjectPhotosFromCloud(`images/user1/${projectName}_${id}`);
             delFromSelectedCards(id);
             deleteProject(id);
           }}

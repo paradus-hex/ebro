@@ -17,7 +17,7 @@ import 'swiper/css/scrollbar';
 import React from 'react';
 
 interface Params {
-  key: string;
+  projectID: string;
   projectName: string;
   intention: string;
   prev: string;
@@ -55,14 +55,15 @@ const ImageUpload = () => {
   } = useCreatePageStore();
 
   const loadImages = async (
-    key: string,
+    projectID: string,
     passedProjectName: string,
     intention: string,
     prev: string,
   ) => {
     if (prev === 'home' && intention === 'update') {
+      // console.log(projectID, passedProjectName, intention, prev);
       await getImageUrlsFromCloud(
-        `images/user1/${passedProjectName}_${getProjectKey()}`,
+        `images/user1/${passedProjectName}_${projectID}`,
       ).then((urls) => {
         console.log('urls', urls);
 
@@ -90,7 +91,7 @@ const ImageUpload = () => {
 
         console.log('mapping in progress');
 
-        getImageDescFromCloud(key).then((desc) => {
+        getImageDescFromCloud(projectID).then((desc) => {
           let keys = Object.keys(desc);
           keys.forEach((element) => {
             console.log('element', element);
@@ -236,8 +237,8 @@ const ImageUpload = () => {
     const parsedParams: Params = params
       ? JSON.parse(decodeURIComponent(params as string))
       : {};
-    const { key, passedProjectName, intention, prev } = parsedParams;
-    loadImages(key, passedProjectName, intention, prev);
+    const { projectID, passedProjectName, intention, prev } = parsedParams;
+    loadImages(projectID, passedProjectName, intention, prev);
   }, []);
 
   return (
