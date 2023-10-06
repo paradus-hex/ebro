@@ -28,12 +28,15 @@ import {
 } from '../lib/constants';
 import { ReactElement, useEffect, useState } from 'react';
 import { useCreatePageStore } from '../stores/createPageStore';
-import { getProjectDetails } from '../lib/firebasedb';
+import {
+  deleteProjectPhotosFromCloud,
+  getProjectDetails,
+} from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import { useSignInPageStore } from '../stores/signInPageStore';
 
 interface Params {
-  key: string;
+  projectID: string;
   passedProjectName: string;
   intention: string;
   prev: string;
@@ -84,7 +87,7 @@ function Create() {
   const parsedParams: Params = params
     ? JSON.parse(decodeURIComponent(params as string))
     : {};
-  const { key, passedProjectName, intention, prev } = parsedParams;
+  const { projectID, passedProjectName, intention, prev } = parsedParams;
   // console.log(passedProjectName, 'ssssssssssss', key, intention, prev);
   const {
     setValues,
@@ -103,14 +106,14 @@ function Create() {
     if (prev !== 'home') {
       return;
     }
-    // if (key === undefined && prev === 'home') {
+    // if (projectID === undefined && prev === 'home') {
     //   form.reset(emptyProjectData);
     //   setResponse('');
     //   setValues({ ...emptyProjectData, projectName: passedProjectName });
     //   return;
     // }
-    key &&
-      (await getProjectDetails(key).then((data) => {
+    projectID &&
+      (await getProjectDetails(projectID).then((data) => {
         form.reset(data);
         setResponse(data.response);
         setValues(data);
@@ -120,7 +123,11 @@ function Create() {
   const handleGenerateClick = () => {
     router.push(
       `/finalpage?params=${encodeURIComponent(
-        JSON.stringify({ projectName: passedProjectName, intention, key }),
+        JSON.stringify({
+          projectName: passedProjectName,
+          intention,
+          projectID,
+        }),
       )}`,
     );
   };
@@ -137,7 +144,11 @@ function Create() {
   const handleNextPageClick = () => {
     router.push(
       `/finalpage?params=${encodeURIComponent(
-        JSON.stringify({ projectName: passedProjectName, intention, key }),
+        JSON.stringify({
+          projectName: passedProjectName,
+          intention,
+          projectID,
+        }),
       )}`,
     );
   };
@@ -148,7 +159,11 @@ function Create() {
       setResponse(message.content.slice(1, -1));
       router.push(
         `/finalpage?params=${encodeURIComponent(
-          JSON.stringify({ projectName: passedProjectName, intention, key }),
+          JSON.stringify({
+            projectName: passedProjectName,
+            intention,
+            projectID,
+          }),
         )}`,
       );
     },
