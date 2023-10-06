@@ -4,7 +4,6 @@ import SideNavbar from './ui/SideNavbar';
 import { RxAvatar } from 'react-icons/rx';
 import { useRouter } from 'next/router';
 
-import { get } from 'lodash';
 import useStore from '../stores/useStore';
 import { useSignInPageStore } from '../stores/signInPageStore';
 
