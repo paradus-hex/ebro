@@ -1,7 +1,12 @@
+
+import { immer } from "zustand/middleware/immer";
 import { z } from "zod";
 import { signInformSchema } from "../pages/signin";
-import { create } from "zustand";
-import { immer } from "zustand/middleware/immer";
+import { create, StateCreator } from "zustand";
+import { devtools, persist, PersistOptions } from "zustand/middleware";
+
+
+
 
 interface SignInPagePageStoreState {
   values: z.infer<typeof signInformSchema>;
@@ -21,24 +26,30 @@ interface SignInPagePageStoreState {
   setSignedIn: (signedIn: boolean) => void;
 }
 
-export const useSignInPageStore = create(
-  immer<SignInPagePageStoreState>((set, get) => ({
-    values: {
-      email: '',
-      password: '',
-    },
-    signedIn: true,
-    user_id: '',
-    account_type: '',
-    account_id: '',
-    setAccount_id: (account_id) => set({ account_id }),
-    getAccount_id: () => get().account_id,
-    setAccount_type: (account_type) => set({ account_type }),
-    getAccount_type: () => get().account_type,
-    setUser_id: (user_id) => set({ user_id }),
-    getUser_id: () => get().user_id,
-    setValues: (values) => set({ values }),
-    getValues: () => get().values,
-    getSignedIn: () => get().signedIn,
-    setSignedIn: (signedIn) => set({ signedIn }),
-  })));
+export const useSignInPageStore = create<SignInPagePageStoreState>()(
+  devtools(
+    persist(
+      (set, get) => ({
+        values: {
+          email: '',
+          password: '',
+        },
+        signedIn: false,
+        user_id: '',
+        account_type: '',
+        account_id: '',
+        setAccount_id: (account_id) => set({ account_id }),
+        getAccount_id: () => get().account_id,
+        setAccount_type: (account_type) => set({ account_type }),
+        getAccount_type: () => get().account_type,
+        setUser_id: (user_id) => set({ user_id }),
+        getUser_id: () => get().user_id,
+        setValues: (values) => set({ values }),
+        getValues: () => get().values,
+        getSignedIn: () => get().signedIn,
+        setSignedIn: (signedIn) => set({ signedIn }),
+      }),
+      { name: 'bearStore' }
+    )
+  )
+)

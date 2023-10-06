@@ -17,6 +17,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { useSignInPageStore } from '../stores/signInPageStore';
 import { createAcc } from '../lib/firebasedb';
+import { useStore } from '../stores/useStore';
 // import { set } from 'lodash';
 
 export const signInformSchema = z.object({
@@ -33,6 +34,10 @@ export const signInformSchema = z.object({
 export default function signin() {
   const router = useRouter();
   const [login, setLogin] = useState<boolean>(true);
+  // const signedIn = useStore(useSignInPageStore, (state) => state.signedIn)
+
+  // const { setSignedIn } = useStore();
+
   const {
     setValues,
     getValues: getStoredValues,
