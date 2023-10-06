@@ -96,6 +96,7 @@ const FinalPage: NextPageWithLayout = () => {
         projectName,
       }).then((docRef) => {
         console.log(docRef.id);
+
         saveImagesToCloud('user1', `${projectName}_${docRef.id}`, getImages());
       });
     } else {
