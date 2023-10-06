@@ -279,14 +279,20 @@ export async function updateImagesDescToCloud(
   let temp = { ...imagesDescObj };
   console.log('temp', temp);
 
-  sortedLinks.forEach((url) => {
-    let name = getUrlFileName(url);
-    console.log(name);
+  if (sortedLinks != undefined) {
+    sortedLinks.forEach((url) => {
+      let name = getUrlFileName(url);
+      console.log(name);
 
-    temp[name] = { ...imagesDescObj[name], desc: imagesDescObj[name].desc };
-    temp[name] = { ...imagesDescObj[name], url: url };
-  });
-  updateDoc(docRef, { imagesDesc: temp }).then((e) => {
-    console.log(key, 'has been updated');
-  });
+      temp[name] = { ...imagesDescObj[name], desc: imagesDescObj[name].desc };
+      temp[name] = { ...imagesDescObj[name], url: url };
+    });
+    updateDoc(docRef, { imagesDesc: temp }).then((e) => {
+      console.log(key, 'has been updated');
+    });
+  } else {
+    updateDoc(docRef, { imagesDesc: temp }).then((e) => {
+      console.log(key, 'has been updated');
+    });
+  }
 }
