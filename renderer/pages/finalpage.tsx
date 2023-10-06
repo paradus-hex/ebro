@@ -91,6 +91,7 @@ const FinalPage: NextPageWithLayout = () => {
   };
 
   const handleSaveToCloudClick = async () => {
+    setCloudSaveDisabled(true);
     if (intention === 'create') {
       await setProjects({
         ...getValues(),
@@ -120,7 +121,6 @@ const FinalPage: NextPageWithLayout = () => {
       });
       saveImagesToCloud('user1', `${projectName}_${projectID}`, getImages());
     }
-    setCloudSaveDisabled(true);
     router.push('/home');
   };
 
