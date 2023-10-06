@@ -31,9 +31,10 @@ const ImageUpload = () => {
   const [expriment, setExperiment] = useState<{
     id: string;
     data: { url: string; descArr: string }[];
-  }>();
+  }>({ id: '', data: [] });
 
   const [getImageDescObjState, setImageDescObjState] = useState<any>({});
+  const [projectIdImageUpload, setProjectIdImageUpload] = useState<string>('');
 
   const [imageKey, setKey] = useState<string>('0');
   const swiperRef = React.useRef(null);
@@ -168,6 +169,7 @@ const ImageUpload = () => {
     const files = Array.from(e.target.files);
     console.log('files', files[0]);
     setImages(getImages().concat(files));
+
     if (files.length > 0) {
       const imageUrls = files.map((file) => URL.createObjectURL(file));
       imageUrls.forEach((url, index) => {
@@ -177,6 +179,10 @@ const ImageUpload = () => {
           url: url,
         });
         setSwiperImageDescObj(index.toString(), files[index].name);
+        let temp = { ...expriment };
+        temp.data.push({ url: url, descArr: '' });
+        setExperiment(temp);
+        console.log('experiment', expriment);
       });
       setSelectedImages([...selectedImages, ...imageUrls]);
       setImageUrls([...selectedImages, ...imageUrls]);
@@ -225,6 +231,7 @@ const ImageUpload = () => {
       ? JSON.parse(decodeURIComponent(params as string))
       : {};
     const { projectID, passedProjectName, intention, prev } = parsedParams;
+    setProjectIdImageUpload(projectID);
     loadImages(projectID, passedProjectName, intention, prev);
   }, []);
 
