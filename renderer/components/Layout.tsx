@@ -3,7 +3,9 @@ import Script from 'next/script';
 import SideNavbar from './ui/SideNavbar';
 import { RxAvatar } from 'react-icons/rx';
 import { useRouter } from 'next/router';
+import useStore from '../stores/useStore';
 import { useSignInPageStore } from '../stores/signInPageStore';
+import { set } from 'lodash';
 
 // const { getValues, setValues } = useSignedInStoreState();
 
@@ -15,14 +17,18 @@ import { useSignInPageStore } from '../stores/signInPageStore';
 
 export default function Layout({ children }) {
   const { getSignedIn, setSignedIn } = useSignInPageStore();
-  const signedIn = getSignedIn();
+  // const signedIn = getSignedIn();
+  const signedIn = useStore(useSignInPageStore, (state) => state.signedIn);
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
   useEffect(() => {
-    if (!signedIn) {
+    if (signedIn == false) {
       router.push('/signin');
     }
-  }, [signedIn]);
+  }, []);
+
+  console.log('sign in state', signedIn);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
