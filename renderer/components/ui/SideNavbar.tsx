@@ -11,8 +11,10 @@ import LiveClock from '../LiveClock';
 import { Button } from './button';
 import { logout } from '../../lib/firebasedb';
 import Link from 'next/link';
+import { useSignInPageStore } from '../../stores/signInPageStore';
 export default function SideNavbar({ open }) {
   const router = useRouter();
+  const { getSignedIn, setSignedIn } = useSignInPageStore();
   const handleClick = (e) => {
     e.target.id === 'dashboardBtn' && router.push('/home');
   };
@@ -74,6 +76,7 @@ export default function SideNavbar({ open }) {
             <Button
               onClick={(e) => {
                 logout().then((e) => {
+                  setSignedIn(false);
                   router.push('/signin');
                 });
               }}
