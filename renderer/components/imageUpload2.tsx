@@ -4,11 +4,7 @@ import Image from 'next/image';
 import '@splidejs/react-splide/css';
 import { Pagination } from 'swiper/modules';
 import { useImageStore } from '../stores/imageStore';
-import useStore from '../stores/useStore';
-import {
-  getImageDescFromCloud,
-  getImageUrlsFromCloud,
-} from '../lib/firebasedb';
+import { getImageDescFromCloud } from '../lib/firebasedb';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -16,7 +12,6 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import React from 'react';
-import { set } from 'lodash';
 
 interface Params {
   projectID: string;
@@ -27,24 +22,15 @@ interface Params {
 }
 
 const ImageUpload = () => {
-  const [imageKey, setKey] = useState<string>('0');
   const swiperRef = React.useRef(null);
   const inputElement = useRef(null);
   const router = useRouter();
 
-  //getImageArray(): { url: string, desc: string, file?: File }[];
-
-  // imagesToDel: { url: string, desc: string }[];
-  // pushImageArray: (item: { url: string, desc: string }) => void;
-  // pushImagesToDel: (item: { url: string, desc: string }) => void;
-
-  // onAddDesc: (index: number, value: string) => void;
-  // onDelete: (index: number) => void;
   const {
     setImageArray,
     getImageArray,
     pushImageArray,
-    pushImagesToDel,
+    getImagesToDel,
     onAddDesc,
     onDelete,
   } = useImageStore();
@@ -54,9 +40,15 @@ const ImageUpload = () => {
     passedProjectName: string,
     intention: string,
     prev: string,
-  ) => {};
+  ) => {
+    if (prev === 'home' && intention === 'update') {
+      const imageDesc = await getImageDescFromCloud(projectID);
+      setImageArray(imageDesc);
+    } else {
+      setImageArray(getImageArray());
+    }
+  };
 
-  const deleteImageFromState = (index: number) => {};
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
@@ -66,7 +58,6 @@ const ImageUpload = () => {
         pushImageArray({ url, desc: '', file });
       }
     }
-    console.log('inside handle image change', getImageArray());
   };
 
   const handleImageMoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +69,6 @@ const ImageUpload = () => {
         pushImageArray({ url, desc: '', file });
       }
     }
-    console.log('inside handle image change', getImageArray());
   };
 
   useEffect(() => {
@@ -87,9 +77,8 @@ const ImageUpload = () => {
       ? JSON.parse(decodeURIComponent(params as string))
       : {};
     const { projectID, passedProjectName, intention, prev } = parsedParams;
-    // loadImages(projectID, passedProjectName, intention, prev);
+    loadImages(projectID, passedProjectName, intention, prev);
   }, []);
-  console.log('image array', getImageArray());
   return (
     <div className="mx-5 mt-7 max-w-xs">
       {getImageArray()?.length === 0 ? (
@@ -140,14 +129,6 @@ const ImageUpload = () => {
                   <button
                     onClick={(e) => {
                       onDelete(swiperRef.current.activeIndex);
-                      if (
-                        swiperRef.current.activeIndex === 0 &&
-                        getImageArray().length > 1
-                      ) {
-                        swiperRef.current.slideNext();
-                      } else {
-                        swiperRef.current.slidePrev();
-                      }
                     }}
                     className="absolute top-2 text-center right-2 bg-red-800 hover:bg-red-500 text-white hover:scale-105 text-sm h-[20px] w-[20px] "
                   >
@@ -158,12 +139,12 @@ const ImageUpload = () => {
               </SwiperSlide>
             ))}
           </Swiper>
-
           <input
             type="text"
             className="mt-8"
             id="imageDesc"
             ref={inputElement}
+            value={getImageArray()[swiperRef.current?.activeIndex]?.desc}
             onChange={(e) => {
               onAddDesc(swiperRef.current.activeIndex, e.target.value);
             }}
@@ -188,9 +169,6 @@ const ImageUpload = () => {
             </label>
             <button
               onClick={() => {
-                // setImageDescObjState({});
-                // delSwiperImageDescObj();
-                // delImageDescObj();
                 setImageArray([]);
               }}
             >

@@ -2,13 +2,10 @@
 import { z } from "zod";
 import { create } from "zustand";
 import { formSchema } from "../pages/create";
-
-
 import { devtools, persist, } from "zustand/middleware";
 
 interface CreatePageStoreState {
   values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>;
-  projectKey: string;
   response: string;
   note: string;
   imageUrls: string[];
@@ -17,10 +14,8 @@ interface CreatePageStoreState {
   imageDescObj: { [key: string]: { desc: string, name: string, url: string } };
   imageSwiperDescObj: { [key: string]: string };
   setValues: (values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>) => void;
-  setProjectKey: (projectKey: string) => void;
   setResponse: (response: string) => void;
   getValues: () => { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>;
-  getProjectKey: () => string;
   getResponse: () => string;
   getNote: () => string;
   setNote: (note: string) => void;
@@ -40,50 +35,7 @@ interface CreatePageStoreState {
   setSwiperImageDescObj: (key: string, value: string) => void;
   delSwiperImageDescObj: () => void;
   delIndiSwiperImageDescObj: (key: string) => void;
-
 }
-
-
-
-interface CreatePageStoreState {
-  values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>;
-  projectKey: string;
-  response: string;
-  note: string;
-  imageUrls: string[];
-  images: File[];
-  imageDesc: { desc: string }[];
-  imageDescObj: { [key: string]: { desc: string, name: string, url: string } };
-  imageSwiperDescObj: { [key: string]: string };
-  setValues: (values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>) => void;
-  setProjectKey: (projectKey: string) => void;
-  setResponse: (response: string) => void;
-  getValues: () => { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>;
-  getProjectKey: () => string;
-  getResponse: () => string;
-  getNote: () => string;
-  setNote: (note: string) => void;
-  getImageUrls: () => string[];
-  setImageUrls: (imageUrls: string[]) => void;
-  delImageUrls: (index: number) => void;
-  getImages: () => File[];
-  setImages: (images: File[]) => void;
-  delImageDesc: (index: number) => void;
-  setImageDesc: (imageDesc: { desc: string }[]) => void;
-  getImageDesc: () => { desc: string }[];
-  getImageDescObj: () => { [key: string]: { desc: string, name: string, url: string } };
-  setImageDescObj: (key: string, value: { desc: string, name: string, url: string }) => void;
-  delImageDescObj: () => void;
-  delIndiImageDescObj: (key: string) => void;
-  getSwiperImageDescObj: () => { [key: string]: string };
-  setSwiperImageDescObj: (key: string, value: string) => void;
-  delSwiperImageDescObj: () => void;
-  delIndiSwiperImageDescObj: (key: string) => void;
-
-
-}
-
-
 
 
 export const useCreatePageStore = create<CreatePageStoreState>()(
@@ -111,7 +63,6 @@ export const useCreatePageStore = create<CreatePageStoreState>()(
           updatedAt: new Date().toISOString(),
           isFavorite: false,
         },
-        projectKey: '',
         response: "",
         note: "",
         imageUrls: [],
@@ -120,11 +71,9 @@ export const useCreatePageStore = create<CreatePageStoreState>()(
         imageDescObj: {},
         imageSwiperDescObj: {},
         setValues: (values) => set({ values }),
-        setProjectKey: (projectKey) => set({ projectKey }),
         setResponse: (response) => set({ response }),
         setNote: (note) => set({ note }),
         getValues: () => get().values,
-        getProjectKey: () => get().projectKey,
         getResponse: () => get().response,
         getNote: () => get().note,
         getImageUrls: () => get().imageUrls,
