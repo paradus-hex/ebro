@@ -33,7 +33,8 @@ export default function Layout({ children }) {
           className="sticky top-3 left-7 z-10 w-9 h-9 flex justify-center items-center text-center text-white bg-gray-700 rounded-full hover:bg-gray-600"
           onClick={toggleSidebar}
         >
-          <RxAvatar className="w-10 h-10" />
+          {/* <RxAvatar className="w-10 h-10" /> */}
+          <img src="/images/avatar.png" alt="alt" className="w-14 h-10" />
         </button>
       ) : (
         ' '

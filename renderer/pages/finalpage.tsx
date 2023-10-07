@@ -153,62 +153,64 @@ const FinalPage: NextPageWithLayout = () => {
       <div className="grid grid-cols-12 w-full gap-2 mx-2 h-screen">
         <div className="col-span-8 bg-transparent rounded">
           {isEditing ? (
-            <div className="w-full">
+            <div className="w-full relative">
+              <Button
+                disabled={isLoading}
+                className="absolute top-0 right-0 px-0 w-[80px] h-[30px] text-black bg-transparent hover:bg-transparent "
+                onClick={handleSaveClick}
+              >
+                <div className="flex flex-row gap-1 items-center text-[#06367a] font-bold">
+                  <img src="/images/done.svg" alt="edit" />
+                  <p className="tracking-wide">Save</p>
+                </div>
+              </Button>
               <textarea
-                className="w-full flex rounded-md h-[600px] mt-2 p-3 px-5 text-sm text-black outline-1 border border-1 border-gray-400"
+                className="w-full flex rounded-md h-[600px] mt-2 p-3 px-5 text-sm text-black outline-1 border border-1 border-gray-400 pt-[40px]"
                 disabled={isLoading}
                 value={text}
                 onChange={handleChange}
                 placeholder="Write here...."
                 required
               ></textarea>
-              <Button
-                disabled={isLoading}
-                className="mt-5 w-full"
-                onClick={handleSaveClick}
-              >
-                Save
-              </Button>
             </div>
           ) : (
-            <div className="flex flex-col">
-              <div className="rounded-md h-[600px] mt-2 p-3 px-5 text-sm text-black outline-0 bg-gray-300/50 overflow-auto text-left">
-                <p>{text}</p>
-              </div>
+            <div className="w-full relative">
               <Button
                 disabled={isLoading || editDisabled}
-                className="mt-5"
+                className="absolute top-0 right-0 px-0 w-[80px] h-[30px] text-black bg-transparent hover:bg-transparent"
                 onClick={handleEditClick}
               >
-                Edit
+                <div className="flex flex-row gap-1 items-center text-[#06367a] font-bold">
+                  <img src="/images/edit.svg" alt="edit" />
+                  <p className="tracking-wide">Edit</p>
+                </div>
               </Button>
+              <div className="w-full flex rounded-md h-[600px] mt-2 p-3 px-5 text-sm text-black outline-0 bg-gray-300/50 overflow-auto text-left pt-[40px]">
+                <p>{text}</p>
+              </div>
             </div>
           )}
         </div>
         <div className="col-span-4 ">
-          <div>
-            <div className="max-w-screen-2xl mx-auto px-4 py-16 lg:py-24 relative bg-white h-[600px] m-2 bg-white rounded mr-5 flex overflow-auto flex-col space-y-5 items-center justify-center">
-              <div className="flex flex-col md:flex-row gap-2">
-                <div className="flex flex-1">
-                  <div className="grid grid-cols-2 gap-2 overflow-auto">
-                    {getImageArray().map((image) => (
-                      <div className="border-red-700">
-                        {/* <!-- img_02 --> */}
-                        <img
-                          className="object-cover h-full"
-                          src={image.url}
-                          alt=""
-                        />
-                      </div>
-                    ))}
-                  </div>
+          <div className="max-w-screen-2xl mx-auto px-4 py-16 lg:py-24 relative h-[600px] m-2 rounded mr-5 flex overflow-auto flex-col space-y-5 items-center justify-center">
+            <div className="flex flex-wrap w-full gap-2 items-center justify-center">
+              {getImageArray().map((image) => (
+                <div className="border-red-700">
+                  {/* <!-- img_02 --> */}
+                  <img
+                    className="object-cover w-[320px] h-[200px]"
+                    src={image.url}
+                    alt=""
+                  />
                 </div>
-              </div>
+              ))}
             </div>
           </div>
+        </div>
+        <div className="col-span-12 flex justify-center">
           <Button
             disabled={isLoading || text.length === 0 || cloudSaveDisabled}
-            className="mt-3 w-full"
+            className="w-[200px]"
             onClick={handleSaveToCloudClick}
           >
             Save to Cloud

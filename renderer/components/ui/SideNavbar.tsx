@@ -24,7 +24,7 @@ export default function SideNavbar({ open }) {
         open ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
-      <div className="py-8 px-6 h-screen border border-r-2 border-nav_color bg-[#06367A] z-20 fixed top-0 left-0 w-full peer-focus:left-0 peer:transition duration-300">
+      <div className="py-8 px-6 h-screen border border-r-2 border-[#06367A] bg-[#06367A] z-20 fixed top-0 left-0 w-full peer-focus:left-0 peer:transition duration-300">
         <div className="flex flex-col justify-start item-center">
           <p className="text-xl m-0 p-0 translate-y-8 whitespace-nowrap overflow-hidden">
             {getValues().email}
@@ -83,7 +83,7 @@ export default function SideNavbar({ open }) {
                   router.push('/signin');
                 });
               }}
-              className="flex my-4 mb-2 justify-start gap-1 lg:gap-4 -translate-x-2 lg:translate-x-0 border border-gray-200 hover:border-none  hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto hover:bg-red-700"
+              className="flex my-4 mb-2 justify-start gap-1 lg:gap-4 -translate-x-2 lg:translate-x-0 hover:border-none hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto w-full bg-transparent"
             >
               <MdOutlineLogout className="text-2xl text-gray-200 group-hover:text-white shrink-0" />
               <h3 className="text-base text-gray-200 group-hover:text-white font-normal">

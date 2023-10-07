@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import '@splidejs/react-splide/css';
-import { Pagination } from 'swiper/modules';
+import { Pagination, Navigation } from 'swiper/modules';
 import { useImageStore } from '../stores/imageStore';
 import { getImageDescFromCloud } from '../lib/firebasedb';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -82,7 +82,7 @@ const ImageUpload = () => {
   return (
     <div className="mx-5 mt-7 max-w-xs">
       {getImageArray()?.length === 0 ? (
-        <div className="flex flex-col items-center h-[295px] cursor-pointer">
+        <div className="flex flex-col items-center w-[320px] h-[360px] cursor-pointer">
           <form>
             <label>
               <input
@@ -116,7 +116,8 @@ const ImageUpload = () => {
             pagination={{
               clickable: true,
             }}
-            modules={[Pagination]}
+            navigation={true}
+            modules={[Pagination, Navigation]}
             className="mySwiper"
             onSlideChange={(swiper) => {
               inputElement.current.value =
@@ -139,9 +140,9 @@ const ImageUpload = () => {
               </SwiperSlide>
             ))}
           </Swiper>
-          <input
-            type="text"
-            className="mt-8"
+          <textarea
+            // type="text"
+            className="mt-8 w-[320px] m-auto border focus:border-1 bg-white focus:outline-slate-400 rounded-lg px-2"
             id="imageDesc"
             ref={inputElement}
             value={getImageArray()[swiperRef.current?.activeIndex]?.desc}
