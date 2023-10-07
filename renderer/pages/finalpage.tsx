@@ -9,6 +9,8 @@ import {
   setProjects,
   updateProjectDetails,
   setImagesDescToCloud,
+  deleteProjectPhotosFromCloud,
+  deleteImagesFromCloud,
 } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
@@ -27,9 +29,8 @@ const FinalPage: NextPageWithLayout = () => {
   const [editDisabled, setEditDisabled] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const { getResponse, setResponse, getValues, getImages, getImageUrls } =
-    useCreatePageStore();
-  const { getImageArray } = useImageStore();
+  const { getResponse, setResponse, getValues } = useCreatePageStore();
+  const { getImageArray, getImagesToDel } = useImageStore();
   const [feedback, setFeedback] = useState<string>('');
   const { append, isLoading } = useChat({
     onFinish: (message) => {
@@ -41,7 +42,6 @@ const FinalPage: NextPageWithLayout = () => {
     ? JSON.parse(decodeURIComponent(params as string))
     : {};
   const { projectID, projectName, intention } = parsedParams;
-
   const handleGoBack = () => {
     router.push(
       `/create?params=${encodeURIComponent(
@@ -120,6 +120,7 @@ const FinalPage: NextPageWithLayout = () => {
         `${projectName}_${projectID}`,
         uploadedFiles,
       ).then(async (downloadUrls) => {
+        deleteImagesFromCloud(getImagesToDel().map((image) => image.url));
         setImagesDescToCloud(projectID, imagesDesc, downloadUrls);
       });
     }
@@ -187,16 +188,6 @@ const FinalPage: NextPageWithLayout = () => {
           <div>
             <div className="max-w-screen-2xl mx-auto px-4 py-16 lg:py-24 relative bg-white h-[600px] m-2 bg-white rounded mr-5 flex overflow-auto flex-col space-y-5 items-center justify-center">
               <div className="flex flex-col md:flex-row gap-2">
-                {/* <div className="flex flex-1 flex-col">
-                  <div className="flex flex-1 flex-col">
-                
-                    <img
-                      className="object-cover h-full"
-                      src="https://images.unsplash.com/photo-1664764119004-999a3f80a1b8?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NjY2NDEzMDc&ixlib=rb-4.0.3&q=80"
-                      alt=""
-                    />
-                  </div>
-                </div> */}
                 <div className="flex flex-1">
                   <div className="grid grid-cols-2 gap-2 overflow-auto">
                     {getImageArray().map((image) => (
@@ -214,9 +205,6 @@ const FinalPage: NextPageWithLayout = () => {
               </div>
             </div>
           </div>
-          {/* <div className="h-[600px] m-2 bg-white rounded mr-5 flex overflow-auto flex-col space-y-5 items-center justify-center">
-            <ImageUpload projectName="" prev="" intention="" />
-          </div> */}
           <Button
             disabled={isLoading || text.length === 0 || cloudSaveDisabled}
             className="mt-3 w-full"

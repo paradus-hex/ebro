@@ -30,12 +30,11 @@ const ImageUpload = () => {
     setImageArray,
     getImageArray,
     pushImageArray,
-    pushImagesToDel,
+    getImagesToDel,
     onAddDesc,
     onDelete,
   } = useImageStore();
 
-  const [initialInputValue, setInitialInputValue] = useState<string>('');
   const loadImages = async (
     projectID: string,
     passedProjectName: string,
@@ -45,9 +44,13 @@ const ImageUpload = () => {
     if (prev === 'home' && intention === 'update') {
       const imageDesc = await getImageDescFromCloud(projectID);
       setImageArray(imageDesc);
+    } else {
+      setImageArray(getImageArray());
     }
-    setInitialInputValue(getImageArray()[0]?.desc);
+    // setInitialInputValue(getImageArray()[0]?.desc);
   };
+
+  // console.log('images to delete', getImagesToDel());
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -79,7 +82,6 @@ const ImageUpload = () => {
     const { projectID, passedProjectName, intention, prev } = parsedParams;
     loadImages(projectID, passedProjectName, intention, prev);
   }, []);
-  console.log('image array', getImageArray());
   return (
     <div className="mx-5 mt-7 max-w-xs">
       {getImageArray()?.length === 0 ? (
@@ -153,7 +155,6 @@ const ImageUpload = () => {
             className="mt-8"
             id="imageDesc"
             ref={inputElement}
-            value={initialInputValue}
             onChange={(e) => {
               onAddDesc(swiperRef.current.activeIndex, e.target.value);
             }}

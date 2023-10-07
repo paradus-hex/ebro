@@ -9,9 +9,7 @@ import { useImageStore } from '../stores/imageStore';
 import useStore from '../stores/useStore';
 
 function Home() {
-  const { setImageArray } = useImageStore();
-  const imageArray = useStore(useImageStore, (state) => state.imageArray);
-
+  const { setImageArray, setImagesToDel } = useImageStore();
   const router = useRouter();
   const [projectName, setProjectName] = React.useState<string>('');
   const handleProjectNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,6 +28,7 @@ function Home() {
   };
   useEffect(() => {
     setImageArray([]);
+    setImagesToDel([]);
   }, []);
   return (
     <React.Fragment>

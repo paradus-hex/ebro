@@ -204,7 +204,6 @@ export async function getImageUrlsFromCloud(folderPath: string) {
 }
 
 export async function deleteProjectPhotosFromCloud(folderPath: string) {
-  console.log(folderPath);
   const folderRef = ref(storage, folderPath);
   const items = await listAll(folderRef);
   console.log(items);
@@ -217,6 +216,20 @@ export async function deleteProjectPhotosFromCloud(folderPath: string) {
   } catch (e) {
     console.log(e);
     return e;
+  }
+}
+
+export async function deleteImagesFromCloud(imageLinks: string[]) {
+  if (imageLinks.length > 0) {
+    imageLinks.forEach((url) => {
+      deleteObject(ref(storage, url))
+        .then(() => {
+          console.log('File deleted successfully');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
   }
 }
 

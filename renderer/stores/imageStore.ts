@@ -13,6 +13,7 @@ interface CreateImageStoreState {
   getImagesToDel: () => { url: string, desc: string }[];
   onAddDesc: (index: number, value: string) => void;
   onDelete: (index: number) => void;
+  setImagesToDel: (imagesToDel: { url: string, desc: string }[]) => void;
 
 }
 export const useImageStore = create<CreateImageStoreState>()(
@@ -42,53 +43,18 @@ export const useImageStore = create<CreateImageStoreState>()(
           }
         },
         onDelete: (index) => {
-          let tem = [...get().imageArray]
-          get().imagesToDel.push(tem[index])
-          tem.splice(index, 1)
-          set({ imageArray: tem })
-        }
+          let item = [...get().imageArray]
+          if (!item[index].file) get().pushImagesToDel(item[index])
+          item.splice(index, 1)
+          set({ imageArray: item })
+        },
+        setImagesToDel: (imagesToDel) => set({ imagesToDel })
       }),
       { name: 'imageStore' }
-
     )
   )
 )
 
-// imageArray = { url: '', desc: '' }[]
-// imagesToDel = { url: '', desc: '' }[]
-// pushImageArray()
-
-// // file input
-// onchange() {
-//   let = tem = [...imageAyy]
-//   fileFromPath.forEach((file) => {
-//     tem.push(file)
-//   }
-//   pushImageArray(tem)
-// }
-
-// // desc input
-// onchange(){
-//   let tem = [...imageAyy]
-//   tem[index].desc = value
-//   pushImageArray(tem)
-// }
-
-// onAdd({ url: '', desc: '' }){
-//   let tem = [...imageAyy]
-//   tem.push({ url: '', desc: '' })
-//   pushImageArray(tem)
-// }
-
-// onDelete(imdex){
-//   let tem = [...imageAyy]
-//   setImagesToDel(tem[index])
-//   tem.splice(index, 1)
-//   pushImageArray(tem)
-// }
-
-// [{ url: sdfm, des: sdfa }, { url: sdfm, des: sdfa }, { url: sdfm, des: sdfa }, { url: sdfm, des: sdfa }]
-// [{ url: local, des: sdfa }, { url: local, des: sdfa }, { url: local, des: sdfa }, { url: local, des: sdfa }]
 
 
 
