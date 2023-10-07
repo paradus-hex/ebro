@@ -5,19 +5,15 @@ import { Button } from '../components/ui/button';
 import { useRouter } from 'next/router';
 import Search from '../components/search';
 import Layout from '../components/Layout';
-import { useCreatePageStore } from '../stores/createPageStore';
 import { useImageStore } from '../stores/imageStore';
 import useStore from '../stores/useStore';
 
 function Home() {
-  const { setImageArray, pushImagesToDel, onAddDesc, onDelete, getImageArray } =
-    useImageStore();
+  const { setImageArray } = useImageStore();
   const imageArray = useStore(useImageStore, (state) => state.imageArray);
 
   const router = useRouter();
   const [projectName, setProjectName] = React.useState<string>('');
-  const { setImages, setImageUrls, delImageDescObj, delSwiperImageDescObj } =
-    useCreatePageStore();
   const handleProjectNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProjectName(e.target.value);
   };
@@ -32,14 +28,8 @@ function Home() {
       )}`,
     );
   };
-  // console.log(getProjectsUsingUsername('user3'));
   useEffect(() => {
     setImageArray([]);
-    setImages([]);
-    setImageUrls([]);
-    delImageDescObj();
-    delSwiperImageDescObj();
-    console.log('image array', getImageArray());
   }, []);
   return (
     <React.Fragment>

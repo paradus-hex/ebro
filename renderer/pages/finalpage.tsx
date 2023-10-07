@@ -9,12 +9,10 @@ import {
   setProjects,
   updateProjectDetails,
   setImagesDescToCloud,
-  updateImagesDescToCloud,
 } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
 import { useImageStore } from '../stores/imageStore';
-
 interface Params {
   projectID: string;
 
@@ -26,41 +24,23 @@ const FinalPage: NextPageWithLayout = () => {
   const router = useRouter();
   const [text, setText] = useState<string>('Initial text');
   const [cloudSaveDisabled, setCloudSaveDisabled] = useState<boolean>(false);
+  const [editDisabled, setEditDisabled] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  // const getImages = useCreatePageStore((state) => state.getImages);
-  const {
-    getResponse,
-    setResponse,
-    getValues,
-    getImages,
-    getImageUrls,
-    getImageDesc,
-    getImageDescObj,
-    // getImageDescObj
-  } = useCreatePageStore();
-  const {
-    setImageArray,
-    getImageArray,
-    pushImageArray,
-    pushImagesToDel,
-    onAddDesc,
-    onDelete,
-  } = useImageStore();
+  const { getResponse, setResponse, getValues, getImages, getImageUrls } =
+    useCreatePageStore();
+  const { getImageArray } = useImageStore();
   const [feedback, setFeedback] = useState<string>('');
   const { append, isLoading } = useChat({
     onFinish: (message) => {
       setResponse(message.content.slice(1, -1));
     },
   });
-  const [imagesUrls, setImagesUrls] = useState<string[]>(getImageUrls());
   const { params } = router.query;
   const parsedParams: Params = params
     ? JSON.parse(decodeURIComponent(params as string))
     : {};
   const { projectID, projectName, intention } = parsedParams;
-  // console.log(projectID);
 
   const handleGoBack = () => {
     router.push(
@@ -103,45 +83,44 @@ const FinalPage: NextPageWithLayout = () => {
 
   const handleSaveToCloudClick = async () => {
     setCloudSaveDisabled(true);
+    setEditDisabled(true);
+    const imagesDesc = getImageArray().map(({ url, desc }) => ({ url, desc }));
+    const uploadedFiles = getImageArray()
+      .map(({ file }) => file)
+      .filter((file) => file !== undefined);
+
     if (intention === 'create') {
       await setProjects({
         ...getValues(),
-        // imagesDesc: getImageDesc(),
-        // imagesDesc: getImageDescObj(),
+        imagesDesc,
         response: getResponse(),
         projectName,
       })
         .then(async (docRef) => {
-          // console.log(docRef.id);
           const downloadUrls = await saveImagesToCloud(
             'user1',
             `${projectName}_${docRef.id}`,
-            getImages(),
+            uploadedFiles,
           );
           return { downloadUrls, docRef };
         })
-        .then(
-          ({ downloadUrls, docRef }) => {
-            console.log('FireStorage Urls: ', downloadUrls),
-              setImagesDescToCloud(docRef.id, getImageArray(), downloadUrls);
-          },
-          //////}
-        );
+        .then(({ downloadUrls, docRef }) => {
+          setImagesDescToCloud(docRef.id, imagesDesc, downloadUrls);
+        });
     } else {
       updateProjectDetails(projectID, {
         ...getValues(),
-
+        imagesDesc,
         response: getResponse(),
         projectName,
       });
-      // imagesDesc: getImageDesc(),
 
       saveImagesToCloud(
         'user1',
         `${projectName}_${projectID}`,
-        getImages(),
-      ).then(async (list) => {
-        updateImagesDescToCloud(projectID, getImageArray(), list);
+        uploadedFiles,
+      ).then(async (downloadUrls) => {
+        setImagesDescToCloud(projectID, imagesDesc, downloadUrls);
       });
     }
     router.push('/home');
@@ -195,7 +174,7 @@ const FinalPage: NextPageWithLayout = () => {
                 <p>{text}</p>
               </div>
               <Button
-                disabled={isLoading}
+                disabled={isLoading || editDisabled}
                 className="mt-5"
                 onClick={handleEditClick}
               >

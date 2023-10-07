@@ -4,14 +4,12 @@ import { devtools, persist, } from "zustand/middleware";
 
 
 interface CreateImageStoreState {
-
   imageArray: { url: string, desc: string, file?: File }[];
-
   imagesToDel: { url: string, desc: string }[];
   setImageArray: (imageArray: { url: string, desc: string, file?: File }[]) => void;
   pushImageArray: (item: { url: string, desc: string, file?: File }) => void;
   pushImagesToDel: (item: { url: string, desc: string }) => void;
-  getImageArray: () => { url: string, desc: string }[];
+  getImageArray: () => { url: string, desc: string, file?: File }[];
   getImagesToDel: () => { url: string, desc: string }[];
   onAddDesc: (index: number, value: string) => void;
   onDelete: (index: number) => void;

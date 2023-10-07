@@ -119,6 +119,7 @@ export async function getProjectsForCarousel(userName: string, col = projects) {
 }
 
 export async function setProjects(data: any, col = projects) {
+  console.log(data);
   return addDoc(col, data);
 }
 
@@ -179,8 +180,8 @@ export async function getImageDescFromCloud(key: string) {
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     const data = docSnap.data();
-    const specificField = data.imagesDesc;
-    return specificField;
+    const imageDesc = data.imagesDesc as { url: string; desc: string }[];
+    return imageDesc;
   }
 }
 
@@ -189,19 +190,16 @@ export async function getImageUrlsFromCloud(folderPath: string) {
   const items = await listAll(folderRef);
   console.log(items);
   const downloadURLs: string[] = [];
-  const names: string[] = [];
   try {
     await Promise.all(
       items.items.map(async (itemRef) => {
         const url = await getDownloadURL(itemRef);
-        names.push(itemRef.name);
         downloadURLs.push(url);
       }),
     );
-    return { downloadURLs, names };
+    return downloadURLs;
   } catch (e) {
     console.log(e);
-    return e;
   }
 }
 
@@ -224,75 +222,23 @@ export async function deleteProjectPhotosFromCloud(folderPath: string) {
 
 export async function setImagesDescToCloud(
   key: string,
-  imagesDescObj: Object,
+  imagesArray: {
+    url: string;
+    desc: string;
+  }[],
   sortedLinks: string[],
 ) {
   const docRef = doc(db, 'projects', key);
-  const getUrlFileName = (url) => {
-    const urlParts = url.split('/');
+  const offset = imagesArray.length - sortedLinks?.length;
+  const updatedImagesArray = [...imagesArray];
 
-    const lastPart = urlParts[urlParts.length - 1];
-    const fileName = lastPart.split('?')[0];
+  for (let i = offset; i < updatedImagesArray.length; i++) {
+    if (i - offset < sortedLinks.length) {
+      updatedImagesArray[i].url = sortedLinks[i - offset];
+    }
+  }
 
-    let temp = decodeURIComponent(fileName);
-    let name = temp.split('/');
-    let name1 = name[name.length - 1];
-
-    return name1;
-  };
-
-  let temp = { ...imagesDescObj };
-  console.log('temp', temp);
-
-  sortedLinks.forEach((url) => {
-    let name = getUrlFileName(url);
-    console.log(name);
-
-    temp[name] = { ...imagesDescObj[name], desc: imagesDescObj[name].desc };
-    temp[name] = { ...imagesDescObj[name], url: url };
-  });
-  updateDoc(docRef, { imagesDesc: temp }).then((e) => {
+  updateDoc(docRef, { imagesDesc: updatedImagesArray }).then((e) => {
     console.log(key, 'has been updated');
   });
-}
-
-export async function updateImagesDescToCloud(
-  key: string,
-  imagesDescObj: Object,
-  sortedLinks: string[],
-) {
-  // console.log(sortedLinks);
-  const docRef = doc(db, 'projects', key);
-  const getUrlFileName = (url) => {
-    const urlParts = url.split('/');
-
-    const lastPart = urlParts[urlParts.length - 1];
-    const fileName = lastPart.split('?')[0];
-
-    let temp = decodeURIComponent(fileName);
-    let name = temp.split('/');
-    let name1 = name[name.length - 1];
-
-    return name1;
-  };
-
-  let temp = { ...imagesDescObj };
-  console.log('temp', temp);
-
-  if (sortedLinks != undefined) {
-    sortedLinks.forEach((url) => {
-      let name = getUrlFileName(url);
-      console.log(name);
-
-      temp[name] = { ...imagesDescObj[name], desc: imagesDescObj[name].desc };
-      temp[name] = { ...imagesDescObj[name], url: url };
-    });
-    updateDoc(docRef, { imagesDesc: temp }).then((e) => {
-      console.log(key, 'has been updated');
-    });
-  } else {
-    updateDoc(docRef, { imagesDesc: temp }).then((e) => {
-      console.log(key, 'has been updated');
-    });
-  }
 }

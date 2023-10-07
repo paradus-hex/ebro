@@ -27,7 +27,6 @@ export default function MyProjectCard({
   favSelectedCards: (key: string) => void;
 }) {
   const router = useRouter();
-  const { setProjectKey } = useCreatePageStore();
   const setFav = (id: string) => {
     // console.log('is fav', id);
   };
@@ -35,10 +34,6 @@ export default function MyProjectCard({
     // console.log('is not fav', id);
   };
   const handleProjectArrowClick = () => {
-    // console.log(
-    //   `Address ${address}, ProjectName ${projectName}, ID ${id}, Isfav ${isFavourite}`,
-    // );
-    setProjectKey(id);
     router.push(
       `/create?params=${encodeURIComponent(
         JSON.stringify({
