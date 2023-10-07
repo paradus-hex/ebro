@@ -16,7 +16,7 @@ export default function ProjectSlider2() {
     }[]
   >([]);
   const { setProjectList } = useCreatePageStore();
-  const [Changed, setChanged] = useState(false);
+
   const delFromSelectedCards = (key: string) => {
     const filteredCards = selectedCards.filter((e) => e.key != key);
     setSelectedCards(filteredCards);
@@ -26,15 +26,15 @@ export default function ProjectSlider2() {
     const filteredCards = temp.filter((e) => e.key == key);
     filteredCards[0].isFavorite = !filteredCards[0].isFavorite;
     const restOfTheCards = temp.filter((e) => e.key != key);
-    let sedondaryTemp = [...filteredCards, ...restOfTheCards];
-    sedondaryTemp.sort((a, b) => {
+    let secondaryTemp = [...filteredCards, ...restOfTheCards];
+    secondaryTemp.sort((a, b) => {
       if (a.isFavorite !== b.isFavorite) {
         return b.isFavorite - a.isFavorite;
       }
       return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
     });
 
-    setSelectedCards([...sedondaryTemp]);
+    setSelectedCards([...secondaryTemp]);
   };
   const fillCarousel = async () => {
     const projects = await getProjectsForCarousel('user1'); // TODO: get username from context
