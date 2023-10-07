@@ -82,7 +82,7 @@ const ImageUpload = () => {
   return (
     <div className="mx-5 mt-7 max-w-xs">
       {getImageArray()?.length === 0 ? (
-        <div className="flex flex-col items-center h-[295px] cursor-pointer">
+        <div className="flex flex-col items-center w-[320px] h-[360px] cursor-pointer">
           <form>
             <label>
               <input
