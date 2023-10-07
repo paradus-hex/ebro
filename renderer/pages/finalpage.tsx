@@ -192,7 +192,7 @@ const FinalPage: NextPageWithLayout = () => {
         </div>
         <div className="col-span-4 ">
           <div>
-            <div className="max-w-screen-2xl mx-auto px-4 py-16 lg:py-24 relative bg-white h-[600px] m-2 bg-white rounded mr-5 flex overflow-auto flex-col space-y-5 items-center justify-center">
+            <div className="max-w-screen-2xl mx-auto px-4 py-16 lg:py-24 relative h-[600px] m-2 rounded mr-5 flex overflow-auto flex-col space-y-5 items-center justify-center">
               <div className="flex flex-col md:flex-row gap-2">
                 <div className="flex flex-1">
                   <div className="grid grid-cols-2 gap-2 overflow-auto">
@@ -211,9 +211,11 @@ const FinalPage: NextPageWithLayout = () => {
               </div>
             </div>
           </div>
+        </div>
+        <div className="col-span-12 flex justify-center">
           <Button
             disabled={isLoading || text.length === 0 || cloudSaveDisabled}
-            className="mt-3 w-full"
+            className="w-[200px]"
             onClick={handleSaveToCloudClick}
           >
             Save to Cloud
