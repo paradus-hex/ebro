@@ -155,7 +155,7 @@ const FinalPage: NextPageWithLayout = () => {
             <div className="w-full relative">
               <Button
                 disabled={isLoading}
-                className="absolute top-0 right-0 px-0 w-[80px] h-[30px] text-black bg-transparent hover:bg-transparent"
+                className="absolute top-0 right-0 px-0 w-[80px] h-[30px] text-black bg-transparent hover:bg-transparent "
                 onClick={handleSaveClick}
               >
                 <div className="flex flex-row gap-1 items-center text-[#06367a] font-bold">
@@ -164,7 +164,7 @@ const FinalPage: NextPageWithLayout = () => {
                 </div>
               </Button>
               <textarea
-                className="w-full flex rounded-md h-[600px] mt-2 p-3 px-5 text-sm text-black outline-1 border border-1 border-gray-400 pt-[30px]"
+                className="w-full flex rounded-md h-[600px] mt-2 p-3 px-5 text-sm text-black outline-1 border border-1 border-gray-400 pt-[40px]"
                 disabled={isLoading}
                 value={text}
                 onChange={handleChange}
@@ -184,27 +184,25 @@ const FinalPage: NextPageWithLayout = () => {
                   <p className="tracking-wide">Edit</p>
                 </div>
               </Button>
-              <div className="w-full flex rounded-md h-[600px] mt-2 p-3 px-5 text-sm text-black outline-0 bg-gray-300/50 overflow-auto text-left pt-[30px]">
+              <div className="w-full flex rounded-md h-[600px] mt-2 p-3 px-5 text-sm text-black outline-0 bg-gray-300/50 overflow-auto text-left pt-[40px]">
                 <p>{text}</p>
               </div>
             </div>
           )}
         </div>
         <div className="col-span-4 ">
-          <div>
-            <div className="max-w-screen-2xl mx-auto px-4 py-16 lg:py-24 relative h-[600px] m-2 rounded mr-5 flex overflow-auto flex-col space-y-5 items-center justify-center">
-              <div className="flex flex-wrap w-full gap-2 items-center justify-center">
-                {getImageArray().map((image) => (
-                  <div className="border-red-700">
-                    {/* <!-- img_02 --> */}
-                    <img
-                      className="object-cover w-[320px] h-[200px]"
-                      src={image.url}
-                      alt=""
-                    />
-                  </div>
-                ))}
-              </div>
+          <div className="max-w-screen-2xl mx-auto px-4 py-16 lg:py-24 relative h-[600px] m-2 rounded mr-5 flex overflow-auto flex-col space-y-5 items-center justify-center">
+            <div className="flex flex-wrap w-full gap-2 items-center justify-center">
+              {getImageArray().map((image) => (
+                <div className="border-red-700">
+                  {/* <!-- img_02 --> */}
+                  <img
+                    className="object-cover w-[320px] h-[200px]"
+                    src={image.url}
+                    alt=""
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </div>

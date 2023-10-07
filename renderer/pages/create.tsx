@@ -593,13 +593,13 @@ function Create() {
           )}
         </div>
 
-        <Button
+        {/* <Button
           className="text-xl mx-8 my-10 rounded-xl"
           onClick={handleGenerateClick}
           disabled={isLoading}
         >
           Generate
-        </Button>
+        </Button> */}
       </div>
     </div>
   );
