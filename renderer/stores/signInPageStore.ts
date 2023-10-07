@@ -48,7 +48,7 @@ export const useSignInPageStore = create<SignInPagePageStoreState>()(
         getSignedIn: () => get().signedIn,
         setSignedIn: (signedIn) => set({ signedIn }),
       }),
-      { name: 'bearStore' }
+      { name: 'signInStore' }
     )
   )
 )
