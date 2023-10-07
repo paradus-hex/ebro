@@ -9,11 +9,12 @@ import {
   setProjects,
   updateProjectDetails,
   setImagesDescToCloud,
-  updateImagesDescToCloud,
+  deleteProjectPhotosFromCloud,
+  deleteImagesFromCloud,
 } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
-
+import { useImageStore } from '../stores/imageStore';
 interface Params {
   projectID: string;
 
@@ -25,34 +26,22 @@ const FinalPage: NextPageWithLayout = () => {
   const router = useRouter();
   const [text, setText] = useState<string>('Initial text');
   const [cloudSaveDisabled, setCloudSaveDisabled] = useState<boolean>(false);
+  const [editDisabled, setEditDisabled] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  // const getImages = useCreatePageStore((state) => state.getImages);
-  const {
-    getResponse,
-    setResponse,
-    getValues,
-    getImages,
-    getImageUrls,
-    getImageDesc,
-    getImageDescObj,
-    // getImageDescObj
-  } = useCreatePageStore();
+  const { getResponse, setResponse, getValues } = useCreatePageStore();
+  const { getImageArray, getImagesToDel } = useImageStore();
   const [feedback, setFeedback] = useState<string>('');
   const { append, isLoading } = useChat({
     onFinish: (message) => {
       setResponse(message.content.slice(1, -1));
     },
   });
-  const [imagesUrls, setImagesUrls] = useState<string[]>(getImageUrls());
   const { params } = router.query;
   const parsedParams: Params = params
     ? JSON.parse(decodeURIComponent(params as string))
     : {};
   const { projectID, projectName, intention } = parsedParams;
-  // console.log(projectID);
-
   const handleGoBack = () => {
     router.push(
       `/create?params=${encodeURIComponent(
@@ -94,45 +83,45 @@ const FinalPage: NextPageWithLayout = () => {
 
   const handleSaveToCloudClick = async () => {
     setCloudSaveDisabled(true);
+    setEditDisabled(true);
+    const imagesDesc = getImageArray().map(({ url, desc }) => ({ url, desc }));
+    const uploadedFiles = getImageArray()
+      .map(({ file }) => file)
+      .filter((file) => file !== undefined);
+
     if (intention === 'create') {
       await setProjects({
         ...getValues(),
-        // imagesDesc: getImageDesc(),
-        // imagesDesc: getImageDescObj(),
+        imagesDesc,
         response: getResponse(),
         projectName,
       })
         .then(async (docRef) => {
-          // console.log(docRef.id);
           const downloadUrls = await saveImagesToCloud(
             'user1',
             `${projectName}_${docRef.id}`,
-            getImages(),
+            uploadedFiles,
           );
           return { downloadUrls, docRef };
         })
-        .then(
-          ({ downloadUrls, docRef }) => {
-            console.log('FireStorage Urls: ', downloadUrls),
-              setImagesDescToCloud(docRef.id, getImageDescObj(), downloadUrls);
-          },
-          //////}
-        );
+        .then(({ downloadUrls, docRef }) => {
+          setImagesDescToCloud(docRef.id, imagesDesc, downloadUrls);
+        });
     } else {
       updateProjectDetails(projectID, {
         ...getValues(),
-
+        imagesDesc,
         response: getResponse(),
         projectName,
       });
-      // imagesDesc: getImageDesc(),
 
       saveImagesToCloud(
         'user1',
         `${projectName}_${projectID}`,
-        getImages(),
-      ).then(async (list) => {
-        updateImagesDescToCloud(projectID, getImageDescObj(), list);
+        uploadedFiles,
+      ).then(async (downloadUrls) => {
+        deleteImagesFromCloud(getImagesToDel().map((image) => image.url));
+        setImagesDescToCloud(projectID, imagesDesc, downloadUrls);
       });
     }
     router.push('/home');
@@ -186,7 +175,7 @@ const FinalPage: NextPageWithLayout = () => {
                 <p>{text}</p>
               </div>
               <Button
-                disabled={isLoading}
+                disabled={isLoading || editDisabled}
                 className="mt-5"
                 onClick={handleEditClick}
               >
@@ -199,19 +188,9 @@ const FinalPage: NextPageWithLayout = () => {
           <div>
             <div className="max-w-screen-2xl mx-auto px-4 py-16 lg:py-24 relative bg-white h-[600px] m-2 bg-white rounded mr-5 flex overflow-auto flex-col space-y-5 items-center justify-center">
               <div className="flex flex-col md:flex-row gap-2">
-                {/* <div className="flex flex-1 flex-col">
-                  <div className="flex flex-1 flex-col">
-                
-                    <img
-                      className="object-cover h-full"
-                      src="https://images.unsplash.com/photo-1664764119004-999a3f80a1b8?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NjY2NDEzMDc&ixlib=rb-4.0.3&q=80"
-                      alt=""
-                    />
-                  </div>
-                </div> */}
                 <div className="flex flex-1">
                   <div className="grid grid-cols-2 gap-2 overflow-auto">
-                    {Object.values(getImageDescObj()).map((image) => (
+                    {getImageArray().map((image) => (
                       <div className="border-red-700">
                         {/* <!-- img_02 --> */}
                         <img
@@ -226,9 +205,6 @@ const FinalPage: NextPageWithLayout = () => {
               </div>
             </div>
           </div>
-          {/* <div className="h-[600px] m-2 bg-white rounded mr-5 flex overflow-auto flex-col space-y-5 items-center justify-center">
-            <ImageUpload projectName="" prev="" intention="" />
-          </div> */}
           <Button
             disabled={isLoading || text.length === 0 || cloudSaveDisabled}
             className="mt-3 w-full"
