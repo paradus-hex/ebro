@@ -29,7 +29,7 @@ const FinalPage: NextPageWithLayout = () => {
   const [editDisabled, setEditDisabled] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const { getResponse, setResponse, getValues } = useCreatePageStore();
+  const { getResponse, setResponse, getValues, getNote } = useCreatePageStore();
   const { getImageArray, getImagesToDel } = useImageStore();
   const [feedback, setFeedback] = useState<string>('');
   const { append, isLoading } = useChat({
@@ -96,6 +96,7 @@ const FinalPage: NextPageWithLayout = () => {
         imagesDesc,
         response: getResponse(),
         projectName,
+        note: getNote(),
       })
         .then(async (docRef) => {
           const downloadUrls = await saveImagesToCloud(
@@ -114,6 +115,7 @@ const FinalPage: NextPageWithLayout = () => {
         imagesDesc,
         response: getResponse(),
         projectName,
+        note: getNote(),
       });
 
       saveImagesToCloud(
@@ -136,8 +138,7 @@ const FinalPage: NextPageWithLayout = () => {
     setIsModalOpen(false);
   };
   useEffect(() => {
-    const data = getResponse();
-    setText(data);
+    setText(getResponse())
   }, [isLoading, getResponse, setText]);
 
   return (

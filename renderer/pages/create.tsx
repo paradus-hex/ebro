@@ -27,12 +27,8 @@ import {
 } from '../lib/constants';
 import { ReactElement, useEffect, useState } from 'react';
 import { useCreatePageStore } from '../stores/createPageStore';
-import {
-  deleteProjectPhotosFromCloud,
-  getProjectDetails,
-} from '../lib/firebasedb';
+import { getProjectDetails } from '../lib/firebasedb';
 import Layout from '../components/Layout';
-import { useSignInPageStore } from '../stores/signInPageStore';
 import ImageUpload2 from '../components/imageUpload2';
 
 interface Params {
@@ -95,10 +91,14 @@ function Create() {
     setResponse,
     getValues: getStoredValues,
     getResponse: getStoredResponse,
+    setNote: setStoredNote,
+    getNote: getStoredNote,
   } = useCreatePageStore();
 
   const { projectName: loadedProjectName, ...defaultValues } =
     getStoredValues();
+
+  const [note, setNote] = useState(getStoredNote());
 
   const prevProjectDetailsFromCloud = async () => {
     if (prev !== 'home') {
@@ -108,6 +108,7 @@ function Create() {
       form.reset(emptyProjectData);
       setResponse('');
       setValues({ ...emptyProjectData, projectName: passedProjectName });
+      setNote('');
       return;
     }
     projectID &&
@@ -115,10 +116,12 @@ function Create() {
         form.reset(data);
         setResponse(data.response);
         setValues(data);
+        setNote(data.note);
       }));
   };
 
   const handleGenerateClick = () => {
+    setStoredNote(note);
     router.push(
       `/finalpage?params=${encodeURIComponent(
         JSON.stringify({
@@ -141,6 +144,7 @@ function Create() {
   });
 
   const handleNextPageClick = () => {
+    setStoredNote(note);
     router.push(
       `/finalpage?params=${encodeURIComponent(
         JSON.stringify({
@@ -183,6 +187,7 @@ function Create() {
       isFavorite: false,
     });
     append({ role: 'user', content: JSON.stringify(values) });
+    setStoredNote(note);
     setLoading(isLoading);
   }
 
@@ -587,6 +592,10 @@ function Create() {
             <Textarea
               className="w-[320px] m-auto border focus:border-1 bg-white focus:border-slate-400"
               placeholder="Type your notes here."
+              value={note}
+              onChange={(e) => {
+                setNote(e.target.value);
+              }}
             />
           )}
         </div>

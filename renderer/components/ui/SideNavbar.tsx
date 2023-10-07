@@ -27,7 +27,7 @@ export default function SideNavbar({ open }) {
       <div className="py-8 px-6 h-screen border border-r-2 border-[#06367A] bg-[#06367A] z-20 fixed top-0 left-0 w-full peer-focus:left-0 peer:transition duration-300">
         <div className="flex flex-col justify-start item-center">
           <p className="text-xl m-0 p-0 translate-y-8 whitespace-nowrap overflow-hidden">
-            {getValues().email}
+            {getValues().email.split('@')[0]}
           </p>
           <h1 className="mt-10 text-base text-center cursor-pointer text-blue-900 border-b border-gray-300 pb-4 w-full"></h1>
           <div className="my-4 border-b border-gray-300 pb-4">
