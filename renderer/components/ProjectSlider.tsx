@@ -5,6 +5,7 @@ import '@splidejs/react-splide/css';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { getProjectsForCarousel } from '../lib/firebasedb';
 import { useCreatePageStore } from '../stores/createPageStore';
+import { useSignInPageStore } from '../stores/signInPageStore';
 export default function ProjectSlider2() {
   const [selectedCards, setSelectedCards] = useState<
     {
@@ -16,6 +17,7 @@ export default function ProjectSlider2() {
     }[]
   >([]);
   const { setProjectList } = useCreatePageStore();
+  const { getUser_id } = useSignInPageStore();
 
   const delFromSelectedCards = (key: string) => {
     const filteredCards = selectedCards.filter((e) => e.key != key);
@@ -37,7 +39,7 @@ export default function ProjectSlider2() {
     setSelectedCards([...secondaryTemp]);
   };
   const fillCarousel = async () => {
-    const projects = await getProjectsForCarousel('user1'); // TODO: get username from context
+    const projects = await getProjectsForCarousel(getUser_id()); // TODO: get username from context
     console.log('Projects: ', projects);
     setProjectList(projects);
     setSelectedCards(projects);

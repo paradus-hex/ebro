@@ -40,6 +40,7 @@ interface Params {
   passedProjectName: string;
   intention: string;
   prev: string;
+  userID: string;
 }
 
 export const formSchema = z.object({
@@ -87,17 +88,14 @@ function Create() {
   const parsedParams: Params = params
     ? JSON.parse(decodeURIComponent(params as string))
     : {};
-  const { projectID, passedProjectName, intention, prev } = parsedParams;
-  // console.log(passedProjectName, 'ssssssssssss', key, intention, prev);
+  const { projectID, passedProjectName, intention, prev, userID } =
+    parsedParams;
   const {
     setValues,
     setResponse,
     getValues: getStoredValues,
     getResponse: getStoredResponse,
   } = useCreatePageStore();
-
-  const { getUser_id } = useSignInPageStore();
-  // console.log(key);
 
   const { projectName: loadedProjectName, ...defaultValues } =
     getStoredValues();
@@ -106,12 +104,12 @@ function Create() {
     if (prev !== 'home') {
       return;
     }
-    // if (projectID === undefined && prev === 'home') {
-    //   form.reset(emptyProjectData);
-    //   setResponse('');
-    //   setValues({ ...emptyProjectData, projectName: passedProjectName });
-    //   return;
-    // }
+    if (projectID === undefined && prev === 'home') {
+      form.reset(emptyProjectData);
+      setResponse('');
+      setValues({ ...emptyProjectData, projectName: passedProjectName });
+      return;
+    }
     projectID &&
       (await getProjectDetails(projectID).then((data) => {
         form.reset(data);
@@ -127,6 +125,7 @@ function Create() {
           projectName: passedProjectName,
           intention,
           projectID,
+          userID,
         }),
       )}`,
     );
@@ -148,6 +147,7 @@ function Create() {
           projectName: passedProjectName,
           intention,
           projectID,
+          userID,
         }),
       )}`,
     );
@@ -163,6 +163,7 @@ function Create() {
             projectName: passedProjectName,
             intention,
             projectID,
+            userID,
           }),
         )}`,
       );
@@ -176,12 +177,11 @@ function Create() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setValues({
       ...values,
-      projectName: passedProjectName, //Change these to test...........
-      userName: 'user1', //TODO: get userName and projectName from context
+      projectName: passedProjectName,
+      userName: userID,
       updatedAt: new Date().toISOString(),
       isFavorite: false,
     });
-    // console.log(setProjects(values));
     append({ role: 'user', content: JSON.stringify(values) });
     setLoading(isLoading);
   }
@@ -298,7 +298,6 @@ function Create() {
                   </div>
                 )}
               </div>
-
               <FormField
                 control={form.control}
                 name="yearOfConstruction"
@@ -419,7 +418,6 @@ function Create() {
                   </div>
                 )}
               </div>
-
               <FormField
                 control={form.control}
                 name="architecturalStyle"

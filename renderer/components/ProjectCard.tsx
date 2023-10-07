@@ -9,7 +9,7 @@ import {
   deleteProjectPhotosFromCloud,
 } from '../lib/firebasedb';
 import { useRouter } from 'next/router';
-import { useCreatePageStore } from '../stores/createPageStore';
+import { useSignInPageStore } from '../stores/signInPageStore';
 
 export default function MyProjectCard({
   projectName,
@@ -27,6 +27,7 @@ export default function MyProjectCard({
   favSelectedCards: (key: string) => void;
 }) {
   const router = useRouter();
+  const { getUser_id } = useSignInPageStore();
   const setFav = (id: string) => {
     // console.log('is fav', id);
   };
@@ -41,6 +42,7 @@ export default function MyProjectCard({
           passedProjectName: projectName,
           intention: 'update',
           prev: 'home',
+          userID: getUser_id(),
         }),
       )}`,
     );
@@ -92,7 +94,9 @@ export default function MyProjectCard({
         ></AiOutlineArrowRight>
         <RiDeleteBin2Line
           onClick={(e) => {
-            deleteProjectPhotosFromCloud(`images/user1/${projectName}_${id}`);
+            deleteProjectPhotosFromCloud(
+              `images/${getUser_id()}/${projectName}_${id}`,
+            );
             delFromSelectedCards(id);
             deleteProject(id);
           }}
