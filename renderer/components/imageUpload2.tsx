@@ -1,0 +1,214 @@
+import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
+import '@splidejs/react-splide/css';
+import { Pagination } from 'swiper/modules';
+import { useImageStore } from '../stores/imageStore';
+import useStore from '../stores/useStore';
+import {
+  getImageDescFromCloud,
+  getImageUrlsFromCloud,
+} from '../lib/firebasedb';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+import React from 'react';
+import { set } from 'lodash';
+
+interface Params {
+  projectID: string;
+  projectName: string;
+  intention: string;
+  prev: string;
+  passedProjectName: string;
+}
+
+const ImageUpload = () => {
+  const [imageKey, setKey] = useState<string>('0');
+  const swiperRef = React.useRef(null);
+  const inputElement = useRef(null);
+  const router = useRouter();
+
+  //getImageArray(): { url: string, desc: string, file?: File }[];
+
+  // imagesToDel: { url: string, desc: string }[];
+  // pushImageArray: (item: { url: string, desc: string }) => void;
+  // pushImagesToDel: (item: { url: string, desc: string }) => void;
+
+  // onAddDesc: (index: number, value: string) => void;
+  // onDelete: (index: number) => void;
+  const {
+    setImageArray,
+    getImageArray,
+    pushImageArray,
+    pushImagesToDel,
+    onAddDesc,
+    onDelete,
+  } = useImageStore();
+
+  const loadImages = async (
+    projectID: string,
+    passedProjectName: string,
+    intention: string,
+    prev: string,
+  ) => {};
+
+  const deleteImageFromState = (index: number) => {};
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const url = URL.createObjectURL(file);
+        pushImageArray({ url, desc: '', file });
+      }
+    }
+    console.log('inside handle image change', getImageArray());
+  };
+
+  const handleImageMoreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const url = URL.createObjectURL(file);
+        pushImageArray({ url, desc: '', file });
+      }
+    }
+    console.log('inside handle image change', getImageArray());
+  };
+
+  useEffect(() => {
+    const { params } = router.query;
+    const parsedParams: Params = params
+      ? JSON.parse(decodeURIComponent(params as string))
+      : {};
+    const { projectID, passedProjectName, intention, prev } = parsedParams;
+    // loadImages(projectID, passedProjectName, intention, prev);
+  }, []);
+  console.log('image array', getImageArray());
+  return (
+    <div className="mx-5 mt-7 max-w-xs">
+      {getImageArray()?.length === 0 ? (
+        <div className="flex flex-col items-center h-[295px] cursor-pointer">
+          <form>
+            <label>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageChange}
+              />
+              <div>
+                <Image
+                  className="cursor-pointer"
+                  src="/images/upload_image.svg"
+                  height={100}
+                  width={100}
+                  alt="upload image"
+                />
+              </div>
+            </label>
+            <div>Upload Image</div>
+          </form>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center w-full overflow-visible image-uploader">
+          <Swiper
+            slidesPerView={1}
+            centeredSlides={true}
+            spaceBetween={10}
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper;
+            }}
+            pagination={{
+              clickable: true,
+            }}
+            modules={[Pagination]}
+            className="mySwiper"
+            onSlideChange={(swiper) => {
+              inputElement.current.value =
+                getImageArray()[swiper.activeIndex].desc;
+            }}
+          >
+            {getImageArray().map((image, index) => (
+              <SwiperSlide key={image.url}>
+                <div className="relative w-[320px] h-[200px]">
+                  <button
+                    onClick={(e) => {
+                      onDelete(swiperRef.current.activeIndex);
+                      if (
+                        swiperRef.current.activeIndex === 0 &&
+                        getImageArray().length > 1
+                      ) {
+                        swiperRef.current.slideNext();
+                      } else {
+                        swiperRef.current.slidePrev();
+                      }
+                    }}
+                    className="absolute top-2 text-center right-2 bg-red-800 hover:bg-red-500 text-white hover:scale-105 text-sm h-[20px] w-[20px] "
+                  >
+                    x
+                  </button>
+                  <img src={image.url} alt="Preview" className="object-cover" />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          <input
+            type="text"
+            className="mt-8"
+            id="imageDesc"
+            ref={inputElement}
+            onChange={(e) => {
+              onAddDesc(swiperRef.current.activeIndex, e.target.value);
+            }}
+          />
+          <div>
+            <label>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageMoreChange}
+              />
+              <div className="flex gap-2">
+                <Image
+                  src="/images/upload_image.svg"
+                  height={22}
+                  width={22}
+                  alt="upload image"
+                />
+                <span className="text-lg"> Upload More</span>
+              </div>
+            </label>
+            <button
+              onClick={() => {
+                // setImageDescObjState({});
+                // delSwiperImageDescObj();
+                // delImageDescObj();
+                setImageArray([]);
+              }}
+            >
+              <div className="flex gap-2">
+                <Image
+                  src="/images/reset.svg"
+                  height={22}
+                  width={22}
+                  alt="upload image"
+                />
+                <span className="text-lg"> Reset</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ImageUpload;

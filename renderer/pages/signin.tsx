@@ -40,6 +40,7 @@ export default function signin() {
     setUser_id,
     setAccount_type,
     getAccount_type,
+    getSignedIn,
   } = useSignInPageStore();
 
   const [showPassLogin, setShowPassLogin] = useState<boolean>(false);
@@ -60,7 +61,9 @@ export default function signin() {
       login
         ? signInUser(values.email, values.password)
             .then((cred) => {
+              console.log('sign in hoise');
               setSignedIn(true);
+              console.log(getSignedIn());
               setUser_id(cred.user.uid);
               getAccountDetails(cred.user.uid)
                 .then((account) => {
