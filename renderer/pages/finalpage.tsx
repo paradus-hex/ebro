@@ -8,12 +8,15 @@ import {
   saveImagesToCloud,
   setProjects,
   updateProjectDetails,
+  setImagesDescToCloud,
+  updateImagesDescToCloud,
 } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
 
 interface Params {
-  key: string;
+  projectID: string;
+
   projectName: string;
   intention: string;
 }
@@ -47,8 +50,8 @@ const FinalPage: NextPageWithLayout = () => {
   const parsedParams: Params = params
     ? JSON.parse(decodeURIComponent(params as string))
     : {};
-  const { key, projectName, intention } = parsedParams;
-  // console.log(key);
+  const { projectID, projectName, intention } = parsedParams;
+  // console.log(projectID);
 
   const handleGoBack = () => {
     router.push(
@@ -56,7 +59,7 @@ const FinalPage: NextPageWithLayout = () => {
         JSON.stringify({
           passedProjectName: projectName,
           intention,
-          key,
+          projectID,
           prev: 'finalpage',
         }),
       )}`,
@@ -90,28 +93,48 @@ const FinalPage: NextPageWithLayout = () => {
   };
 
   const handleSaveToCloudClick = async () => {
+    setCloudSaveDisabled(true);
     if (intention === 'create') {
       await setProjects({
         ...getValues(),
         // imagesDesc: getImageDesc(),
-        imagesDesc: getImageDescObj(),
+        // imagesDesc: getImageDescObj(),
         response: getResponse(),
         projectName,
-      }).then((docRef) => {
-        console.log(docRef.id);
-
-        saveImagesToCloud('user1', `${projectName}_${docRef.id}`, getImages());
-      });
+      })
+        .then(async (docRef) => {
+          // console.log(docRef.id);
+          const downloadUrls = await saveImagesToCloud(
+            'user1',
+            `${projectName}_${docRef.id}`,
+            getImages(),
+          );
+          return { downloadUrls, docRef };
+        })
+        .then(
+          ({ downloadUrls, docRef }) => {
+            console.log('FireStorage Urls: ', downloadUrls),
+              setImagesDescToCloud(docRef.id, getImageDescObj(), downloadUrls);
+          },
+          //////}
+        );
     } else {
-      updateProjectDetails(key, {
+      updateProjectDetails(projectID, {
         ...getValues(),
-        imagesDesc: getImageDesc(),
+
         response: getResponse(),
         projectName,
       });
-      saveImagesToCloud('user1', `${projectName}_${key}`, getImages());
+      // imagesDesc: getImageDesc(),
+
+      saveImagesToCloud(
+        'user1',
+        `${projectName}_${projectID}`,
+        getImages(),
+      ).then(async (list) => {
+        updateImagesDescToCloud(projectID, getImageDescObj(), list);
+      });
     }
-    setCloudSaveDisabled(true);
     router.push('/home');
   };
 
