@@ -10,17 +10,17 @@ import { set } from 'lodash';
 export default function Layout({ children }) {
   const { getSignedIn, setSignedIn } = useSignInPageStore();
   // const signedIn = getSignedIn();
-  const signedIn = useStore(useSignInPageStore, (state) => state.signedIn);
+  // const signedIn = useStore(useSignInPageStore, (state) => state.signedIn);
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
-    if (signedIn == false) {
+    if (getSignedIn() == false) {
       router.push('/signin');
     }
   }, []);
 
-  console.log('sign in state', signedIn);
+  console.log('sign in state', getSignedIn());
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -45,7 +45,7 @@ export default function Layout({ children }) {
           sidebarOpen ? 'w-5/6 ' : 'w-screen'
         } h-screen transition-width duration-300 ease-in-out`}
       >
-        {children}
+        {getSignedIn() ? children : null}
       </div>
     </div>
   );
