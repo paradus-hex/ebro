@@ -3,10 +3,12 @@ import SearchRecommendationBox from './searchRecommendationBox';
 import { useState } from 'react';
 // import { useSearch } from '../context/searchContext';
 import { projects } from '../lib/constants';
+import { useCreatePageStore } from '../stores/createPageStore';
 
 export default function Search() {
   const [search, setSearch] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
+  const { getProjectList } = useCreatePageStore();
   const searchClick = () => {
     setSearch(true);
   };
@@ -14,15 +16,18 @@ export default function Search() {
   const searchRef = useRef(null);
   const check = (e) => {
     setSuggestions(
-      projects.filter((project) =>
-        project.name.toLowerCase().includes(e.target.value.toLowerCase()),
+      getProjectList().filter((project) =>
+        project.projectName
+          .toLowerCase()
+          .includes(e.target.value.toLowerCase()),
       ),
     );
+    console.log('suggestions in check', suggestions);
   };
 
   useEffect(() => {
     const clickAway = (e) => {
-      console.log(searchRef?.current?.contains(e.target));
+      // console.log(searchRef?.current?.contains(e.target));
       if (!searchRef?.current?.contains(e.target)) {
         setSearch(false);
       }

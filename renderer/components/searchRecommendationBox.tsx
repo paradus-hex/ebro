@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchListElement from './searchListElement';
+import SearchListElement from './SearchListElement';
 
 export default function SearchRecommendationBox({
   searchRef,
@@ -8,6 +8,7 @@ export default function SearchRecommendationBox({
   searchRef: React.MutableRefObject<any>;
   suggestions: any[];
 }) {
+  console.log('suggestions', suggestions);
   return (
     <ul
       ref={searchRef}
@@ -17,7 +18,8 @@ export default function SearchRecommendationBox({
         ? suggestions.map((project, index) => {
             return (
               <SearchListElement
-                name={project.name}
+                name={project.projectName}
+                projectId={project.key}
                 address={project.address}
                 key={index}
               />

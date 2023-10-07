@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect } from 'react';
 import Head from 'next/head';
 import ProjectSlider from '../components/ProjectSlider';
-import { Button } from '../components/ui/button';
+import { Button } from '../components/ui/Button';
 import { useRouter } from 'next/router';
 import Search from '../components/search';
 import Layout from '../components/Layout';

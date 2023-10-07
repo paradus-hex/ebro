@@ -123,7 +123,7 @@ const ImageUpload = () => {
                 getImageArray()[swiper.activeIndex].desc;
             }}
           >
-            {getImageArray().map((image, index) => (
+            {getImageArray()?.map((image, index) => (
               <SwiperSlide key={image.url}>
                 <div className="relative w-[320px] h-[200px]">
                   <button
