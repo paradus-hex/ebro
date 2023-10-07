@@ -193,21 +193,17 @@ const FinalPage: NextPageWithLayout = () => {
         <div className="col-span-4 ">
           <div>
             <div className="max-w-screen-2xl mx-auto px-4 py-16 lg:py-24 relative h-[600px] m-2 rounded mr-5 flex overflow-auto flex-col space-y-5 items-center justify-center">
-              <div className="flex flex-col md:flex-row gap-2">
-                <div className="flex flex-1">
-                  <div className="grid grid-cols-2 gap-2">
-                    {getImageArray().map((image) => (
-                      <div className="border-red-700">
-                        {/* <!-- img_02 --> */}
-                        <img
-                          className="object-cover w-[320px] h-[200px]"
-                          src={image.url}
-                          alt=""
-                        />
-                      </div>
-                    ))}
+              <div className="flex flex-wrap w-full gap-2 items-center justify-center">
+                {getImageArray().map((image) => (
+                  <div className="border-red-700">
+                    {/* <!-- img_02 --> */}
+                    <img
+                      className="object-cover w-[320px] h-[200px]"
+                      src={image.url}
+                      alt=""
+                    />
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
