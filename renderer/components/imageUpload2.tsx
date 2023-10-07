@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import '@splidejs/react-splide/css';
-import { Pagination } from 'swiper/modules';
+import { Pagination, Navigation } from 'swiper/modules';
 import { useImageStore } from '../stores/imageStore';
 import { getImageDescFromCloud } from '../lib/firebasedb';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -116,7 +116,8 @@ const ImageUpload = () => {
             pagination={{
               clickable: true,
             }}
-            modules={[Pagination]}
+            navigation={true}
+            modules={[Pagination, Navigation]}
             className="mySwiper"
             onSlideChange={(swiper) => {
               inputElement.current.value =
