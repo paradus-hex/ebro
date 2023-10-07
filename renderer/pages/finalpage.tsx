@@ -17,7 +17,7 @@ import { NextPageWithLayout } from './_app';
 import { useImageStore } from '../stores/imageStore';
 interface Params {
   projectID: string;
-
+  userID: string;
   projectName: string;
   intention: string;
 }
@@ -29,7 +29,7 @@ const FinalPage: NextPageWithLayout = () => {
   const [editDisabled, setEditDisabled] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const { getResponse, setResponse, getValues } = useCreatePageStore();
+  const { getResponse, setResponse, getValues, getNote } = useCreatePageStore();
   const { getImageArray, getImagesToDel } = useImageStore();
   const [feedback, setFeedback] = useState<string>('');
   const { append, isLoading } = useChat({
@@ -41,7 +41,7 @@ const FinalPage: NextPageWithLayout = () => {
   const parsedParams: Params = params
     ? JSON.parse(decodeURIComponent(params as string))
     : {};
-  const { projectID, projectName, intention } = parsedParams;
+  const { projectID, projectName, intention, userID } = parsedParams;
   const handleGoBack = () => {
     router.push(
       `/create?params=${encodeURIComponent(
@@ -49,6 +49,7 @@ const FinalPage: NextPageWithLayout = () => {
           passedProjectName: projectName,
           intention,
           projectID,
+          userID,
           prev: 'finalpage',
         }),
       )}`,
@@ -95,10 +96,11 @@ const FinalPage: NextPageWithLayout = () => {
         imagesDesc,
         response: getResponse(),
         projectName,
+        note: getNote(),
       })
         .then(async (docRef) => {
           const downloadUrls = await saveImagesToCloud(
-            'user1',
+            userID,
             `${projectName}_${docRef.id}`,
             uploadedFiles,
           );
@@ -113,10 +115,11 @@ const FinalPage: NextPageWithLayout = () => {
         imagesDesc,
         response: getResponse(),
         projectName,
+        note: getNote(),
       });
 
       saveImagesToCloud(
-        'user1',
+        userID,
         `${projectName}_${projectID}`,
         uploadedFiles,
       ).then(async (downloadUrls) => {
@@ -135,8 +138,7 @@ const FinalPage: NextPageWithLayout = () => {
     setIsModalOpen(false);
   };
   useEffect(() => {
-    const data = getResponse();
-    setText(data);
+    setText(getResponse())
   }, [isLoading, getResponse, setText]);
 
   return (
@@ -144,7 +146,7 @@ const FinalPage: NextPageWithLayout = () => {
       <Button
         className="sticky top-5 w-24 h-12"
         onClick={handleGoBack}
-        disabled={isLoading}
+        disabled={isLoading || editDisabled}
       >
         Go back
       </Button>
@@ -218,14 +220,14 @@ const FinalPage: NextPageWithLayout = () => {
       </div>
       <div className="flex flex-row w-full justify-between">
         <Button
-          disabled={isLoading}
+          disabled={isLoading || editDisabled}
           className="ml-4 my-2 bg-nav_primary text-white w-[200px] rounded-xl text-sm px-2 h-10 "
           onClick={handleAIButtonClick}
         >
           AI Modification
         </Button>
         <Button
-          disabled={isLoading}
+          disabled={isLoading || editDisabled}
           className="mr-4 my-2 bg-nav_primary w-[200px] text-white rounded-xl text-sm px-2 h-10 "
         >
           Export

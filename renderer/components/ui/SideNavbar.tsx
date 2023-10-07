@@ -14,7 +14,7 @@ import Link from 'next/link';
 import { useSignInPageStore } from '../../stores/signInPageStore';
 export default function SideNavbar({ open }) {
   const router = useRouter();
-  const { getSignedIn, setSignedIn } = useSignInPageStore();
+  const { setSignedIn, getValues } = useSignInPageStore();
   const handleClick = (e) => {
     e.target.id === 'dashboardBtn' && router.push('/home');
   };
@@ -26,6 +26,9 @@ export default function SideNavbar({ open }) {
     >
       <div className="py-8 px-6 h-screen border border-r-2 border-[#06367A] bg-[#06367A] z-20 fixed top-0 left-0 w-full peer-focus:left-0 peer:transition duration-300">
         <div className="flex flex-col justify-start item-center">
+          <p className="text-xl m-0 p-0 translate-y-8 whitespace-nowrap overflow-hidden">
+            {getValues().email.split('@')[0]}
+          </p>
           <h1 className="mt-10 text-base text-center cursor-pointer text-blue-900 border-b border-gray-300 pb-4 w-full"></h1>
           <div className="my-4 border-b border-gray-300 pb-4">
             <LiveClock className="flex justify-start px-0 mx-0 mt-2 mb-4 text-xl lg:text-2xl text-back translate-x-0 lg:translate-x-2" />

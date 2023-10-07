@@ -27,12 +27,8 @@ import {
 } from '../lib/constants';
 import { ReactElement, useEffect, useState } from 'react';
 import { useCreatePageStore } from '../stores/createPageStore';
-import {
-  deleteProjectPhotosFromCloud,
-  getProjectDetails,
-} from '../lib/firebasedb';
+import { getProjectDetails } from '../lib/firebasedb';
 import Layout from '../components/Layout';
-import { useSignInPageStore } from '../stores/signInPageStore';
 import ImageUpload2 from '../components/imageUpload2';
 
 interface Params {
@@ -40,6 +36,7 @@ interface Params {
   passedProjectName: string;
   intention: string;
   prev: string;
+  userID: string;
 }
 
 export const formSchema = z.object({
@@ -87,46 +84,51 @@ function Create() {
   const parsedParams: Params = params
     ? JSON.parse(decodeURIComponent(params as string))
     : {};
-  const { projectID, passedProjectName, intention, prev } = parsedParams;
-  // console.log(passedProjectName, 'ssssssssssss', key, intention, prev);
+  const { projectID, passedProjectName, intention, prev, userID } =
+    parsedParams;
   const {
     setValues,
     setResponse,
     getValues: getStoredValues,
     getResponse: getStoredResponse,
+    setNote: setStoredNote,
+    getNote: getStoredNote,
   } = useCreatePageStore();
-
-  const { getUser_id } = useSignInPageStore();
-  // console.log(key);
 
   const { projectName: loadedProjectName, ...defaultValues } =
     getStoredValues();
+
+  const [note, setNote] = useState(getStoredNote());
 
   const prevProjectDetailsFromCloud = async () => {
     if (prev !== 'home') {
       return;
     }
-    // if (projectID === undefined && prev === 'home') {
-    //   form.reset(emptyProjectData);
-    //   setResponse('');
-    //   setValues({ ...emptyProjectData, projectName: passedProjectName });
-    //   return;
-    // }
+    if (projectID === undefined && prev === 'home') {
+      form.reset(emptyProjectData);
+      setResponse('');
+      setValues({ ...emptyProjectData, projectName: passedProjectName });
+      setNote('');
+      return;
+    }
     projectID &&
       (await getProjectDetails(projectID).then((data) => {
         form.reset(data);
         setResponse(data.response);
         setValues(data);
+        setNote(data.note);
       }));
   };
 
   const handleGenerateClick = () => {
+    setStoredNote(note);
     router.push(
       `/finalpage?params=${encodeURIComponent(
         JSON.stringify({
           projectName: passedProjectName,
           intention,
           projectID,
+          userID,
         }),
       )}`,
     );
@@ -142,12 +144,14 @@ function Create() {
   });
 
   const handleNextPageClick = () => {
+    setStoredNote(note);
     router.push(
       `/finalpage?params=${encodeURIComponent(
         JSON.stringify({
           projectName: passedProjectName,
           intention,
           projectID,
+          userID,
         }),
       )}`,
     );
@@ -163,6 +167,7 @@ function Create() {
             projectName: passedProjectName,
             intention,
             projectID,
+            userID,
           }),
         )}`,
       );
@@ -176,13 +181,13 @@ function Create() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setValues({
       ...values,
-      projectName: passedProjectName, //Change these to test...........
-      userName: 'user1', //TODO: get userName and projectName from context
+      projectName: passedProjectName,
+      userName: userID,
       updatedAt: new Date().toISOString(),
       isFavorite: false,
     });
-    // console.log(setProjects(values));
     append({ role: 'user', content: JSON.stringify(values) });
+    setStoredNote(note);
     setLoading(isLoading);
   }
 
@@ -298,7 +303,6 @@ function Create() {
                   </div>
                 )}
               </div>
-
               <FormField
                 control={form.control}
                 name="yearOfConstruction"
@@ -419,7 +423,6 @@ function Create() {
                   </div>
                 )}
               </div>
-
               <FormField
                 control={form.control}
                 name="architecturalStyle"
@@ -589,6 +592,10 @@ function Create() {
             <Textarea
               className="w-[320px] m-auto border focus:border-1 bg-white focus:border-slate-400"
               placeholder="Type your notes here."
+              value={note}
+              onChange={(e) => {
+                setNote(e.target.value);
+              }}
             />
           )}
         </div>
