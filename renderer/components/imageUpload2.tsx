@@ -140,9 +140,9 @@ const ImageUpload = () => {
               </SwiperSlide>
             ))}
           </Swiper>
-          <input
-            type="text"
-            className="mt-8"
+          <textarea
+            // type="text"
+            className="mt-8 w-[320px] m-auto border focus:border-1 bg-white focus:outline-slate-400 rounded-lg px-2"
             id="imageDesc"
             ref={inputElement}
             value={getImageArray()[swiperRef.current?.activeIndex]?.desc}
