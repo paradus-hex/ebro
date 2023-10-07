@@ -587,7 +587,7 @@ function Create() {
           </Button>
           {notes && (
             <Textarea
-              className="w-[80%] m-auto border focus:border-1 bg-white focus:border-slate-400"
+              className="w-[320px] m-auto border focus:border-1 bg-white focus:border-slate-400"
               placeholder="Type your notes here."
             />
           )}
