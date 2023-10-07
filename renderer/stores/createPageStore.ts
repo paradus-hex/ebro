@@ -13,6 +13,7 @@ interface CreatePageStoreState {
   imageDesc: { desc: string }[];
   imageDescObj: { [key: string]: { desc: string, name: string, url: string } };
   imageSwiperDescObj: { [key: string]: string };
+  projectList: { userName: string; projectName: string; updatedAt: string; isFavorite: boolean; }[];
   setValues: (values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>) => void;
   setResponse: (response: string) => void;
   getValues: () => { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>;
@@ -35,6 +36,7 @@ interface CreatePageStoreState {
   setSwiperImageDescObj: (key: string, value: string) => void;
   delSwiperImageDescObj: () => void;
   delIndiSwiperImageDescObj: (key: string) => void;
+  setProjectList: (projectList: { userName: string; projectName: string; updatedAt: string; isFavorite: boolean; }[]) => void;
 }
 
 
@@ -70,6 +72,7 @@ export const useCreatePageStore = create<CreatePageStoreState>()(
         imageDesc: [],
         imageDescObj: {},
         imageSwiperDescObj: {},
+        projectList: [],
         setValues: (values) => set({ values }),
         setResponse: (response) => set({ response }),
         setNote: (note) => set({ note }),
@@ -141,7 +144,8 @@ export const useCreatePageStore = create<CreatePageStoreState>()(
             }
             return { imageSwiperDescObj: newObj }
           })
-        }
+        },
+        setProjectList: (projectList) => set({ projectList }),
       }),
       { name: 'pageStore' }
     )

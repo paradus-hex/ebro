@@ -4,6 +4,7 @@ import MyProjectCard from './ProjectCard';
 import '@splidejs/react-splide/css';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { getProjectsForCarousel } from '../lib/firebasedb';
+import { useCreatePageStore } from '../stores/createPageStore';
 export default function ProjectSlider2() {
   const [selectedCards, setSelectedCards] = useState<
     {
@@ -14,14 +15,13 @@ export default function ProjectSlider2() {
       isFavorite: any;
     }[]
   >([]);
-
+  const { setProjectList } = useCreatePageStore();
   const [Changed, setChanged] = useState(false);
   const delFromSelectedCards = (key: string) => {
     const filteredCards = selectedCards.filter((e) => e.key != key);
     setSelectedCards(filteredCards);
   };
   const favSelectedCards = (key: string) => {
-    // optimistic update for sorting
     let temp = [...selectedCards];
     const filteredCards = temp.filter((e) => e.key == key);
     filteredCards[0].isFavorite = !filteredCards[0].isFavorite;
@@ -39,6 +39,7 @@ export default function ProjectSlider2() {
   const fillCarousel = async () => {
     const projects = await getProjectsForCarousel('user1'); // TODO: get username from context
     console.log('Projects: ', projects);
+    setProjectList(projects);
     setSelectedCards(projects);
   };
   useEffect(() => {}, [selectedCards]);
