@@ -18,7 +18,6 @@ import {
 } from '../components/ui/Form';
 import { Input } from '../components/ui/input';
 import { MultiSelect } from '../components/MultiSelect';
-import ImageUpload from '../components/imageUpload';
 import { FormPopOver } from '../components/formPopOver';
 import { Textarea } from '../components/ui/textarea';
 import {

@@ -47,10 +47,7 @@ const ImageUpload = () => {
     } else {
       setImageArray(getImageArray());
     }
-    // setInitialInputValue(getImageArray()[0]?.desc);
   };
-
-  // console.log('images to delete', getImagesToDel());
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -132,14 +129,6 @@ const ImageUpload = () => {
                   <button
                     onClick={(e) => {
                       onDelete(swiperRef.current.activeIndex);
-                      if (
-                        swiperRef.current.activeIndex === 0 &&
-                        getImageArray().length > 1
-                      ) {
-                        swiperRef.current.slideNext();
-                      } else {
-                        swiperRef.current.slidePrev();
-                      }
                     }}
                     className="absolute top-2 text-center right-2 bg-red-800 hover:bg-red-500 text-white hover:scale-105 text-sm h-[20px] w-[20px] "
                   >
@@ -155,6 +144,7 @@ const ImageUpload = () => {
             className="mt-8"
             id="imageDesc"
             ref={inputElement}
+            value={getImageArray()[swiperRef.current?.activeIndex]?.desc}
             onChange={(e) => {
               onAddDesc(swiperRef.current.activeIndex, e.target.value);
             }}
