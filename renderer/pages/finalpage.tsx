@@ -152,35 +152,41 @@ const FinalPage: NextPageWithLayout = () => {
       <div className="grid grid-cols-12 w-full gap-2 mx-2 h-screen">
         <div className="col-span-8 bg-transparent rounded">
           {isEditing ? (
-            <div className="w-full">
+            <div className="w-full relative">
+              <Button
+                disabled={isLoading}
+                className="absolute top-0 right-0 px-0 w-[80px] h-[30px] text-black bg-transparent hover:bg-transparent"
+                onClick={handleSaveClick}
+              >
+                <div className="flex flex-row gap-1 items-center text-[#06367a] font-bold">
+                  <img src="/images/done.svg" alt="edit" />
+                  <p className="tracking-wide">Save</p>
+                </div>
+              </Button>
               <textarea
-                className="w-full flex rounded-md h-[600px] mt-2 p-3 px-5 text-sm text-black outline-1 border border-1 border-gray-400"
+                className="w-full flex rounded-md h-[600px] mt-2 p-3 px-5 text-sm text-black outline-1 border border-1 border-gray-400 pt-[30px]"
                 disabled={isLoading}
                 value={text}
                 onChange={handleChange}
                 placeholder="Write here...."
                 required
               ></textarea>
-              <Button
-                disabled={isLoading}
-                className="mt-5 w-full"
-                onClick={handleSaveClick}
-              >
-                Save
-              </Button>
             </div>
           ) : (
-            <div className="flex flex-col">
-              <div className="rounded-md h-[600px] mt-2 p-3 px-5 text-sm text-black outline-0 bg-gray-300/50 overflow-auto text-left">
-                <p>{text}</p>
-              </div>
+            <div className="w-full relative">
               <Button
                 disabled={isLoading || editDisabled}
-                className="mt-5"
+                className="absolute top-0 right-0 px-0 w-[80px] h-[30px] text-black bg-transparent hover:bg-transparent"
                 onClick={handleEditClick}
               >
-                Edit
+                <div className="flex flex-row gap-1 items-center text-[#06367a] font-bold">
+                  <img src="/images/edit.svg" alt="edit" />
+                  <p className="tracking-wide">Edit</p>
+                </div>
               </Button>
+              <div className="w-full flex rounded-md h-[600px] mt-2 p-3 px-5 text-sm text-black outline-0 bg-gray-300/50 overflow-auto text-left pt-[30px]">
+                <p>{text}</p>
+              </div>
             </div>
           )}
         </div>
