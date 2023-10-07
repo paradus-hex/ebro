@@ -53,12 +53,12 @@ export default function MyProjectCard({
   return (
     <div
       key={id}
-      className=" p-5 relative  flex justify-start items-center text-left min-w-[200px] min-h-[150px] rounded-lg  m-2 "
+      className=" p-5 relative  flex justify-start items-center text-left w-[250px] h-[150px] rounded-lg  m-2 "
     >
       <div className="w-[90%]   ">
         <BsHouse className="text-gray-700 w-[50px] h-[50px] mb-5"></BsHouse>
-        <h1 className="text-white font-bold ">{projectName}</h1>
-        <p className="text-gray font-bold text-sm">{address}</p>
+        <h1 className="text-white font-bold truncate">{projectName}</h1>
+        <p className="text-gray font-bold text-sm truncate">{address}</p>
       </div>
       <div className="w-[10%] h-[120px] flex flex-col justify-between ">
         <div

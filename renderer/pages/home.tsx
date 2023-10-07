@@ -61,11 +61,11 @@ function Home() {
           type="text"
           placeholder="Project Name"
           onChange={handleProjectNameChange}
-          className="w-[300px] bg-white rounded-md shadow p-2 input"
+          className="w-[300px] bg-white rounded-md shadow p-2 input border focus:border focus:outline-[#06367a]"
         />
 
         <Button
-          className="mt-10 text-xl rounded-md px-8 py-6 tracking-wider w-[300px]"
+          className="mt-10 text-xl rounded-md px-8 py-6 tracking-wider w-[300px] primary_grad shadow-lg shadow-gray-500"
           onClick={handleCreateClick}
           disabled={projectName.length === 0}
         >
