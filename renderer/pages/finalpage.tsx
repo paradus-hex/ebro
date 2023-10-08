@@ -150,8 +150,9 @@ const FinalPage: NextPageWithLayout = () => {
     setIsModalOpen(false);
   };
   useEffect(() => {
-    setText(getResponse());
-  }, [getResponse, setText]);
+    setResponse(text);
+    setButtonsDisabled(false);
+  }, [text]);
 
   return (
     <div className="flex flex-col w-full h-screen  justify-center">
