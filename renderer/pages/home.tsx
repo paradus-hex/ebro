@@ -6,11 +6,12 @@ import { useRouter } from 'next/router';
 import Search from '../components/search';
 import Layout from '../components/Layout';
 import { useImageStore } from '../stores/imageStore';
+import useStore from '../stores/useStore';
 import { useSignInPageStore } from '../stores/signInPageStore';
 
 function Home() {
   const { setImageArray, setImagesToDel } = useImageStore();
-  const { getUser_id, getValues } = useSignInPageStore();
+  const { getValues, getUser_id } = useSignInPageStore();
   const router = useRouter();
   const [projectName, setProjectName] = React.useState<string>('');
   const handleProjectNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +24,7 @@ function Home() {
           passedProjectName: projectName,
           intention: 'create',
           prev: 'home',
-          userID: getUser_id(),
+          userID: `${getValues().email}_${getUser_id()}`,
         }),
       )}`,
     );

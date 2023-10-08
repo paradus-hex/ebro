@@ -27,7 +27,7 @@ export default function MyProjectCard({
   favSelectedCards: (key: string) => void;
 }) {
   const router = useRouter();
-  const { getUser_id } = useSignInPageStore();
+  const { getUser_id, getValues } = useSignInPageStore();
   const setFav = (id: string) => {
     // console.log('is fav', id);
   };
@@ -42,7 +42,7 @@ export default function MyProjectCard({
           passedProjectName: projectName,
           intention: 'update',
           prev: 'home',
-          userID: getUser_id(),
+          userID: `${getValues().email}_${getUser_id()}`,
         }),
       )}`,
     );
@@ -95,7 +95,9 @@ export default function MyProjectCard({
         <RiDeleteBin2Line
           onClick={(e) => {
             deleteProjectPhotosFromCloud(
-              `images/${getUser_id()}/${projectName}_${id}`,
+              `images/${
+                getValues().email
+              }_${getUser_id()}/${projectName}_${id}`,
             );
             delFromSelectedCards(id);
             deleteProject(id);

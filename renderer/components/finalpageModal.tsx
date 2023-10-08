@@ -8,7 +8,7 @@ interface EditModalProps {
   text: string;
   feedback: string;
   isEditing: boolean;
-  isLoading: boolean;
+  buttonsDisabled: boolean;
   setText: React.Dispatch<React.SetStateAction<string>>;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -23,7 +23,7 @@ const EditModal: React.FC<EditModalProps> = ({
   text,
   feedback,
   isEditing,
-  isLoading,
+  buttonsDisabled,
   setText,
   setIsEditing,
   handleChange,
@@ -66,11 +66,7 @@ const EditModal: React.FC<EditModalProps> = ({
                 placeholder="Write here...."
                 required
               ></textarea>
-              <Button
-                disabled={isLoading}
-                className="mt-3 w-full"
-                onClick={handleSaveClick}
-              >
+              <Button className="mt-3 w-full" onClick={handleSaveClick}>
                 Save
               </Button>
             </div>
@@ -79,11 +75,7 @@ const EditModal: React.FC<EditModalProps> = ({
               <div className="rounded h-[200px] mt-2 p-3 text-sm text-black outline-0 bg-gray-300/50 overflow-auto text-left">
                 <p>{text}</p>
               </div>
-              <Button
-                disabled={isLoading}
-                className="mt-3"
-                onClick={handleEditClick}
-              >
+              <Button className="mt-3" onClick={handleEditClick}>
                 Edit
               </Button>
             </div>
@@ -96,11 +88,7 @@ const EditModal: React.FC<EditModalProps> = ({
               value={feedback}
               required
             ></textarea>
-            <Button
-              disabled={isLoading}
-              onClick={handleAISubmitClick}
-              className="mt-2 w-full"
-            >
+            <Button onClick={handleAISubmitClick} className="mt-2 w-full">
               Submit
             </Button>
           </div>

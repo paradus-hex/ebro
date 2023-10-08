@@ -17,7 +17,7 @@ export default function ProjectSlider2() {
     }[]
   >([]);
   const { setProjectList } = useCreatePageStore();
-  const { getUser_id } = useSignInPageStore();
+  const { getValues, getUser_id } = useSignInPageStore();
 
   const delFromSelectedCards = (key: string) => {
     const filteredCards = selectedCards.filter((e) => e.key != key);
@@ -39,8 +39,9 @@ export default function ProjectSlider2() {
     setSelectedCards([...secondaryTemp]);
   };
   const fillCarousel = async () => {
-    const projects = await getProjectsForCarousel(getUser_id()); // TODO: get username from context
-    console.log('Projects: ', projects);
+    const projects = await getProjectsForCarousel(
+      `${getValues().email}_${getUser_id()}`,
+    );
     setProjectList(projects);
     setSelectedCards(projects);
   };

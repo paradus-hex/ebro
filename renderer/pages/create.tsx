@@ -7,6 +7,7 @@ import { DevTool } from '@hookform/devtools';
 import { useForm } from 'react-hook-form';
 import { useChat } from 'ai/react';
 import { Loader2 } from 'lucide-react';
+import axios from 'axios';
 import {
   Form,
   FormControl,
@@ -30,6 +31,7 @@ import { useCreatePageStore } from '../stores/createPageStore';
 import { getProjectDetails } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import ImageUpload2 from '../components/imageUpload2';
+import chat from '../lib/chat';
 
 interface Params {
   projectID: string;
@@ -99,6 +101,8 @@ function Create() {
     getStoredValues();
 
   const [note, setNote] = useState(getStoredNote());
+  const [chatGptRes, setChatGptRes] = useState('');
+  const [disableButtons, setDisableButtons] = useState(false);
 
   const prevProjectDetailsFromCloud = async () => {
     if (prev !== 'home') {
@@ -136,7 +140,6 @@ function Create() {
   const handleGoBackClick = () => {
     router.push('/home');
   };
-  // console.log(key, key && getProjectDetails(key));
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -158,9 +161,46 @@ function Create() {
   };
 
   const textAlreadyExists = getStoredResponse().length !== 0;
-  const { append, isLoading } = useChat({
-    onFinish: (message) => {
-      setResponse(message.content.slice(1, -1));
+  // const { append, isLoading } = useChat({
+  //   api: '../lib/chat',
+  //   onFinish: (message) => {
+  //     setResponse(message.content.slice(1, -1));
+  //     router.push(
+  //       `/finalpage?params=${encodeURIComponent(
+  //         JSON.stringify({
+  //           projectName: passedProjectName,
+  //           intention,
+  //           projectID,
+  //           userID,
+  //         }),
+  //       )}`,
+  //     );
+  //   },
+  // });
+  const [loading, setLoading] = useState(false);
+  const [notesToggle, setNotesToggle] = useState(false);
+  const { control, formState, watch } = form;
+  const values = watch();
+  const { errors } = formState;
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setDisableButtons(true);
+    setValues({
+      ...values,
+      projectName: passedProjectName,
+      userName: userID,
+      updatedAt: new Date().toISOString(),
+      isFavorite: false,
+    });
+    // append({ role: 'user', content: JSON.stringify(values) });
+    setChatGptRes(await chat(JSON.stringify(values)));
+    setStoredNote(note);
+    // setLoading(isLoading);
+  }
+
+  useEffect(() => {
+    setDisableButtons(false);
+    if (chatGptRes.length > 0) {
+      setResponse(chatGptRes);
       router.push(
         `/finalpage?params=${encodeURIComponent(
           JSON.stringify({
@@ -171,25 +211,8 @@ function Create() {
           }),
         )}`,
       );
-    },
-  });
-  const [loading, setLoading] = useState(false);
-  const [notes, setNotes] = useState(false);
-  const { control, formState, watch } = form;
-  const values = watch();
-  const { errors } = formState;
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    setValues({
-      ...values,
-      projectName: passedProjectName,
-      userName: userID,
-      updatedAt: new Date().toISOString(),
-      isFavorite: false,
-    });
-    append({ role: 'user', content: JSON.stringify(values) });
-    setStoredNote(note);
-    setLoading(isLoading);
-  }
+    }
+  }, [chatGptRes]);
 
   useEffect(() => {
     prevProjectDetailsFromCloud();
@@ -199,14 +222,14 @@ function Create() {
     <div className="flex">
       <div className=" flex-col gap-10 justify-center w-[100%] px-auto mx-auto">
         <div className="flex justify-between mt-10 mb-8">
-          <Button disabled={isLoading} onClick={handleGoBackClick}>
+          <Button disabled={disableButtons} onClick={handleGoBackClick}>
             Go Back
           </Button>
           <h1 className="font-extrabold">
             {passedProjectName || 'Project Name'}
           </h1>
           <Button
-            disabled={!textAlreadyExists || isLoading}
+            disabled={!textAlreadyExists || disableButtons}
             onClick={handleNextPageClick}
             className="-translate-x-4"
           >
@@ -565,7 +588,7 @@ function Create() {
                 )}
               />
             </div>
-            <Button disabled={isLoading} type="submit">
+            <Button disabled={disableButtons} type="submit">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Submit
             </Button>
@@ -582,15 +605,15 @@ function Create() {
         flex-col justify-center items-center"
         >
           <Button
-            onClick={() => setNotes((prev) => !prev)}
-            disabled={isLoading}
+            onClick={() => setNotesToggle((prev) => !prev)}
+            disabled={disableButtons}
             className="m-5 rounded-xl"
           >
             Notes
           </Button>
-          {notes && (
+          {notesToggle && (
             <Textarea
-              className="w-[320px] m-auto border focus:border-1 bg-white focus:border-slate-400"
+              className="w-[320px] min-h-[140px] m-auto border focus:border-1 bg-white focus:border-slate-400"
               placeholder="Type your notes here."
               value={note}
               onChange={(e) => {
