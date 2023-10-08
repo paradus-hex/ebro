@@ -4,7 +4,6 @@ import { openAiApiKey } from "../firebase-constants";
 import { formSchema } from "../pages/create";
 
 
-
 // TODO: Add your better system prompt here
 const systemPrompt = {
   role: "system",
