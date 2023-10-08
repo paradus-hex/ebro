@@ -51,6 +51,7 @@ export interface ProjectData {
   isFavorite: boolean;
   response: string;
   imagesDesc: string[];
+  note: string;
 }
 
 const app = initializeApp(firebaseConfig);

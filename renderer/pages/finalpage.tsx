@@ -18,7 +18,7 @@ import { useImageStore } from '../stores/imageStore';
 import chat from '../lib/chat';
 interface Params {
   projectID: string;
-
+  userID: string;
   projectName: string;
   intention: string;
 }
@@ -43,7 +43,7 @@ const FinalPage: NextPageWithLayout = () => {
   const parsedParams: Params = params
     ? JSON.parse(decodeURIComponent(params as string))
     : {};
-  const { projectID, projectName, intention } = parsedParams;
+  const { projectID, projectName, intention, userID } = parsedParams;
   const handleGoBack = () => {
     router.push(
       `/create?params=${encodeURIComponent(
@@ -51,6 +51,7 @@ const FinalPage: NextPageWithLayout = () => {
           passedProjectName: projectName,
           intention,
           projectID,
+          userID,
           prev: 'finalpage',
         }),
       )}`,
@@ -108,10 +109,11 @@ const FinalPage: NextPageWithLayout = () => {
         imagesDesc,
         response: getResponse(),
         projectName,
+        note: getNote(),
       })
         .then(async (docRef) => {
           const downloadUrls = await saveImagesToCloud(
-            'user1',
+            userID,
             `${projectName}_${docRef.id}`,
             uploadedFiles,
           );
@@ -126,9 +128,10 @@ const FinalPage: NextPageWithLayout = () => {
         imagesDesc,
         response: getResponse(),
         projectName,
+        note: getNote(),
       });
       saveImagesToCloud(
-        'user1',
+        userID,
         `${projectName}_${projectID}`,
         uploadedFiles,
       ).then(async (downloadUrls) => {

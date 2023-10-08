@@ -28,12 +28,8 @@ import {
 } from '../lib/constants';
 import { ReactElement, useEffect, useState } from 'react';
 import { useCreatePageStore } from '../stores/createPageStore';
-import {
-  deleteProjectPhotosFromCloud,
-  getProjectDetails,
-} from '../lib/firebasedb';
+import { getProjectDetails } from '../lib/firebasedb';
 import Layout from '../components/Layout';
-import { useSignInPageStore } from '../stores/signInPageStore';
 import ImageUpload2 from '../components/imageUpload2';
 import chat from '../lib/chat';
 
@@ -92,16 +88,14 @@ function Create() {
     : {};
   const { projectID, passedProjectName, intention, prev, userID } =
     parsedParams;
-  // console.log(passedProjectName, 'ssssssssssss', key, intention, prev);
   const {
     setValues,
     setResponse,
     getValues: getStoredValues,
     getResponse: getStoredResponse,
-    getNote: getStoredNote,
     setNote: setStoredNote,
+    getNote: getStoredNote,
   } = useCreatePageStore();
-
 
   const { projectName: loadedProjectName, ...defaultValues } =
     getStoredValues();
@@ -126,16 +120,19 @@ function Create() {
         form.reset(data);
         setResponse(data.response);
         setValues(data);
+        setNote(data.note);
       }));
   };
 
   const handleGenerateClick = () => {
+    setStoredNote(note);
     router.push(
       `/finalpage?params=${encodeURIComponent(
         JSON.stringify({
           projectName: passedProjectName,
           intention,
           projectID,
+          userID,
         }),
       )}`,
     );
@@ -150,12 +147,14 @@ function Create() {
   });
 
   const handleNextPageClick = () => {
+    setStoredNote(note);
     router.push(
       `/finalpage?params=${encodeURIComponent(
         JSON.stringify({
           projectName: passedProjectName,
           intention,
           projectID,
+          userID,
         }),
       )}`,
     );
@@ -208,7 +207,7 @@ function Create() {
             projectName: passedProjectName,
             intention,
             projectID,
-            userID
+            userID,
           }),
         )}`,
       );
@@ -327,7 +326,6 @@ function Create() {
                   </div>
                 )}
               </div>
-
               <FormField
                 control={form.control}
                 name="yearOfConstruction"
@@ -448,7 +446,6 @@ function Create() {
                   </div>
                 )}
               </div>
-
               <FormField
                 control={form.control}
                 name="architecturalStyle"
@@ -618,6 +615,10 @@ function Create() {
             <Textarea
               className="w-[320px] min-h-[140px] m-auto border focus:border-1 bg-white focus:border-slate-400"
               placeholder="Type your notes here."
+              value={note}
+              onChange={(e) => {
+                setNote(e.target.value);
+              }}
             />
           )}
         </div>
