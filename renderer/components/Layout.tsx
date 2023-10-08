@@ -20,8 +20,6 @@ export default function Layout({ children }) {
     }
   }, []);
 
-  console.log('sign in state', getSignedIn());
-
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };

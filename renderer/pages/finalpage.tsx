@@ -15,6 +15,7 @@ import {
 import Layout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
 import { useImageStore } from '../stores/imageStore';
+import chat from '../lib/chat';
 interface Params {
   projectID: string;
 
@@ -24,19 +25,20 @@ interface Params {
 
 const FinalPage: NextPageWithLayout = () => {
   const router = useRouter();
-  const [text, setText] = useState<string>('Initial text');
   const [cloudSaveDisabled, setCloudSaveDisabled] = useState<boolean>(false);
   const [editDisabled, setEditDisabled] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const { getResponse, setResponse, getValues } = useCreatePageStore();
+  const [buttonsDisabled, setButtonsDisabled] = useState<boolean>(false);
+  const { getResponse, setResponse, getValues, getNote } = useCreatePageStore();
   const { getImageArray, getImagesToDel } = useImageStore();
   const [feedback, setFeedback] = useState<string>('');
-  const { append, isLoading } = useChat({
-    onFinish: (message) => {
-      setResponse(message.content.slice(1, -1));
-    },
-  });
+  const [text, setText] = useState<string>(getResponse());
+  // const { append, isLoading } = useChat({
+  //   onFinish: (message) => {
+  //     setResponse(message.content.slice(1, -1));
+  //   },
+  // });
   const { params } = router.query;
   const parsedParams: Params = params
     ? JSON.parse(decodeURIComponent(params as string))
@@ -65,12 +67,23 @@ const FinalPage: NextPageWithLayout = () => {
     setCloudSaveDisabled(false);
   };
 
-  const handleAISubmitClick = () => {
-    append({
-      role: 'user',
-      content: JSON.stringify(text + '$$$' + feedback),
-    });
+  const handleAISubmitClick = async () => {
+    // append({
+    //   role: 'user',
+    //   content: JSON.stringify(text + '$$$' + feedback),
+    // });
     handleCloseModal();
+    setButtonsDisabled(true);
+    setText(
+      await chat(
+        JSON.stringify(
+          text +
+            '$$$' +
+            feedback +
+            '.\n Keep every other information as it is.',
+        ),
+      ),
+    );
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -114,7 +127,6 @@ const FinalPage: NextPageWithLayout = () => {
         response: getResponse(),
         projectName,
       });
-
       saveImagesToCloud(
         'user1',
         `${projectName}_${projectID}`,
@@ -135,8 +147,7 @@ const FinalPage: NextPageWithLayout = () => {
     setIsModalOpen(false);
   };
   useEffect(() => {
-    const data = getResponse();
-    setText(data);
+    setText(getResponse());
   }, [isLoading, getResponse, setText]);
 
   return (
@@ -144,7 +155,7 @@ const FinalPage: NextPageWithLayout = () => {
       <Button
         className="sticky top-5 w-24 h-12"
         onClick={handleGoBack}
-        disabled={isLoading}
+        disabled={editDisabled || isEditing || buttonsDisabled}
       >
         Go back
       </Button>
@@ -154,7 +165,6 @@ const FinalPage: NextPageWithLayout = () => {
           {isEditing ? (
             <div className="w-full relative">
               <Button
-                disabled={isLoading}
                 className="absolute top-0 right-0 px-0 w-[80px] h-[30px] text-black bg-transparent hover:bg-transparent "
                 onClick={handleSaveClick}
               >
@@ -165,7 +175,6 @@ const FinalPage: NextPageWithLayout = () => {
               </Button>
               <textarea
                 className="w-full flex rounded-md h-[600px] mt-2 p-3 px-5 text-sm text-black outline-1 border border-1 border-gray-400 pt-[40px]"
-                disabled={isLoading}
                 value={text}
                 onChange={handleChange}
                 placeholder="Write here...."
@@ -175,7 +184,7 @@ const FinalPage: NextPageWithLayout = () => {
           ) : (
             <div className="w-full relative">
               <Button
-                disabled={isLoading || editDisabled}
+                disabled={editDisabled || buttonsDisabled}
                 className="absolute top-0 right-0 px-0 w-[80px] h-[30px] text-black bg-transparent hover:bg-transparent"
                 onClick={handleEditClick}
               >
@@ -192,13 +201,13 @@ const FinalPage: NextPageWithLayout = () => {
         </div>
         <div className="col-span-4 ">
           <div className="max-w-screen-2xl mx-auto px-4 py-16 lg:py-24 relative h-[600px] m-2 rounded mr-5 flex overflow-auto flex-col space-y-5 items-center justify-center">
-            <div className="flex flex-wrap w-full gap-2 items-center justify-center">
-              {getImageArray().map((image) => (
+            <div className="flex flex-wrap w-full gap-2 items-center justify-center overflow-auto">
+              {getImageArray().map((image, index) => (
                 <div className="border-red-700">
-                  {/* <!-- img_02 --> */}
                   <img
                     className="object-cover w-[320px] h-[200px]"
                     src={image.url}
+                    key={index}
                     alt=""
                   />
                 </div>
@@ -208,7 +217,12 @@ const FinalPage: NextPageWithLayout = () => {
         </div>
         <div className="col-span-12 flex justify-center">
           <Button
-            disabled={isLoading || text.length === 0 || cloudSaveDisabled}
+            disabled={
+              text.length === 0 ||
+              cloudSaveDisabled ||
+              isEditing ||
+              buttonsDisabled
+            }
             className="w-[200px]"
             onClick={handleSaveToCloudClick}
           >
@@ -218,14 +232,14 @@ const FinalPage: NextPageWithLayout = () => {
       </div>
       <div className="flex flex-row w-full justify-between">
         <Button
-          disabled={isLoading}
+          disabled={editDisabled || isEditing || buttonsDisabled}
           className="ml-4 my-2 bg-nav_primary text-white w-[200px] rounded-xl text-sm px-2 h-10 "
           onClick={handleAIButtonClick}
         >
           AI Modification
         </Button>
         <Button
-          disabled={isLoading}
+          disabled={editDisabled || isEditing || buttonsDisabled}
           className="mr-4 my-2 bg-nav_primary w-[200px] text-white rounded-xl text-sm px-2 h-10 "
         >
           Export
@@ -236,7 +250,7 @@ const FinalPage: NextPageWithLayout = () => {
           text={text}
           feedback={feedback}
           isEditing={isEditing}
-          isLoading={isLoading}
+          buttonsDisabled={buttonsDisabled}
           setText={setText}
           setIsEditing={setIsEditing}
           handleChange={handleChange}
