@@ -42,6 +42,7 @@ interface Params {
   passedProjectName: string;
   intention: string;
   prev: string;
+  userID: string;
 }
 
 export const formSchema = z.object({
@@ -89,17 +90,18 @@ function Create() {
   const parsedParams: Params = params
     ? JSON.parse(decodeURIComponent(params as string))
     : {};
-  const { projectID, passedProjectName, intention, prev } = parsedParams;
+  const { projectID, passedProjectName, intention, prev, userID } =
+    parsedParams;
   // console.log(passedProjectName, 'ssssssssssss', key, intention, prev);
   const {
     setValues,
     setResponse,
     getValues: getStoredValues,
     getResponse: getStoredResponse,
+    getNote: getStoredNote,
+    setNote: setStoredNote,
   } = useCreatePageStore();
 
-  const { getUser_id } = useSignInPageStore();
-  // console.log(key);
 
   const { projectName: loadedProjectName, ...defaultValues } =
     getStoredValues();
@@ -206,6 +208,7 @@ function Create() {
             projectName: passedProjectName,
             intention,
             projectID,
+            userID
           }),
         )}`,
       );

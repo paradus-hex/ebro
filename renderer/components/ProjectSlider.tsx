@@ -5,6 +5,7 @@ import '@splidejs/react-splide/css';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { getProjectsForCarousel } from '../lib/firebasedb';
 import { useCreatePageStore } from '../stores/createPageStore';
+import { useSignInPageStore } from '../stores/signInPageStore';
 export default function ProjectSlider2() {
   const [selectedCards, setSelectedCards] = useState<
     {

@@ -9,7 +9,7 @@ import {
   deleteProjectPhotosFromCloud,
 } from '../lib/firebasedb';
 import { useRouter } from 'next/router';
-import { useCreatePageStore } from '../stores/createPageStore';
+import { useSignInPageStore } from '../stores/signInPageStore';
 
 export default function MyProjectCard({
   projectName,

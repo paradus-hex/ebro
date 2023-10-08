@@ -148,7 +148,7 @@ const FinalPage: NextPageWithLayout = () => {
   };
   useEffect(() => {
     setText(getResponse());
-  }, [isLoading, getResponse, setText]);
+  }, [getResponse, setText]);
 
   return (
     <div className="flex flex-col w-full h-screen  justify-center">
