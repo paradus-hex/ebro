@@ -7,7 +7,6 @@ import { DevTool } from '@hookform/devtools';
 import { useForm } from 'react-hook-form';
 import { useChat } from 'ai/react';
 import { Loader2 } from 'lucide-react';
-import axios from 'axios';
 import {
   Form,
   FormControl,
@@ -192,7 +191,27 @@ function Create() {
       isFavorite: false,
     });
     // append({ role: 'user', content: JSON.stringify(values) });
-    setChatGptRes(await chat(JSON.stringify(values)));
+    // setChatGptRes(await chat(JSON.stringify(values)));
+    fetch('https://cyan-important-rattlesnake.cyclic.app/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        console.log(response);
+        return response.json();
+      })
+      .then((data) => {
+        setChatGptRes(data.message);
+      })
+      .catch((error) => {
+        console.error('API error:', error);
+      });
     setStoredNote(note);
     // setLoading(isLoading);
   }

@@ -75,16 +75,39 @@ const FinalPage: NextPageWithLayout = () => {
     // });
     handleCloseModal();
     setButtonsDisabled(true);
-    setText(
-      await chat(
-        JSON.stringify(
-          text +
-            '$$$' +
-            feedback +
-            '.\n Keep every other information as it is.',
-        ),
-      ),
-    );
+    // setText(
+    //   await chat(
+    //     JSON.stringify(
+    //       text +
+    //         '$$$' +
+    //         feedback +
+    //         '.\n Keep every other information as it is.',
+    //     ),
+    //   ),
+    // );
+    fetch('https://cyan-important-rattlesnake.cyclic.app', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        prev: text,
+        feedback: `${feedback}. Keep every other information as it is.`,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        console.log(response);
+        return response.json();
+      })
+      .then((data) => {
+        setText(data.message);
+      })
+      .catch((error) => {
+        console.error('API error:', error);
+      });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -211,7 +234,7 @@ const FinalPage: NextPageWithLayout = () => {
                   <img
                     className="object-cover w-[320px] h-[200px]"
                     src={image.url}
-                    key={index}
+                    key={image.url}
                     alt=""
                   />
                 </div>
