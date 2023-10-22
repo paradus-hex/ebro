@@ -18,6 +18,7 @@ function Home() {
     setIntentions,
     setPrev,
     projectName,
+    resetValues,
     setProjectName,
     setValues,
   } = useCreatePageStore();
@@ -46,6 +47,7 @@ function Home() {
     );
   };
   useEffect(() => {
+    resetValues();
     setImageArray([]);
     setImagesToDel([]);
   }, []);
