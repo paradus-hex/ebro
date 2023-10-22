@@ -10,6 +10,7 @@ import {
 } from '../lib/firebasedb';
 import { useRouter } from 'next/router';
 import { useSignInPageStore } from '../stores/signInPageStore';
+import { useCreatePageStore } from '../stores/createPageStore';
 
 export default function MyProjectCard({
   projectName,
@@ -26,6 +27,23 @@ export default function MyProjectCard({
   delFromSelectedCards: (key: string) => void;
   favSelectedCards: (key: string) => void;
 }) {
+  const {
+    setValues,
+    setResponse,
+    getValues: getStoredValues,
+    getResponse: getStoredResponse,
+    setNote: setStoredNote,
+    getNote: getStoredNote,
+    setProjectId,
+    setUserId,
+    setIntentions,
+    setProjectName,
+    setPrev,
+    prev,
+    projectId,
+    intention,
+    userId,
+  } = useCreatePageStore();
   const router = useRouter();
   const { getUser_id, getValues } = useSignInPageStore();
   const setFav = (id: string) => {
@@ -46,6 +64,12 @@ export default function MyProjectCard({
         }),
       )}`,
     );
+    setProjectId(id);
+    setUserId(`${getValues().email}_${getUser_id()}`);
+    setIntentions('update');
+    setProjectName(projectName);
+    setPrev('home');
+    console.log('old project clicked');
   };
   const [isFavoriteState, setIsFavoriteState] = useState(false);
   useEffect(() => {

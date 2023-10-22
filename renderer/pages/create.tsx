@@ -145,19 +145,19 @@ function Create() {
       }));
   };
 
-  const handleGenerateClick = () => {
-    setStoredNote(note);
-    router.push(
-      `/finalpage?params=${encodeURIComponent(
-        JSON.stringify({
-          projectName: projectName,
-          intention,
-          projectId,
-          userId,
-        }),
-      )}`,
-    );
-  };
+  // const handleGenerateClick = () => {
+  //   setStoredNote(note);
+  //   router.push(
+  //     `/finalpage?params=${encodeURIComponent(
+  //       JSON.stringify({
+  //         projectName: projectName,
+  //         intention,
+  //         projectId,
+  //         userId,
+  //       }),
+  //     )}`,
+  //   );
+  // };
   const handleGoBackClick = () => {
     router.push('/home');
     setProjectId('');
@@ -259,7 +259,7 @@ function Create() {
       // );
       setProjectId(projectId);
       setUserId(userId);
-      setIntentions(intention as 'create' | 'edit');
+      setIntentions(intention);
       setProjectName(projectName);
     }
   }, [chatGptRes]);

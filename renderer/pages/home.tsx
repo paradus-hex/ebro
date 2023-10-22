@@ -12,26 +12,35 @@ import { useCreatePageStore } from '../stores/createPageStore';
 
 function Home() {
   const { setImageArray, setImagesToDel } = useImageStore();
-  const { setProjectId, setUserId, setIntentions, setPrev } =
-    useCreatePageStore();
+  const {
+    setProjectId,
+    setUserId,
+    setIntentions,
+    setPrev,
+    projectName,
+    setProjectName,
+    setValues,
+  } = useCreatePageStore();
   const { getValues, getUser_id } = useSignInPageStore();
   const router = useRouter();
-  const [projectName, setProjectName] = React.useState<string>('');
+  // const [projectName, setProjectName] = React.useState<string>('');
   const handleProjectNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProjectName(e.target.value);
   };
   const handleCreateClick = () => {
-    setProjectId('');
-    setUserId(`${getValues().email}_${getUser_id()}`);
     setIntentions('create');
-    setProjectName(projectName);
+    // setProjectName('testiti');
+    setProjectId('');
+    setPrev('home');
+    setUserId(`${getValues().email}_${getUser_id()}`);
     router.push(
       `/create?params=${encodeURIComponent(
         JSON.stringify({
-          passedProjectName: projectName,
+          projectName: projectName,
           intention: 'create',
           prev: 'home',
           userID: `${getValues().email}_${getUser_id()}`,
+          test: 'test',
         }),
       )}`,
     );

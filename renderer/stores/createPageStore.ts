@@ -15,8 +15,8 @@ interface CreatePageStoreState {
   imageDescObj: { [key: string]: { desc: string, name: string, url: string } };
   imageSwiperDescObj: { [key: string]: string };
   projectList: { key: string; projectName: any; address: any; updatedAt: any; isFavorite: any; }[];
-  intention: "create" | "edit" | "";
-  setIntentions: (intention: "create" | "edit" | "") => void;
+  intention: "create" | "edit" | "update" | "";
+  setIntentions: (intention: "create" | "edit" | "update" | "") => void;
   projectId: string;
   setProjectId: (projectId: string) => void;
   userId: string;

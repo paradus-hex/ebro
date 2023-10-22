@@ -164,6 +164,7 @@ export default function FinalModal() {
       ).then(async (downloadUrls) => {
         deleteImagesFromCloud(getImagesToDel().map((image) => image.url));
         setImagesDescToCloud(projectId, imagesDesc, downloadUrls);
+        console.log('done uploading image to cloud');
       });
     }
     router.push('/home');
@@ -190,6 +191,7 @@ export default function FinalModal() {
       >
         Go back
       </Button> */}
+      {<div> `${projectId}`</div>}
       <h1 className="font-extrabold mt-4 ml-3 mb-4 ">
         {projectName || 'Project Name'}
       </h1>
