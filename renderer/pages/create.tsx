@@ -238,7 +238,7 @@ function Create() {
   }, []);
 
   return (
-    <div className="flex">
+    <div className="flex overflow-y-auto max-h-screen">
       <div className=" flex-col gap-10 justify-center w-[100%] px-auto mx-auto">
         <div className="flex justify-between mt-10 mb-8">
           <Button disabled={disableButtons} onClick={handleGoBackClick}>
@@ -616,7 +616,7 @@ function Create() {
         </Form>
         <DevTool control={control} />
       </div>
-      <div className="flex flex-col justify-start items-center bg-slate-200/50 max-w-fit min-h-screen">
+      <div className="flex flex-col justify-start items-center bg-red-500 max-w-fit min-h-screen sticky top-0">
         {/* <ImageUpload></ImageUpload> */}
         <ImageUpload2></ImageUpload2>
         <div
