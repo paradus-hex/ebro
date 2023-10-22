@@ -172,16 +172,16 @@ image-uploader > .swiper-slide {
 }
 
 .slideRow:nth-child(4n + 1) {
-  background: linear-gradient(to right, rgb(153, 246, 228), rgb(178, 250, 236));
+  background: linear-gradient(to right, #6663fe, #8482ff);
 }
 .slideRow:nth-child(4n + 2) {
-  background: linear-gradient(to right, rgb(56, 189, 248), rgb(103, 232, 249));
+  background: linear-gradient(to right, #00a0b6, #02b6ce);
 }
 .slideRow:nth-child(4n + 3) {
-  background: linear-gradient(to right, rgb(255, 95, 121), rgb(253, 164, 175));
+  background: linear-gradient(to right, #e06c9f, rgb(233, 136, 178));
 }
 .slideRow:nth-child(4n + 4) {
-  background: linear-gradient(to right, rgb(167, 139, 250), rgb(196, 181, 253));
+  background: linear-gradient(to right, #266fd5, #3882e9);
 }
 label input {
   height: 0;
