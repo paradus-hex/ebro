@@ -179,7 +179,7 @@ function Create() {
         JSON.stringify({
           projectName: projectName,
           intention,
-          projectId,
+          projectID: projectId,
           userId,
         }),
       )}`,
@@ -247,20 +247,20 @@ function Create() {
     setDisableButtons(false);
     if (chatGptRes.length > 0) {
       setResponse(chatGptRes);
-      // router.push(
-      //   `/finalpage?params=${encodeURIComponent(
-      //     JSON.stringify({
-      //       projectName: projectName,
-      //       intention,
-      //       projectId,
-      //       userId,
-      //     }),
-      //   )}`,
-      // );
       setProjectId(projectId);
       setUserId(userId);
       setIntentions(intention);
       setProjectName(projectName);
+      router.push(
+        `/finalpage?params=${encodeURIComponent(
+          JSON.stringify({
+            projectName: projectName,
+            intention,
+            projectId,
+            userId,
+          }),
+        )}`,
+      );
     }
   }, [chatGptRes]);
 

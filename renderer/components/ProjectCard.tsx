@@ -53,6 +53,12 @@ export default function MyProjectCard({
     // console.log('is not fav', id);
   };
   const handleProjectArrowClick = () => {
+    setProjectId(id);
+    setUserId(`${getValues().email}_${getUser_id()}`);
+    setIntentions('update');
+    setProjectName(projectName);
+    setPrev('home');
+    console.log('old project clicked');
     router.push(
       `/create?params=${encodeURIComponent(
         JSON.stringify({
@@ -64,12 +70,6 @@ export default function MyProjectCard({
         }),
       )}`,
     );
-    setProjectId(id);
-    setUserId(`${getValues().email}_${getUser_id()}`);
-    setIntentions('update');
-    setProjectName(projectName);
-    setPrev('home');
-    console.log('old project clicked');
   };
   const [isFavoriteState, setIsFavoriteState] = useState(false);
   useEffect(() => {

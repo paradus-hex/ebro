@@ -30,7 +30,17 @@ const FinalPage: NextPageWithLayout = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [buttonsDisabled, setButtonsDisabled] = useState<boolean>(false);
-  const { getResponse, setResponse, getValues, getNote } = useCreatePageStore();
+  const {
+    getResponse,
+    setResponse,
+    getValues,
+    getNote,
+    setProjectId,
+    setUserId,
+    setIntentions,
+    setProjectName,
+    setPrev,
+  } = useCreatePageStore();
   const { getImageArray, getImagesToDel } = useImageStore();
   const [feedback, setFeedback] = useState<string>('');
   const [text, setText] = useState<string>(getResponse());
@@ -45,6 +55,11 @@ const FinalPage: NextPageWithLayout = () => {
     : {};
   const { projectID, projectName, intention, userID } = parsedParams;
   const handleGoBack = () => {
+    setProjectId(projectID);
+    setPrev('finalpage');
+    setUserId(userID);
+    setIntentions(intention as 'create' | 'update' | 'edit' | '');
+    setProjectName(projectName);
     router.push(
       `/create?params=${encodeURIComponent(
         JSON.stringify({
