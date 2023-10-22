@@ -101,7 +101,7 @@ const ImageUpload = () => {
                 />
               </div>
             </label>
-            <div>Upload Image</div>
+            <div className="text-[#266fd5] font-bold">Upload Image</div>
           </form>
         </div>
       ) : (
@@ -135,7 +135,11 @@ const ImageUpload = () => {
                   >
                     x
                   </button>
-                  <img src={image.url} alt="Preview" className="object-cover" />
+                  <img
+                    src={image.url}
+                    alt="Preview"
+                    className="object-cover rounded-xl"
+                  />
                 </div>
               </SwiperSlide>
             ))}
@@ -159,7 +163,7 @@ const ImageUpload = () => {
               />
               <div className="flex gap-2">
                 <Image
-                  src="/images/upload_image.svg"
+                  src="/images/upload_image_black.svg"
                   height={22}
                   width={22}
                   alt="upload image"
