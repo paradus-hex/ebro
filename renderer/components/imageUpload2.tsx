@@ -101,7 +101,7 @@ const ImageUpload = () => {
                 />
               </div>
             </label>
-            <div>Upload Image</div>
+            <div className="text-[#266fd5] font-bold">Upload Image</div>
           </form>
         </div>
       ) : (
