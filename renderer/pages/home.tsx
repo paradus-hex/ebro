@@ -8,9 +8,12 @@ import Layout from '../components/Layout';
 import { useImageStore } from '../stores/imageStore';
 import useStore from '../stores/useStore';
 import { useSignInPageStore } from '../stores/signInPageStore';
+import { useCreatePageStore } from '../stores/createPageStore';
 
 function Home() {
   const { setImageArray, setImagesToDel } = useImageStore();
+  const { setProjectId, setUserId, setIntentions, setPrev } =
+    useCreatePageStore();
   const { getValues, getUser_id } = useSignInPageStore();
   const router = useRouter();
   const [projectName, setProjectName] = React.useState<string>('');
@@ -18,6 +21,10 @@ function Home() {
     setProjectName(e.target.value);
   };
   const handleCreateClick = () => {
+    setProjectId('');
+    setUserId(`${getValues().email}_${getUser_id()}`);
+    setIntentions('create');
+    setProjectName(projectName);
     router.push(
       `/create?params=${encodeURIComponent(
         JSON.stringify({
