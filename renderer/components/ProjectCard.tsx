@@ -55,10 +55,10 @@ export default function MyProjectCard({
   return (
     <div
       key={id}
-      className=" p-5 relative  flex justify-start items-center text-left w-[250px] h-[150px] rounded-lg  m-2 "
+      className=" p-5 relative  flex justify-start items-center text-left w-[220px] h-[120px] rounded-lg  m-2 "
     >
       <div className="w-[90%]   ">
-        <BsHouse className="text-gray-700 w-[50px] h-[50px] mb-5"></BsHouse>
+        <BsHouse className="text-gray-700 w-[40px] h-[35px] mb-5"></BsHouse>
         <h1 className="text-white font-bold truncate">{projectName}</h1>
         <p className="text-gray font-bold text-sm truncate">{address}</p>
       </div>
@@ -75,7 +75,7 @@ export default function MyProjectCard({
                 isFav(id, false);
                 favSelectedCards(id);
               }}
-              className="text-yellow-300 hover:text-yellow-300  transition-colors ease-in-out delay-200"
+              className="text-yellow-300 hover:text-yellow-300  transition-colors ease-in-out delay-200 mt-2"
             />
           ) : (
             <AiOutlineStar
@@ -84,7 +84,7 @@ export default function MyProjectCard({
                 isFav(id, true);
                 favSelectedCards(id);
               }}
-              className=" hover:text-yellow-300  transition-colors ease-in-out delay-200"
+              className=" hover:text-yellow-300  transition-colors ease-in-out delay-200 mt-2"
             ></AiOutlineStar>
           )}
         </div>
@@ -102,7 +102,7 @@ export default function MyProjectCard({
             delFromSelectedCards(id);
             deleteProject(id);
           }}
-          className=" hover:text-red-500 transition-colors ease-in-out delay-200"
+          className=" hover:text-red-500 transition-colors ease-in-out delay-200 w-5 h-5 mb-2"
         ></RiDeleteBin2Line>
       </div>
     </div>
