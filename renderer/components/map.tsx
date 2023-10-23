@@ -16,7 +16,7 @@ export default function Map() {
 
   useEffect(() => {
     if (map.current) return; // stops map from intializing more than once
-    const gc = new GeocodingControl({ apiKey, maptilersdk });
+    const gc = new GeocodingControl({ apiKey });
     map.current = new maptilersdk.Map({
       container: mapContainer.current,
       style: maptilersdk.MapStyle.STREETS,
