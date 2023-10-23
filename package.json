@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
+    "@maptiler/geocoding-control": "^0.0.99",
+    "@maptiler/sdk": "^1.1.2",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-popover": "^1.0.7",
@@ -28,6 +30,7 @@
     "flowbite-react": "^0.6.4",
     "immer": "^10.0.2",
     "lucide-react": "^0.279.0",
+    "maplibre-gl": "^3.5.1",
     "openai": "^4.11.0",
     "openai-edge": "^1.2.2",
     "react-hook-form": "^7.46.2",

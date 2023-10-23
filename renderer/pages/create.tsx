@@ -31,6 +31,7 @@ import { getProjectDetails } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import ImageUpload2 from '../components/imageUpload2';
 import chat from '../lib/chat';
+import Map from '../components/map';
 
 interface Params {
   projectID: string;
@@ -650,6 +651,7 @@ function Create() {
         >
           Generate
         </Button> */}
+          <Map></Map>
         </div>
       </div>
     </div>
