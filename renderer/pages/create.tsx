@@ -251,16 +251,16 @@ function Create() {
       setUserId(userId);
       setIntentions(intention);
       setProjectName(projectName);
-      router.push(
-        `/finalpage?params=${encodeURIComponent(
-          JSON.stringify({
-            projectName: projectName,
-            intention,
-            projectId,
-            userId,
-          }),
-        )}`,
-      );
+      // router.push(
+      //   `/finalpage?params=${encodeURIComponent(
+      //     JSON.stringify({
+      //       projectName: projectName,
+      //       intention,
+      //       projectId,
+      //       userId,
+      //     }),
+      //   )}`,
+      // );
     }
   }, [chatGptRes]);
 
