@@ -281,7 +281,7 @@ function Create() {
             onClick={handleNextPageClick}
             className="-translate-x-4"
           >
-            Next Page
+            Past Output
           </Button>
         </div>
         <Form {...form}>
