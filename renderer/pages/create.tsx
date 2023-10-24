@@ -244,6 +244,7 @@ function Create() {
   }
 
   useEffect(() => {
+    console.log(userId, projectId, intention, projectName);
     setDisableButtons(false);
     if (chatGptRes.length > 0) {
       setResponse(chatGptRes);

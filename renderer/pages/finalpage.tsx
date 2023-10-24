@@ -36,6 +36,7 @@ const FinalPage: NextPageWithLayout = () => {
     getValues,
     getNote,
     setProjectId,
+    userId,
     setUserId,
     setIntentions,
     setProjectName,
@@ -53,20 +54,21 @@ const FinalPage: NextPageWithLayout = () => {
   const parsedParams: Params = params
     ? JSON.parse(decodeURIComponent(params as string))
     : {};
-  const { projectID, projectName, intention, userID } = parsedParams;
+  const { projectID, projectName, intention } = parsedParams;
   const handleGoBack = () => {
     setProjectId(projectID);
     setPrev('finalpage');
-    setUserId(userID);
+    setUserId(userId);
     setIntentions(intention as 'create' | 'update' | 'edit' | '');
     setProjectName(projectName);
+
     router.push(
       `/create?params=${encodeURIComponent(
         JSON.stringify({
           passedProjectName: projectName,
           intention,
           projectID,
-          userID,
+          userId,
           prev: 'finalpage',
         }),
       )}`,
@@ -151,7 +153,7 @@ const FinalPage: NextPageWithLayout = () => {
       })
         .then(async (docRef) => {
           const downloadUrls = await saveImagesToCloud(
-            userID,
+            userId,
             `${projectName}_${docRef.id}`,
             uploadedFiles,
           );
@@ -169,7 +171,7 @@ const FinalPage: NextPageWithLayout = () => {
         note: getNote(),
       });
       saveImagesToCloud(
-        userID,
+        userId,
         `${projectName}_${projectID}`,
         uploadedFiles,
       ).then(async (downloadUrls) => {

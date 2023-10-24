@@ -129,7 +129,7 @@ export default function FinalModal() {
     const uploadedFiles = getImageArray()
       .map(({ file }) => file)
       .filter((file) => file !== undefined);
-
+    console.log(intention);
     if (intention === 'create') {
       await setProjects({
         ...getValues(),
@@ -150,6 +150,10 @@ export default function FinalModal() {
           setImagesDescToCloud(docRef.id, imagesDesc, downloadUrls);
         });
     } else {
+      console.log('updating');
+      console.log(getValues());
+      console.log(projectId);
+      console.log(getResponse());
       updateProjectDetails(projectId, {
         ...getValues(),
         imagesDesc,
