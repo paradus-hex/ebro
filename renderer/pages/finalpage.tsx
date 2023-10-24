@@ -195,16 +195,16 @@ const FinalPage: NextPageWithLayout = () => {
   }, [text]);
 
   return (
-    <div className="flex flex-col w-full h-screen  justify-center">
+    <div className="flex flex-col w-full h-screen  justify-between">
       <Button
-        className="sticky top-5 w-24 h-12"
+        className=" w-24 h-12 mt-5"
         onClick={handleGoBack}
         disabled={editDisabled || isEditing || buttonsDisabled}
       >
         Go back
       </Button>
       <h1 className="font-extrabold mb-10">{projectName || 'Project Name'}</h1>
-      <div className="grid grid-cols-12 w-full gap-2 mx-2 h-screen">
+      <div className="grid grid-cols-12 w-full gap-2 h-screen">
         <div className="col-span-8 bg-transparent rounded">
           {isEditing ? (
             <div className="w-full relative">
@@ -259,7 +259,14 @@ const FinalPage: NextPageWithLayout = () => {
             </div>
           </div>
         </div>
-        <div className="col-span-12 flex justify-center">
+        <div className="col-span-12 flex justify-around">
+          <Button
+            disabled={editDisabled || isEditing || buttonsDisabled}
+            className=" bg-nav_primary text-white w-[200px] rounded-xl text-sm px-2 h-10 mb-5"
+            onClick={handleAIButtonClick}
+          >
+            AI Modification
+          </Button>
           <Button
             disabled={
               text.length === 0 ||
@@ -267,27 +274,19 @@ const FinalPage: NextPageWithLayout = () => {
               isEditing ||
               buttonsDisabled
             }
-            className="w-[200px]"
+            className=" bg-nav_primary text-white w-[200px] rounded-xl text-sm px-2 h-10 mb-5"
             onClick={handleSaveToCloudClick}
           >
             Save to Cloud
           </Button>
+
+          <Button
+            disabled={editDisabled || isEditing || buttonsDisabled}
+            className=" bg-nav_primary w-[200px] text-white rounded-xl text-sm px-2 h-10 mb-5"
+          >
+            Export
+          </Button>
         </div>
-      </div>
-      <div className="flex flex-row w-full justify-between">
-        <Button
-          disabled={editDisabled || isEditing || buttonsDisabled}
-          className="ml-4 my-2 bg-nav_primary text-white w-[200px] rounded-xl text-sm px-2 h-10 "
-          onClick={handleAIButtonClick}
-        >
-          AI Modification
-        </Button>
-        <Button
-          disabled={editDisabled || isEditing || buttonsDisabled}
-          className="mr-4 my-2 bg-nav_primary w-[200px] text-white rounded-xl text-sm px-2 h-10 "
-        >
-          Export
-        </Button>
       </div>
       {isModalOpen && (
         <EditModal
