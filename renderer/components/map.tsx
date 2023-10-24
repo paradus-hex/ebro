@@ -89,6 +89,10 @@ export default function Map2() {
             draggable={true}
             eventHandlers={{
               dragend: (e) => {
+                console.log({
+                  lat: e.target._latlng.lat,
+                  lng: e.target._latlng.lng,
+                });
                 setMapLocation({
                   lat: e.target._latlng.lat,
                   lng: e.target._latlng.lng,
