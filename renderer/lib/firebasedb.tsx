@@ -52,6 +52,7 @@ export interface ProjectData {
   response: string;
   imagesDesc: string[];
   note: string;
+  mapLocation?: { lat: number; lng: number };
 }
 
 const app = initializeApp(firebaseConfig);

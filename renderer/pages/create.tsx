@@ -46,6 +46,11 @@ import chat from '../lib/chat';
 import Map from '../components/map';
 
 import FinalModal from '../components/finalModal';
+import dynamic from 'next/dynamic';
+// import Map2 from '../components/map2';
+const Map2 = dynamic(() => import('../components/map2'), {
+  ssr: false,
+});
 interface Params {
   projectId: string;
   projectName: string;
@@ -113,11 +118,13 @@ function Create() {
     setIntentions,
     setProjectName,
     setPrev,
+    mapLocation,
     prev,
     projectName,
     projectId,
     intention,
     userId,
+    setMapLocation,
   } = useCreatePageStore();
 
   const { projectName: loadedProjectName, ...defaultValues } =
@@ -143,6 +150,12 @@ function Create() {
         form.reset(data);
         setResponse(data.response);
         setValues(data);
+        data?.mapLocation
+          ? setMapLocation({
+              lng: data.mapLocation.lng,
+              lat: data.mapLocation.lat,
+            })
+          : ' ';
         setNote(data.note);
       }));
   };
@@ -218,6 +231,7 @@ function Create() {
       userName: userId,
       updatedAt: new Date().toISOString(),
       isFavorite: false,
+      mapLocation,
     });
     // append({ role: 'user', content: JSON.stringify(values) });
     // setChatGptRes(await chat(JSON.stringify(values)));
@@ -369,7 +383,7 @@ function Create() {
                     />
                   </div>
                   <div className="grid  items-center gap-4">
-                    <FormField
+                    {/* <FormField
                       control={form.control}
                       name="city"
                       render={({ field }) => (
@@ -387,7 +401,37 @@ function Create() {
                           <FormMessage />
                         </FormItem>
                       )}
-                    />
+                    /> */}
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        {/* <Button variant="outline">Show Dialog</Button>
+                         */}
+                        <Button disabled={disableButtons} type="submit">
+                          {loading && (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          )}
+                          Set Coordinates
+                        </Button>
+                      </AlertDialogTrigger>
+                      {!disableButtons && (
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogDescription>
+                              <div className="w-full flex justify-between">
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                {/* <AlertDialogAction>Continue</AlertDialogAction> */}
+                              </div>
+
+                              <Map2 />
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          {/* <AlertDialogFooter>
+                   <AlertDialogCancel>Cancel</AlertDialogCancel>
+                   <AlertDialogAction>Continue</AlertDialogAction>
+                 </AlertDialogFooter> */}
+                        </AlertDialogContent>
+                      )}
+                    </AlertDialog>
                   </div>
                 </FormPopOver>
                 {(errors.address || errors.city || errors.zipCode) && (
@@ -731,7 +775,7 @@ function Create() {
         >
           Generate
         </Button> */}
-          <Map></Map>
+          {/* <Map></Map> */}
         </div>
       </div>
     </div>
