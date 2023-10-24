@@ -1,10 +1,10 @@
 'use client';
 import { useRouter } from 'next/router';
-import { Button } from '../components/ui/button';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { DevTool } from '@hookform/devtools';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { useChat } from 'ai/react';
 import { Loader2 } from 'lucide-react';
 import {
@@ -16,6 +16,18 @@ import {
   FormLabel,
   FormMessage,
 } from '../components/ui/Form';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '../components/ui/alert-dialog';
+import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { MultiSelect } from '../components/MultiSelect';
 import { FormPopOver } from '../components/formPopOver';
@@ -33,12 +45,13 @@ import ImageUpload2 from '../components/imageUpload2';
 import chat from '../lib/chat';
 import Map from '../components/map';
 
+import FinalModal from '../components/finalModal';
 interface Params {
-  projectID: string;
-  passedProjectName: string;
+  projectId: string;
+  projectName: string;
   intention: string;
   prev: string;
-  userID: string;
+  userId: string;
 }
 
 export const formSchema = z.object({
@@ -83,11 +96,11 @@ export const formSchema = z.object({
 function Create() {
   const router = useRouter();
   const { params } = router.query;
-  const parsedParams: Params = params
-    ? JSON.parse(decodeURIComponent(params as string))
-    : {};
-  const { projectID, passedProjectName, intention, prev, userID } =
-    parsedParams;
+  // const parsedParams: Params = params
+  //   ? JSON.parse(decodeURIComponent(params as string))
+  //   : {};
+  // const { projectId, projectName, intention, prev, userId } =
+  //   parsedParams;
   const {
     setValues,
     setResponse,
@@ -95,6 +108,16 @@ function Create() {
     getResponse: getStoredResponse,
     setNote: setStoredNote,
     getNote: getStoredNote,
+    setProjectId,
+    setUserId,
+    setIntentions,
+    setProjectName,
+    setPrev,
+    prev,
+    projectName,
+    projectId,
+    intention,
+    userId,
   } = useCreatePageStore();
 
   const { projectName: loadedProjectName, ...defaultValues } =
@@ -108,15 +131,15 @@ function Create() {
     if (prev !== 'home') {
       return;
     }
-    if (projectID === undefined && prev === 'home') {
+    if (projectId === undefined && prev === 'home') {
       form.reset(emptyProjectData);
       setResponse('');
-      setValues({ ...emptyProjectData, projectName: passedProjectName });
+      setValues({ ...emptyProjectData, projectName: projectName });
       setNote('');
       return;
     }
-    projectID &&
-      (await getProjectDetails(projectID).then((data) => {
+    projectId &&
+      (await getProjectDetails(projectId).then((data) => {
         form.reset(data);
         setResponse(data.response);
         setValues(data);
@@ -124,21 +147,26 @@ function Create() {
       }));
   };
 
-  const handleGenerateClick = () => {
-    setStoredNote(note);
-    router.push(
-      `/finalpage?params=${encodeURIComponent(
-        JSON.stringify({
-          projectName: passedProjectName,
-          intention,
-          projectID,
-          userID,
-        }),
-      )}`,
-    );
-  };
+  // const handleGenerateClick = () => {
+  //   setStoredNote(note);
+  //   router.push(
+  //     `/finalpage?params=${encodeURIComponent(
+  //       JSON.stringify({
+  //         projectName: projectName,
+  //         intention,
+  //         projectId,
+  //         userId,
+  //       }),
+  //     )}`,
+  //   );
+  // };
   const handleGoBackClick = () => {
     router.push('/home');
+    setProjectId('');
+    setUserId('');
+    setIntentions('');
+    setProjectName('');
+    setPrev('');
   };
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -151,10 +179,10 @@ function Create() {
     router.push(
       `/finalpage?params=${encodeURIComponent(
         JSON.stringify({
-          projectName: passedProjectName,
+          projectName: projectName,
           intention,
-          projectID,
-          userID,
+          projectID: projectId,
+          userId,
         }),
       )}`,
     );
@@ -168,10 +196,10 @@ function Create() {
   //     router.push(
   //       `/finalpage?params=${encodeURIComponent(
   //         JSON.stringify({
-  //           projectName: passedProjectName,
+  //           projectName: projectName,
   //           intention,
-  //           projectID,
-  //           userID,
+  //           projectId,
+  //           userId,
   //         }),
   //       )}`,
   //     );
@@ -186,8 +214,8 @@ function Create() {
     setDisableButtons(true);
     setValues({
       ...values,
-      projectName: passedProjectName,
-      userName: userID,
+      projectName: projectName,
+      userName: userId,
       updatedAt: new Date().toISOString(),
       isFavorite: false,
     });
@@ -218,19 +246,24 @@ function Create() {
   }
 
   useEffect(() => {
+    console.log(userId, projectId, intention, projectName);
     setDisableButtons(false);
     if (chatGptRes.length > 0) {
       setResponse(chatGptRes);
-      router.push(
-        `/finalpage?params=${encodeURIComponent(
-          JSON.stringify({
-            projectName: passedProjectName,
-            intention,
-            projectID,
-            userID,
-          }),
-        )}`,
-      );
+      setProjectId(projectId);
+      setUserId(userId);
+      setIntentions(intention);
+      setProjectName(projectName);
+      // router.push(
+      //   `/finalpage?params=${encodeURIComponent(
+      //     JSON.stringify({
+      //       projectName: projectName,
+      //       intention,
+      //       projectId,
+      //       userId,
+      //     }),
+      //   )}`,
+      // );
     }
   }, [chatGptRes]);
 
@@ -245,15 +278,13 @@ function Create() {
           <Button disabled={disableButtons} onClick={handleGoBackClick}>
             Go Back
           </Button>
-          <h1 className="font-extrabold">
-            {passedProjectName || 'Project Name'}
-          </h1>
+          <h1 className="font-extrabold">{projectName || 'Project Name'}</h1>
           <Button
             disabled={!textAlreadyExists || disableButtons}
             onClick={handleNextPageClick}
             className="-translate-x-4"
           >
-            Next Page
+            Past Output
           </Button>
         </div>
         <Form {...form}>
@@ -629,10 +660,38 @@ function Create() {
                 )}
               />
             </div>
-            <Button disabled={disableButtons} type="submit">
+            {/* <Button disabled={disableButtons} type="submit">
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Submit
-            </Button>
+            </Button> */}
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                {/* <Button variant="outline">Show Dialog</Button>
+                 */}
+                <Button disabled={disableButtons} type="submit">
+                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Submit
+                </Button>
+              </AlertDialogTrigger>
+              {!disableButtons && (
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogDescription>
+                      <div className="w-full flex justify-between">
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        {/* <AlertDialogAction>Continue</AlertDialogAction> */}
+                      </div>
+
+                      <FinalModal />
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  {/* <AlertDialogFooter>
+                   <AlertDialogCancel>Cancel</AlertDialogCancel>
+                   <AlertDialogAction>Continue</AlertDialogAction>
+                 </AlertDialogFooter> */}
+                </AlertDialogContent>
+              )}
+            </AlertDialog>
             {/* <Button type="submit">Submit</Button> */}
           </form>
         </Form>
