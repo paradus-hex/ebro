@@ -7,7 +7,19 @@ import {
   useMapEvents,
 } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { GeoSearchControl, MapBoxProvider } from 'leaflet-geosearch';
+import 'leaflet-geosearch/dist/geosearch.css';
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import mapPointer from '/images/mapPointer.png';
+
+// import myCustomMarkerIcon from './path/to/your/custom-marker-icon.png'; // Replace with the path to your custom marker icon image
+
+const customIcon = new L.Icon({
+  // @ts-ignore
+  iconUrl: '/images/mapPointer.png',
+  iconSize: [32, 32], // Adjust the size as needed
+  iconAnchor: [16, 32], // Adjust the anchor point if necessary
+});
+
 import React, {
   useCallback,
   useEffect,
@@ -15,35 +27,41 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import L from 'leaflet';
+
+const apiKey = 'imiWDMZVVfUMgl4VXQ80';
+
+const SearchField = ({ apiKey }) => {
+  const provider = new OpenStreetMapProvider();
+
+  // @ts-ignore
+  const searchControl = new GeoSearchControl({
+    provider: provider,
+    showMarker: true,
+    showPopup: true,
+    marker: {
+      // optional: L.Marker    - default L.Icon.Default
+      icon: customIcon,
+      draggable: true,
+    },
+    popupFormat: ({ query, result }) => result.label, // optional: function    - default returns result label,
+    resultFormat: ({ result }) => result.label,
+  });
+
+  const map = useMap();
+  // @ts-ignore
+  useEffect(() => {
+    map.addControl(searchControl);
+    return () => map.removeControl(searchControl);
+  }, []);
+
+  return null;
+};
 function MyComponent() {
   const map = useMap();
   console.log('map center:', map.getCenter());
   return null;
 }
-const apiKey = 'imiWDMZVVfUMgl4VXQ80';
-// import { useMap } from 'react-leaflet';
-// const SearchField = ({ apiKey }) => {
-//   const provider = new MapBoxProvider({
-//     params: {
-//       access_token: apiKey,
-//     },
-//   });
-
-//   // @ts-ignore
-//   const searchControl = new GeoSearchControl({
-//     provider: provider,
-//   });
-
-//   const map = useMap();
-
-//   useEffect(() => {
-//     map.addControl(searchControl);
-//     return map.removeControl(searchControl);
-//   }, []);
-
-//   return null;
-// };
-
 function LocationMarker() {
   const [position, setPosition] = useState(null);
   const map = useMapEvents({
@@ -109,12 +127,12 @@ export default function Map2() {
       <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
         <div className="w-[100px] h-screen">
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=imiWDMZVVfUMgl4VXQ80">OpenStreetMap</a> contributors'
+            url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=imiWDMZVVfUMgl4VXQ80"
           />
           {/* {showSearch && <SearchField apiKey={apiKey} />} */}
-          <DraggableMarker />
-          {/* <SearchField apiKey={apiKey} /> */}
+          {/* <DraggableMarker /> */}
+          <SearchField apiKey={apiKey} />
         </div>
       </MapContainer>
     </div>

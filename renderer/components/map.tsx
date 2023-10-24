@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as maptilersdk from '@maptiler/sdk';
 import '@maptiler/sdk/dist/maptiler-sdk.css';
-// import '@maptiler/geocoding-control/dist/style.css';
+import '@maptiler/geocoding-control/style.css';
 // import './map.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { GeocodingControl } from '@maptiler/geocoding-control/maplibregl';
