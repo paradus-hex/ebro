@@ -1,38 +1,103 @@
-import React, { useRef, useEffect, useState } from 'react';
-import * as maptilersdk from '@maptiler/sdk';
-import '@maptiler/sdk/dist/maptiler-sdk.css';
-import '@maptiler/geocoding-control/style.css';
-// import './map.css';
-import 'maplibre-gl/dist/maplibre-gl.css';
-import { GeocodingControl } from '@maptiler/geocoding-control/maplibregl';
+import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-geosearch/dist/geosearch.css';
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 
-export default function Map() {
-  const apiKey = 'imiWDMZVVfUMgl4VXQ80';
-  const mapContainer = useRef(null);
-  const map = useRef(null);
-  const tokyo = { lng: 139.753, lat: 35.6844 };
-  const [zoom] = useState(14);
-  maptilersdk.config.apiKey = 'imiWDMZVVfUMgl4VXQ80';
+import { useCreatePageStore } from '../stores/createPageStore';
 
+import React, { useEffect } from 'react';
+import L from 'leaflet';
+
+// @ts-ignore
+const customIcon = new L.Icon({
+  // @ts-ignore
+  iconUrl: '/images/mapPointer.png',
+  iconSize: [32, 32], // Adjust the size as needed
+  iconAnchor: [16, 32], // Adjust the anchor point if necessary
+});
+
+const apiKey = '';
+
+const SearchField = () => {
+  const provider = new OpenStreetMapProvider();
+  const { mapLocation, setMapLocation, showSearch, setShowSearch } =
+    useCreatePageStore();
+
+  // @ts-ignore
+  const searchControl = new GeoSearchControl({
+    provider: provider,
+    showMarker: true,
+    showPopup: true,
+    updateMap: true,
+    retainZoomLevel: false,
+    marker: {
+      // optional: L.Marker    - default L.Icon.Default
+      icon: customIcon,
+      draggable: true,
+    },
+    popupFormat: ({ query, result }) => {
+      setMapLocation({ lng: result.x, lat: result.y });
+      console.log('result:', result);
+      return result.label;
+    }, // optional: function    - default returns result label,
+    resultFormat: ({ result }) => result.label,
+    // retainZoomLevel: true,
+  });
+
+  const map = useMap();
+
+  // @ts-ignore
   useEffect(() => {
-    if (map.current) return; // stops map from intializing more than once
-    const gc = new GeocodingControl({ apiKey });
-    map.current = new maptilersdk.Map({
-      container: mapContainer.current,
-      style: maptilersdk.MapStyle.STREETS,
-      center: [tokyo.lng, tokyo.lat],
-      zoom: zoom,
+    map.addControl(searchControl);
+    map.on('geosearch/showlocation', function (e) {
+      setShowSearch(true);
     });
-    map.current.addControl(gc);
 
-    new maptilersdk.Marker({ color: '#FF0000' })
-      .setLngLat([139.7525, 35.6846])
-      .addTo(map.current);
-  }, [tokyo.lng, tokyo.lat, zoom]);
+    return () => map.removeControl(searchControl);
+  }, []);
+
+  return null;
+};
+
+export default function Map2() {
+  const { mapLocation, showSearch, setShowSearch, setMapLocation } =
+    useCreatePageStore();
+  useEffect(() => {
+    setShowSearch(false);
+  }, []);
 
   return (
-    <div className="map-wrap">
-      <div ref={mapContainer} className="map" />
+    <div className="flex justify-center items-center">
+      {/* <h1>{mapLocation.lat}</h1>
+      <h1>{mapLocation.lng}</h1> */}
+      <MapContainer
+        className="w-[90%] h-[600px]"
+        center={[mapLocation.lat, mapLocation.lng]}
+        zoom={13}
+        scrollWheelZoom={false}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+
+        <SearchField />
+        {!showSearch && (
+          <Marker
+            position={[mapLocation.lat, mapLocation.lng]}
+            icon={customIcon}
+            draggable={true}
+            eventHandlers={{
+              dragend: (e) => {
+                setMapLocation({
+                  lat: e.target._latlng.lat,
+                  lng: e.target._latlng.lng,
+                });
+              },
+            }}
+          />
+        )}
+      </MapContainer>
     </div>
   );
 }

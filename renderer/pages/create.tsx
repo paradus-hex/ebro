@@ -43,12 +43,12 @@ import { getProjectDetails } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import ImageUpload2 from '../components/imageUpload2';
 import chat from '../lib/chat';
-import Map from '../components/map';
+// import Map from '../components/map';
 
 import FinalModal from '../components/finalModal';
 import dynamic from 'next/dynamic';
 // import Map2 from '../components/map2';
-const Map2 = dynamic(() => import('../components/map2'), {
+const Map = dynamic(() => import('../components/map'), {
   ssr: false,
 });
 interface Params {
@@ -422,7 +422,7 @@ function Create() {
                                 {/* <AlertDialogAction>Continue</AlertDialogAction> */}
                               </div>
 
-                              <Map2 />
+                              <Map />
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           {/* <AlertDialogFooter>

@@ -2,7 +2,7 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-const MapWithNoSSR = dynamic(() => import('../components/map2'), {
+const MapWithNoSSR = dynamic(() => import('../components/map'), {
   ssr: false,
 });
 // import Map2 from '../components/map2';
