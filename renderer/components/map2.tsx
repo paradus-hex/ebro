@@ -1,25 +1,11 @@
-import {
-  MapContainer,
-  Marker,
-  Popup,
-  TileLayer,
-  useMap,
-  useMapEvents,
-} from 'react-leaflet';
+import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-geosearch/dist/geosearch.css';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
-import mapPointer from '/images/mapPointer.png';
+
 import { useCreatePageStore } from '../stores/createPageStore';
-// import myCustomMarkerIcon from './path/to/your/custom-marker-icon.png'; // Replace with the path to your custom marker icon image
-// import { Marker } from 'leaflet';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+
+import React, { useEffect } from 'react';
 import L from 'leaflet';
 
 // @ts-ignore
@@ -66,11 +52,7 @@ const SearchField = () => {
     map.on('geosearch/showlocation', function (e) {
       setShowSearch(true);
     });
-    // map.on('geosearch/marker/dragend', function (e) {
-    //   console.log(e);
-    //   // @ts-ignore
-    //   setMapLocation({ lat: e.location.lat, lng: e.location.lng });
-    // });
+
     return () => map.removeControl(searchControl);
   }, []);
 
@@ -94,13 +76,11 @@ export default function Map2() {
         zoom={13}
         scrollWheelZoom={false}
       >
-        {/* <div className="w-[800px] h-screen"> */}
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {/* {showSearch && <SearchField apiKey={apiKey} />} */}
-        {/* <DraggableMarker /> */}
+
         <SearchField />
         {!showSearch && (
           <Marker
@@ -117,8 +97,6 @@ export default function Map2() {
             }}
           />
         )}
-
-        {/* </div> */}
       </MapContainer>
     </div>
   );
