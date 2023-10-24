@@ -204,7 +204,7 @@ const FinalPage: NextPageWithLayout = () => {
         Go back
       </Button>
       <h1 className="font-extrabold mb-10">{projectName || 'Project Name'}</h1>
-      <div className="grid grid-cols-12 w-full gap-2 mx-2 h-screen">
+      <div className="grid grid-cols-12 w-full gap-2 h-screen">
         <div className="col-span-8 bg-transparent rounded">
           {isEditing ? (
             <div className="w-full relative">
