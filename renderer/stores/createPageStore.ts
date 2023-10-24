@@ -6,8 +6,15 @@ import { formSchema } from "../pages/create";
 import { devtools, persist, } from "zustand/middleware";
 
 interface CreatePageStoreState {
-  values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>;
+  values: {
+    userName: string; projectName: string, updatedAt: string, isFavorite: boolean, mapLocation?: {
+      lat: number;
+      lng: number;
+    }
+  } & z.infer<typeof formSchema>;
   response: string;
+  showSearch: boolean;
+  setShowSearch: (showSearch: boolean) => void;
   note: string;
   imageUrls: string[];
   images: File[];
@@ -15,6 +22,8 @@ interface CreatePageStoreState {
   imageDescObj: { [key: string]: { desc: string, name: string, url: string } };
   imageSwiperDescObj: { [key: string]: string };
   projectList: { key: string; projectName: any; address: any; updatedAt: any; isFavorite: any; }[];
+  mapLocation: { lat: number, lng: number };
+  setMapLocation: (mapLocation: { lat: number, lng: number }) => void;
   intention: "create" | "edit" | "update" | "";
   setIntentions: (intention: "create" | "edit" | "update" | "") => void;
   projectId: string;
@@ -25,7 +34,12 @@ interface CreatePageStoreState {
   setProjectName: (projectName: string) => void;
   prev: string;
   setPrev: (prev: string) => void;
-  setValues: (values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>) => void;
+  setValues: (values: {
+    userName: string; projectName: string, updatedAt: string, isFavorite: boolean, mapLocation?: {
+      lat: number;
+      lng: number;
+    }
+  } & z.infer<typeof formSchema>) => void;
   resetValues: () => void;
   setResponse: (response: string) => void;
   getValues: () => { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>;
@@ -78,6 +92,8 @@ export const useCreatePageStore = create<CreatePageStoreState>()(
           updatedAt: new Date().toISOString(),
           isFavorite: false,
         },
+        showSearch: false,
+        setShowSearch: (showSearch) => set({ showSearch }),
         response: "",
         note: "",
         imageUrls: [],
@@ -86,6 +102,8 @@ export const useCreatePageStore = create<CreatePageStoreState>()(
         imageDescObj: {},
         imageSwiperDescObj: {},
         projectList: [],
+        mapLocation: { lat: 60.472, lng: 8.4689 },
+        setMapLocation: (mapLocation) => set({ mapLocation }),
         intention: "create",
         projectId: "",
         setProjectId: (projectId) => set({ projectId }),
@@ -119,6 +137,10 @@ export const useCreatePageStore = create<CreatePageStoreState>()(
             nearbyAmenities: 'Psychiatrist office, Swimming pool full of sharks',
             updatedAt: new Date().toISOString(),
             isFavorite: false,
+            mapLocation: {
+              lat: 60.472,
+              lng: 8.4689
+            }
           }
           set({ values })
         },

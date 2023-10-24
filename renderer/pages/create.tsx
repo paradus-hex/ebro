@@ -43,7 +43,14 @@ import { getProjectDetails } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import ImageUpload2 from '../components/imageUpload2';
 import chat from '../lib/chat';
+// import Map from '../components/map';
+
 import FinalModal from '../components/finalModal';
+import dynamic from 'next/dynamic';
+// import Map2 from '../components/map2';
+const Map = dynamic(() => import('../components/map'), {
+  ssr: false,
+});
 interface Params {
   projectId: string;
   projectName: string;
@@ -111,11 +118,13 @@ function Create() {
     setIntentions,
     setProjectName,
     setPrev,
+    mapLocation,
     prev,
     projectName,
     projectId,
     intention,
     userId,
+    setMapLocation,
   } = useCreatePageStore();
 
   const { projectName: loadedProjectName, ...defaultValues } =
@@ -141,6 +150,12 @@ function Create() {
         form.reset(data);
         setResponse(data.response);
         setValues(data);
+        data?.mapLocation
+          ? setMapLocation({
+              lng: data.mapLocation.lng,
+              lat: data.mapLocation.lat,
+            })
+          : ' ';
         setNote(data.note);
       }));
   };
@@ -216,6 +231,7 @@ function Create() {
       userName: userId,
       updatedAt: new Date().toISOString(),
       isFavorite: false,
+      mapLocation,
     });
     // append({ role: 'user', content: JSON.stringify(values) });
     // setChatGptRes(await chat(JSON.stringify(values)));
@@ -365,6 +381,57 @@ function Create() {
                         </FormItem>
                       )}
                     />
+                  </div>
+                  <div className="grid  items-center gap-4">
+                    {/* <FormField
+                      control={form.control}
+                      name="city"
+                      render={({ field }) => (
+                        <FormItem className=" flex flex-col items-center">
+                          <FormLabel className="text-xl col-span-1">
+                            City
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              className="max-w-[920px] bg-white rounded-xl col-span-2 h-8 border focus:border-1 focus:border-slate-400"
+                              placeholder="Enter the name of the city"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    /> */}
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        {/* <Button variant="outline">Show Dialog</Button>
+                         */}
+                        <Button disabled={disableButtons} type="submit">
+                          {loading && (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          )}
+                          Set Coordinates
+                        </Button>
+                      </AlertDialogTrigger>
+                      {!disableButtons && (
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogDescription>
+                              <div className="w-full flex justify-between">
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                {/* <AlertDialogAction>Continue</AlertDialogAction> */}
+                              </div>
+
+                              <Map />
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          {/* <AlertDialogFooter>
+                   <AlertDialogCancel>Cancel</AlertDialogCancel>
+                   <AlertDialogAction>Continue</AlertDialogAction>
+                 </AlertDialogFooter> */}
+                        </AlertDialogContent>
+                      )}
+                    </AlertDialog>
                   </div>
                 </FormPopOver>
                 {(errors.address || errors.city || errors.zipCode) && (
@@ -708,6 +775,7 @@ function Create() {
         >
           Generate
         </Button> */}
+          {/* <Map></Map> */}
         </div>
       </div>
     </div>

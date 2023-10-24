@@ -18,6 +18,7 @@ function Home() {
     setIntentions,
     setPrev,
     projectName,
+    setMapLocation,
     resetValues,
     setProjectName,
     setValues,
@@ -50,6 +51,7 @@ function Home() {
     resetValues();
     setImageArray([]);
     setImagesToDel([]);
+    setMapLocation({ lat: 60.472, lng: 8.4689 });
   }, []);
   return (
     <React.Fragment>
