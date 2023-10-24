@@ -337,6 +337,27 @@ function Create() {
                       )}
                     />
                   </div>
+                  <div className="grid  items-center gap-4">
+                    <FormField
+                      control={form.control}
+                      name="city"
+                      render={({ field }) => (
+                        <FormItem className=" flex flex-col items-center">
+                          <FormLabel className="text-xl col-span-1">
+                            City
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              className="max-w-[920px] bg-white rounded-xl col-span-2 h-8 border focus:border-1 focus:border-slate-400"
+                              placeholder="Enter the name of the city"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </FormPopOver>
                 {(errors.address || errors.city || errors.zipCode) && (
                   <div>
