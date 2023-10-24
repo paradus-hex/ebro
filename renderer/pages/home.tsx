@@ -8,28 +8,46 @@ import Layout from '../components/Layout';
 import { useImageStore } from '../stores/imageStore';
 import useStore from '../stores/useStore';
 import { useSignInPageStore } from '../stores/signInPageStore';
+import { useCreatePageStore } from '../stores/createPageStore';
 
 function Home() {
   const { setImageArray, setImagesToDel } = useImageStore();
+  const {
+    setProjectId,
+    setUserId,
+    setIntentions,
+    setPrev,
+    projectName,
+    resetValues,
+    setProjectName,
+    setValues,
+  } = useCreatePageStore();
   const { getValues, getUser_id } = useSignInPageStore();
   const router = useRouter();
-  const [projectName, setProjectName] = React.useState<string>('');
+  // const [projectName, setProjectName] = React.useState<string>('');
   const handleProjectNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProjectName(e.target.value);
   };
   const handleCreateClick = () => {
+    setIntentions('create');
+    // setProjectName('testiti');
+    setProjectId('');
+    setPrev('home');
+    setUserId(`${getValues().email}_${getUser_id()}`);
     router.push(
       `/create?params=${encodeURIComponent(
         JSON.stringify({
-          passedProjectName: projectName,
+          projectName: projectName,
           intention: 'create',
           prev: 'home',
           userID: `${getValues().email}_${getUser_id()}`,
+          test: 'test',
         }),
       )}`,
     );
   };
   useEffect(() => {
+    resetValues();
     setImageArray([]);
     setImagesToDel([]);
   }, []);
