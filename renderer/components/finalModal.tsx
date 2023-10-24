@@ -187,7 +187,7 @@ export default function FinalModal() {
   }, [text]);
 
   return (
-    <div className="flex flex-col w-full max-h-[700px] justify-center  overflow-hidden">
+    <div className="flex flex-col w-full max-h-[700px] justify-center">
       {/* <Button
         className="sticky top-5 w-24 h-12"
         onClick={handleGoBack}
@@ -254,7 +254,7 @@ export default function FinalModal() {
             </div>
           </div>
         </div>
-        <div className="col-span-12  flex justify-between ">
+        <div className="col-span-12  flex justify-between mt-5">
           <div className="flex flex-row w-full justify-between">
             <Button
               disabled={editDisabled || isEditing || buttonsDisabled}
