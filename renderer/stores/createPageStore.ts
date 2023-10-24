@@ -1,3 +1,4 @@
+import { set } from 'lodash';
 
 import { z } from "zod";
 import { create } from "zustand";
@@ -14,6 +15,8 @@ interface CreatePageStoreState {
   imageDescObj: { [key: string]: { desc: string, name: string, url: string } };
   imageSwiperDescObj: { [key: string]: string };
   projectList: { key: string; projectName: any; address: any; updatedAt: any; isFavorite: any; }[];
+  mapLocation: { lat: number, lng: number };
+  setMapLocation: (mapLocation: { lat: number, lng: number }) => void;
   setValues: (values: { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>) => void;
   setResponse: (response: string) => void;
   getValues: () => { userName: string; projectName: string, updatedAt: string, isFavorite: boolean } & z.infer<typeof formSchema>;
@@ -74,6 +77,8 @@ export const useCreatePageStore = create<CreatePageStoreState>()(
         imageDescObj: {},
         imageSwiperDescObj: {},
         projectList: [],
+        mapLocation: { lat: 0, lng: 0 },
+        setMapLocation: (mapLocation) => set({ mapLocation }),
         setValues: (values) => set({ values }),
         setResponse: (response) => set({ response }),
         setNote: (note) => set({ note }),
