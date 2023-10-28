@@ -177,7 +177,6 @@ export const useCreatePageStore = create<CreatePageStoreState>()(
             let keys = Object.keys(obj);
             let values = Object.values(obj);
             values.splice(parseInt(key), 1);
-            console.log("values", values);
             let newObj = {};
             for (let i = 0; i < values.length; i++) {
               newObj[i.toString()] = values[i];

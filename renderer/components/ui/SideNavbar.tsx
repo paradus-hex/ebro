@@ -31,9 +31,11 @@ export default function SideNavbar() {
     };
   }, []);
   let greeting;
-  if (time.getHours() < 12) {
+  if (time.getHours() > 5) {
     greeting = 'Good Morning';
-  } else if (time.getHours() < 18) {
+  } else if (time.getHours() > 12) {
+    greeting = 'Good Noon';
+  } else if (time.getHours() > 16) {
     greeting = 'Good Afternoon';
   } else {
     greeting = 'Good Evening';
@@ -46,7 +48,7 @@ export default function SideNavbar() {
     >
       <div className="py-8 px-6 h-screen border border-r-2 border-[#06367A] bg-[#06367A] z-20 overflow-auto fixed top-0 left-0 w-full peer-focus:left-0 peer:transition duration-300">
         <button
-          className="fixed -translate-y-5 translate-x-1 w-9 h-9 flex justify-center items-center text-center text-white bg-gray-700 rounded-full hover:bg-gray-600"
+          className="fixed z-30 -translate-y-5 translate-x-1 w-9 h-9 flex justify-center items-center text-center text-white bg-gray-700 rounded-full hover:bg-gray-600"
           onClick={toggleSidebar}
         >
           <img src="/images/avatar.png" alt="alt" className="w-14 h-10" />

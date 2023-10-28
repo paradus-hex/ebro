@@ -116,10 +116,10 @@ const FinalPage: NextPageWithLayout = () => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        console.log(response);
         return response.json();
       })
       .then((data) => {
+        console.log(data.message);
         setText(data.message);
       })
       .catch((error) => {
@@ -195,16 +195,16 @@ const FinalPage: NextPageWithLayout = () => {
   }, [text]);
 
   return (
-    <div className="flex flex-col w-full h-full ml-4 justify-between">
+    <div className="flex flex-col w-full h-full ml-2 justify-between">
       <Button
-        className="w-24 h-12 translate-y-16"
+        className="z-20 w-24 h-12 translate-y-16"
         onClick={handleGoBack}
         disabled={editDisabled || isEditing || buttonsDisabled}
       >
         Go back
       </Button>
       <h1 className="font-extrabold mb-10">{projectName || 'Project Name'}</h1>
-      <div className="grid grid-cols-12 w-full gap-2 h-full">
+      <div className="grid grid-cols-12 w-full gap-2 h-full content-start overflow-y-auto">
         <div className="col-span-8 bg-transparent rounded h-full">
           {isEditing ? (
             <div className="w-full relative">
@@ -218,7 +218,7 @@ const FinalPage: NextPageWithLayout = () => {
                 </div>
               </Button>
               <textarea
-                className="w-full flex rounded-md mt-2 p-3 px-5 text-sm text-black outline-1 border border-1 border-gray-400 pt-[40px]"
+                className="w-full h-[600px] flex rounded-md p-3 px-5 text-sm text-black outline-1 border border-1 border-gray-400 pt-[40px]"
                 value={text}
                 onChange={handleChange}
                 placeholder="Write here...."
@@ -237,23 +237,18 @@ const FinalPage: NextPageWithLayout = () => {
                   <p className="tracking-wide">Edit</p>
                 </div>
               </Button>
-              <div className="w-full flex rounded-md h-[600px] mt-2 p-3 px-5 text-sm text-black outline-0 bg-gray-300/50 overflow-auto text-left pt-[40px]">
+              <div className="w-full flex rounded-md h-[600px] p-3 px-5 text-sm text-black outline-0 bg-gray-300/50 overflow-auto text-left pt-[40px]">
                 <p>{text}</p>
               </div>
             </div>
           )}
         </div>
         <div className="col-span-4">
-          <div className="mx-auto relative h-full rounded flex overflow-auto flex-col items-center justify-center">
+          <div className="mx-auto mr-2 relative max-h-[600px] rounded flex overflow-y-auto flex-col items-center justify-center">
             <div className="flex flex-wrap w-full gap-2 items-center justify-center overflow-auto">
               {getImageArray().map((image) => (
-                <div className="border-red-700">
-                  <img
-                    className="object-cover "
-                    src={image.url}
-                    key={image.url}
-                    alt=""
-                  />
+                <div key={image.url} className="border-red-700">
+                  <img className="object-cover " src={image.url} alt="" />
                 </div>
               ))}
             </div>
@@ -281,7 +276,8 @@ const FinalPage: NextPageWithLayout = () => {
           </Button>
 
           <Button
-            disabled={editDisabled || isEditing || buttonsDisabled}
+            // disabled={editDisabled || isEditing || buttonsDisabled}
+            disabled
             className=" bg-nav_primary w-[200px] text-white rounded-xl text-sm px-2 h-10 mb-5"
           >
             Export
