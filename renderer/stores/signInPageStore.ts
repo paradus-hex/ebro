@@ -9,6 +9,7 @@ interface SignInPagePageStoreState {
   user_id: string;
   account_type: string;
   account_id: string;
+  sideBarIsOpen: boolean;
   setAccount_id: (account_id: string) => void;
   getAccount_id: () => string;
   setAccount_type: (account_type: string) => void;
@@ -19,6 +20,7 @@ interface SignInPagePageStoreState {
   getValues: () => z.infer<typeof signInformSchema>;
   getSignedIn: () => boolean;
   setSignedIn: (signedIn: boolean) => void;
+  setSideBarIsOpen: (sideBarIsOpen: boolean) => void;
 }
 
 export const useSignInPageStore = create<SignInPagePageStoreState>()(
@@ -33,6 +35,7 @@ export const useSignInPageStore = create<SignInPagePageStoreState>()(
         user_id: '',
         account_type: '',
         account_id: '',
+        sideBarIsOpen: true,
         setAccount_id: (account_id) => set({ account_id }),
         getAccount_id: () => get().account_id,
         setAccount_type: (account_type) => set({ account_type }),
@@ -43,6 +46,7 @@ export const useSignInPageStore = create<SignInPagePageStoreState>()(
         getValues: () => get().values,
         getSignedIn: () => get().signedIn,
         setSignedIn: (signedIn) => set({ signedIn }),
+        setSideBarIsOpen: (sideBarIsOpen) => set({ sideBarIsOpen }),
       }),
       { name: 'signInStore' }
     )

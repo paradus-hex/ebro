@@ -184,7 +184,7 @@ function Create() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues,
+    defaultValues: projectId ? defaultValues : emptyProjectData,
   });
 
   const handleNextPageClick = () => {
@@ -260,7 +260,6 @@ function Create() {
   }
 
   useEffect(() => {
-    console.log(userId, projectId, intention, projectName);
     setDisableButtons(false);
     if (chatGptRes.length > 0) {
       setResponse(chatGptRes);
@@ -283,12 +282,12 @@ function Create() {
 
   useEffect(() => {
     prevProjectDetailsFromCloud();
-  }, []);
+  }, [projectId, prev]);
 
   return (
-    <div className="flex overflow-y-auto max-h-screen">
+    <div className="flex overflow-y-auto ml-4 max-h-screen">
       <div className=" flex-col gap-10 justify-center w-[100%] px-auto mx-auto">
-        <div className="flex justify-between mt-10 mb-8">
+        <div className="flex justify-between mt-14 mb-8">
           <Button disabled={disableButtons} onClick={handleGoBackClick}>
             Go Back
           </Button>
@@ -298,7 +297,7 @@ function Create() {
             onClick={handleNextPageClick}
             className="-translate-x-4"
           >
-            Past Output
+            Generated Output
           </Button>
         </div>
         <Form {...form}>
@@ -714,7 +713,7 @@ function Create() {
                  */}
                 <Button disabled={disableButtons} type="submit">
                   {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Submit
+                  Generate
                 </Button>
               </AlertDialogTrigger>
               {!disableButtons && (

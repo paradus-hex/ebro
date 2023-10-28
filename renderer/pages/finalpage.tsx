@@ -195,17 +195,17 @@ const FinalPage: NextPageWithLayout = () => {
   }, [text]);
 
   return (
-    <div className="flex flex-col w-full h-screen  justify-between">
+    <div className="flex flex-col w-full h-full ml-4 justify-between">
       <Button
-        className=" w-24 h-12 mt-5"
+        className="w-24 h-12 translate-y-16"
         onClick={handleGoBack}
         disabled={editDisabled || isEditing || buttonsDisabled}
       >
         Go back
       </Button>
       <h1 className="font-extrabold mb-10">{projectName || 'Project Name'}</h1>
-      <div className="grid grid-cols-12 w-full gap-2 h-screen">
-        <div className="col-span-8 bg-transparent rounded">
+      <div className="grid grid-cols-12 w-full gap-2 h-full">
+        <div className="col-span-8 bg-transparent rounded h-full">
           {isEditing ? (
             <div className="w-full relative">
               <Button
@@ -218,7 +218,7 @@ const FinalPage: NextPageWithLayout = () => {
                 </div>
               </Button>
               <textarea
-                className="w-full flex rounded-md h-[600px] mt-2 p-3 px-5 text-sm text-black outline-1 border border-1 border-gray-400 pt-[40px]"
+                className="w-full flex rounded-md mt-2 p-3 px-5 text-sm text-black outline-1 border border-1 border-gray-400 pt-[40px]"
                 value={text}
                 onChange={handleChange}
                 placeholder="Write here...."
@@ -243,13 +243,13 @@ const FinalPage: NextPageWithLayout = () => {
             </div>
           )}
         </div>
-        <div className="col-span-4 ">
-          <div className="max-w-screen-2xl mx-auto px-4 py-16 lg:py-24 relative h-[600px] m-2 rounded mr-5 flex overflow-auto flex-col space-y-5 items-center justify-center">
+        <div className="col-span-4">
+          <div className="mx-auto relative h-full rounded flex overflow-auto flex-col items-center justify-center">
             <div className="flex flex-wrap w-full gap-2 items-center justify-center overflow-auto">
-              {getImageArray().map((image, index) => (
+              {getImageArray().map((image) => (
                 <div className="border-red-700">
                   <img
-                    className="object-cover w-[320px] h-[200px]"
+                    className="object-cover "
                     src={image.url}
                     key={image.url}
                     alt=""
