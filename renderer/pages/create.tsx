@@ -184,7 +184,7 @@ function Create() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues,
+    defaultValues: projectId ? defaultValues : emptyProjectData,
   });
 
   const handleNextPageClick = () => {
