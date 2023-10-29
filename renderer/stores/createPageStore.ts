@@ -103,7 +103,7 @@ export const useCreatePageStore = create<CreatePageStoreState>()(
         imageSwiperDescObj: {},
         projectList: [],
         mapLocation: { lat: 60.472, lng: 8.4689 },
-        setMapLocation: (mapLocation) => set({ mapLocation }),
+        setMapLocation: (mapLocation) => set({ values: { ...get().values, mapLocation } }),
         intention: "create",
         projectId: "",
         setProjectId: (projectId) => set({ projectId }),

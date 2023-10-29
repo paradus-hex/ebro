@@ -40,7 +40,11 @@ const SearchField = () => {
       console.log('result:', result);
       return result.label;
     }, // optional: function    - default returns result label,
-    resultFormat: ({ result }) => result.label,
+    resultFormat: ({ result }) => {
+      setMapLocation({ lng: result.x, lat: result.y });
+      console.log('result:', result);
+      return result.label;
+    },
     // retainZoomLevel: true,
   });
 
@@ -60,7 +64,7 @@ const SearchField = () => {
 };
 
 export default function Map2() {
-  const { mapLocation, showSearch, setShowSearch, setMapLocation } =
+  const { values, showSearch, setShowSearch, setMapLocation } =
     useCreatePageStore();
   useEffect(() => {
     setShowSearch(false);
@@ -72,7 +76,7 @@ export default function Map2() {
       <h1>{mapLocation.lng}</h1> */}
       <MapContainer
         className="w-[90%] h-[600px]"
-        center={[mapLocation.lat, mapLocation.lng]}
+        center={[values.mapLocation.lat, values.mapLocation.lng]}
         zoom={13}
         scrollWheelZoom={false}
       >
@@ -84,7 +88,7 @@ export default function Map2() {
         <SearchField />
         {!showSearch && (
           <Marker
-            position={[mapLocation.lat, mapLocation.lng]}
+            position={[values.mapLocation.lat, values.mapLocation.lng]}
             icon={customIcon}
             draggable={true}
             eventHandlers={{

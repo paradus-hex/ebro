@@ -28,39 +28,11 @@ export default function FinalModal() {
     projectName,
     intention,
     userId,
+    mapLocation,
   } = useCreatePageStore();
   const { getImageArray, getImagesToDel } = useImageStore();
   const [feedback, setFeedback] = useState<string>('');
   const [text, setText] = useState<string>(getResponse());
-  // const { append, isLoading } = useChat({
-  //   onFinish: (message) => {
-  //     setResponse(message.content.slice(1, -1));
-  //   },
-  // });
-  const { params } = router.query;
-  // const parsedParams: Params = params
-  //   ? JSON.parse(decodeURIComponent(params as string))
-  //   : {};
-  // const { projectId, projectName, intention, userId } = parsedParams;
-  // const { projectId, projectName, intention, userId } = {
-  //   projectId: 'asdf',
-  //   projectName: 'Asdf',
-  //   intention: 'asdf',
-  //   userId: 'Asdfsd',
-  // };
-  // const handleGoBack = () => {
-  //   router.push(
-  //     `/create?params=${encodeURIComponent(
-  //       JSON.stringify({
-  //         passedProjectName: projectName,
-  //         intention,
-  //         projectId,
-  //         userId,
-  //         prev: 'finalpage',
-  //       }),
-  //     )}`,
-  //   );
-  // };
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -73,22 +45,9 @@ export default function FinalModal() {
   };
 
   const handleAISubmitClick = async () => {
-    // append({
-    //   role: 'user',
-    //   content: JSON.stringify(text + '$$$' + feedback),
-    // });
     handleCloseModal();
     setButtonsDisabled(true);
-    // setText(
-    //   await chat(
-    //     JSON.stringify(
-    //       text +
-    //         '$$$' +
-    //         feedback +
-    //         '.\n Keep every other information as it is.',
-    //     ),
-    //   ),
-    // );
+
     fetch('https://cyan-important-rattlesnake.cyclic.app', {
       method: 'POST',
       headers: {
@@ -137,6 +96,7 @@ export default function FinalModal() {
         response: getResponse(),
         projectName,
         note: getNote(),
+        // mapLocation,
       })
         .then(async (docRef) => {
           const downloadUrls = await saveImagesToCloud(
@@ -160,6 +120,7 @@ export default function FinalModal() {
         response: getResponse(),
         projectName,
         note: getNote(),
+        mapLocation,
       });
       saveImagesToCloud(
         userId,
