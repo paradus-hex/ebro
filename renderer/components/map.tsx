@@ -15,6 +15,12 @@ const customIcon = new L.Icon({
   iconSize: [32, 32], // Adjust the size as needed
   iconAnchor: [16, 32], // Adjust the anchor point if necessary
 });
+// const customIcon2 = new L.Icon({
+//   // @ts-ignore
+//   iconUrl: '/images/mapPointer2.png',
+//   iconSize: [32, 32], // Adjust the size as needed
+//   iconAnchor: [16, 32], // Adjust the anchor point if necessary
+// });
 
 const apiKey = '';
 
@@ -31,8 +37,11 @@ const SearchField = () => {
       setShowSearch(true);
     });
     map.on('geosearch/marker/dragend', function (e) {
-      console.log('dragend:', e);
-      setMapLocation(e.location!);
+      // @ts-ignore
+      console.log('dragend:', e.location);
+      // @ts-ignore
+      setMapLocation({ lng: e.location.lng, lat: e.location.lat });
+      // console.log('current maplocation: ', mapLocation);
     });
 
     return () => map.removeControl(searchControl);
@@ -51,12 +60,12 @@ const SearchField = () => {
     },
     popupFormat: ({ query, result }) => {
       setMapLocation({ lng: result.x, lat: result.y });
-      console.log('result:', result);
+
       return result.label;
     }, // optional: function    - default returns result label,
     resultFormat: ({ result }) => {
       setMapLocation({ lng: result.x, lat: result.y });
-      console.log('result:', result);
+
       return result.label;
     },
     // retainZoomLevel: true,
@@ -89,6 +98,24 @@ export default function Map2() {
 
         <SearchField />
         {!showSearch && (
+          // <Marker
+          //   position={[mapLocation.lat, mapLocation.lng]}
+          //   icon={customIcon}
+          //   draggable={true}
+          //   eventHandlers={{
+          //     dragend: (e) => {
+          //       console.log({
+          //         lat: e.target._latlng.lat,
+          //         lng: e.target._latlng.lng,
+          //       });
+          //       setMapLocation({
+          //         lat: e.target._latlng.lat,
+          //         lng: e.target._latlng.lng,
+          //       });
+          //     },
+          //   }}
+          // />
+
           <Marker
             position={[mapLocation.lat, mapLocation.lng]}
             icon={customIcon}
