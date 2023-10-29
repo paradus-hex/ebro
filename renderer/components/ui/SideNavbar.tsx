@@ -63,7 +63,7 @@ export default function SideNavbar() {
           <img src="/images/avatar.png" alt="alt" className="w-14 h-10" />
         </button>
         <div className="flex flex-col justify-start item-center">
-          <p className="m-0 text-lg p-0 translate-y-8 overflow-hidden">
+          <p className="m-0 text-lg p-0 translate-y-8 self-start overflow-hidden">
             {greeting} {getValues().email.split('@')[0]}
           </p>
           <h1 className="mt-10 text-base text-center cursor-pointer text-blue-900 border-b border-gray-300 pb-4 w-full"></h1>
