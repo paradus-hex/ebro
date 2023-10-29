@@ -28,6 +28,7 @@ export default function FinalModal() {
     projectName,
     intention,
     userId,
+    mapLocation,
   } = useCreatePageStore();
   const { getImageArray, getImagesToDel } = useImageStore();
   const [feedback, setFeedback] = useState<string>('');
@@ -132,6 +133,7 @@ export default function FinalModal() {
     if (intention === 'create') {
       await setProjects({
         ...getValues(),
+        mapLocation,
         imagesDesc,
         response: getResponse(),
         projectName,
@@ -151,6 +153,7 @@ export default function FinalModal() {
     } else {
       updateProjectDetails(projectId, {
         ...getValues(),
+        mapLocation,
         imagesDesc,
         response: getResponse(),
         projectName,
