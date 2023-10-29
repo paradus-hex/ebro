@@ -22,12 +22,26 @@ const SearchField = () => {
   const provider = new OpenStreetMapProvider();
   const { mapLocation, setMapLocation, showSearch, setShowSearch } =
     useCreatePageStore();
+  const map = useMap();
 
+  // @ts-ignore
+  useEffect(() => {
+    map.addControl(searchControl);
+    map.on('geosearch/showlocation', function (e) {
+      setShowSearch(true);
+    });
+    map.on('geosearch/marker/dragend', function (e) {
+      console.log('dragend:', e);
+      setMapLocation(e.location!);
+    });
+
+    return () => map.removeControl(searchControl);
+  }, []);
   // @ts-ignore
   const searchControl = new GeoSearchControl({
     provider: provider,
     showMarker: true,
-    showPopup: true,
+    // showPopup: true,
     updateMap: true,
     retainZoomLevel: false,
     marker: {
@@ -40,21 +54,13 @@ const SearchField = () => {
       console.log('result:', result);
       return result.label;
     }, // optional: function    - default returns result label,
-    resultFormat: ({ result }) => result.label,
+    resultFormat: ({ result }) => {
+      setMapLocation({ lng: result.x, lat: result.y });
+      console.log('result:', result);
+      return result.label;
+    },
     // retainZoomLevel: true,
   });
-
-  const map = useMap();
-
-  // @ts-ignore
-  useEffect(() => {
-    map.addControl(searchControl);
-    map.on('geosearch/showlocation', function (e) {
-      setShowSearch(true);
-    });
-
-    return () => map.removeControl(searchControl);
-  }, []);
 
   return null;
 };
