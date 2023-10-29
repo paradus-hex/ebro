@@ -13,14 +13,12 @@ function LiveClock({ className }) {
     };
   }, []);
 
-  const hours = time.getHours() % 12 || 12;
+  const hours = time.getHours();
   const minutes = time.getMinutes().toString().padStart(2, '0');
-  const seconds = time.getSeconds().toString().padStart(2, '0');
-  const amPm = time.getHours() >= 12 ? 'PM' : 'AM';
 
   return (
     <div className={`font-semibold tracking-wide ${className}`}>
-      {hours}:{minutes}:{seconds} {amPm}
+      {hours}:{minutes}
     </div>
   );
 }

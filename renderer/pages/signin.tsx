@@ -61,9 +61,7 @@ export default function signin() {
       login
         ? signInUser(values.email, values.password)
             .then((cred) => {
-              console.log('sign in hoise');
               setSignedIn(true);
-              console.log(getSignedIn());
               setUser_id(cred.user.uid);
               getAccountDetails(cred.user.uid)
                 .then((account) => {

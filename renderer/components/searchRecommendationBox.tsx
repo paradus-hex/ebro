@@ -8,7 +8,6 @@ export default function SearchRecommendationBox({
   searchRef: React.MutableRefObject<any>;
   suggestions: any[];
 }) {
-  console.log('suggestions', suggestions);
   return (
     <ul
       ref={searchRef}

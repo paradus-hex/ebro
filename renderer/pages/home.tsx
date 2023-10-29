@@ -19,19 +19,16 @@ function Home() {
     setPrev,
     projectName,
     setMapLocation,
-    resetValues,
     setProjectName,
-    setValues,
+    setResponse,
   } = useCreatePageStore();
   const { getValues, getUser_id } = useSignInPageStore();
   const router = useRouter();
-  // const [projectName, setProjectName] = React.useState<string>('');
   const handleProjectNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProjectName(e.target.value);
   };
   const handleCreateClick = () => {
     setIntentions('create');
-    // setProjectName('testiti');
     setProjectId('');
     setPrev('home');
     setUserId(`${getValues().email}_${getUser_id()}`);
@@ -48,7 +45,7 @@ function Home() {
     );
   };
   useEffect(() => {
-    resetValues();
+    setResponse('');
     setImageArray([]);
     setImagesToDel([]);
     setMapLocation({ lat: 60.472, lng: 8.4689 });

@@ -58,7 +58,6 @@ export default function MyProjectCard({
     setIntentions('update');
     setProjectName(projectName);
     setPrev('home');
-    console.log('old project clicked');
     router.push(
       `/create?params=${encodeURIComponent(
         JSON.stringify({

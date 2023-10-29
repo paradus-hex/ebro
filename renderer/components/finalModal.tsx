@@ -103,7 +103,7 @@ export default function FinalModal() {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        console.log(response);
+        // console.log(response);
         return response.json();
       })
       .then((data) => {
@@ -129,7 +129,6 @@ export default function FinalModal() {
     const uploadedFiles = getImageArray()
       .map(({ file }) => file)
       .filter((file) => file !== undefined);
-    console.log(intention);
     if (intention === 'create') {
       await setProjects({
         ...getValues(),
@@ -150,10 +149,6 @@ export default function FinalModal() {
           setImagesDescToCloud(docRef.id, imagesDesc, downloadUrls);
         });
     } else {
-      console.log('updating');
-      console.log(getValues());
-      console.log(projectId);
-      console.log(getResponse());
       updateProjectDetails(projectId, {
         ...getValues(),
         imagesDesc,
@@ -168,7 +163,6 @@ export default function FinalModal() {
       ).then(async (downloadUrls) => {
         deleteImagesFromCloud(getImagesToDel().map((image) => image.url));
         setImagesDescToCloud(projectId, imagesDesc, downloadUrls);
-        console.log('done uploading image to cloud');
       });
     }
     router.push('/home');
@@ -276,7 +270,8 @@ export default function FinalModal() {
               Save to Cloud
             </Button>
             <Button
-              disabled={editDisabled || isEditing || buttonsDisabled}
+              // disabled={editDisabled || isEditing || buttonsDisabled}
+              disabled
               className="mr-4 my-2 bg-nav_primary w-[200px] text-white rounded-xl text-sm px-2 h-10  m-auto"
             >
               Export
