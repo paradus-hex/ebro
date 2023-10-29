@@ -3,6 +3,7 @@ import EditModal from '../components/finalpageModal';
 import { Button } from '../components/ui/button';
 import { useCreatePageStore } from '../stores/createPageStore';
 import { useRouter } from 'next/router';
+import { useChat } from 'ai/react';
 import {
   saveImagesToCloud,
   setProjects,
@@ -14,6 +15,7 @@ import {
 import Layout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
 import { useImageStore } from '../stores/imageStore';
+import chat from '../lib/chat';
 interface Params {
   projectID: string;
   userID: string;
@@ -39,7 +41,6 @@ const FinalPage: NextPageWithLayout = () => {
     setIntentions,
     setProjectName,
     setPrev,
-    mapLocation,
   } = useCreatePageStore();
   const { getImageArray, getImagesToDel } = useImageStore();
   const [feedback, setFeedback] = useState<string>('');
@@ -118,6 +119,7 @@ const FinalPage: NextPageWithLayout = () => {
         return response.json();
       })
       .then((data) => {
+        console.log(data.message);
         setText(data.message);
       })
       .catch((error) => {
@@ -144,7 +146,6 @@ const FinalPage: NextPageWithLayout = () => {
     if (intention === 'create') {
       await setProjects({
         ...getValues(),
-        mapLocation,
         imagesDesc,
         response: getResponse(),
         projectName,
@@ -164,7 +165,6 @@ const FinalPage: NextPageWithLayout = () => {
     } else {
       updateProjectDetails(projectID, {
         ...getValues(),
-        mapLocation,
         imagesDesc,
         response: getResponse(),
         projectName,

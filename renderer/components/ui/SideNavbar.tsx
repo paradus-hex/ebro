@@ -10,21 +10,12 @@ import LiveClock from '../LiveClock';
 import { Button } from './button';
 import { logout } from '../../lib/firebasedb';
 import { useSignInPageStore } from '../../stores/signInPageStore';
-import { useCreatePageStore } from '../../stores/createPageStore';
 export default function SideNavbar() {
   const router = useRouter();
   const { setSignedIn, getValues, sideBarIsOpen, setSideBarIsOpen } =
     useSignInPageStore();
-  const { setProjectId, setIntentions, setProjectName, setPrev } =
-    useCreatePageStore();
   const handleClick = (e) => {
-    if (e.target.id === 'dashboardBtn') {
-      setProjectId('');
-      setIntentions('');
-      setProjectName('');
-      setPrev('');
-      router.push('/home');
-    }
+    e.target.id === 'dashboardBtn' && router.push('/home');
   };
   const [time, setTime] = useState(new Date());
   const toggleSidebar = () => {
@@ -40,14 +31,14 @@ export default function SideNavbar() {
     };
   }, []);
   let greeting;
-  if (time.getHours() >= 19 || time.getHours() < 5) {
-    greeting = 'Good Evening';
-  } else if (time.getHours() < 12) {
+  if (time.getHours() > 5) {
     greeting = 'Good Morning';
-  } else if (time.getHours() < 16) {
+  } else if (time.getHours() > 12) {
     greeting = 'Good Noon';
-  } else {
+  } else if (time.getHours() > 16) {
     greeting = 'Good Afternoon';
+  } else {
+    greeting = 'Good Evening';
   }
   return (
     <div
@@ -63,7 +54,7 @@ export default function SideNavbar() {
           <img src="/images/avatar.png" alt="alt" className="w-14 h-10" />
         </button>
         <div className="flex flex-col justify-start item-center">
-          <p className="m-0 text-lg p-0 translate-y-8 self-start overflow-hidden">
+          <p className="m-0 text-lg p-0 translate-y-8 overflow-hidden">
             {greeting} {getValues().email.split('@')[0]}
           </p>
           <h1 className="mt-10 text-base text-center cursor-pointer text-blue-900 border-b border-gray-300 pb-4 w-full"></h1>
