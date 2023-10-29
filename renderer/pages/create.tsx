@@ -1,11 +1,9 @@
 'use client';
 import { useRouter } from 'next/router';
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { DevTool } from '@hookform/devtools';
-import { set, useForm } from 'react-hook-form';
-import { useChat } from 'ai/react';
+import { useForm } from 'react-hook-form';
 import { Loader2 } from 'lucide-react';
 import {
   Form,
@@ -42,7 +40,6 @@ import { useCreatePageStore } from '../stores/createPageStore';
 import { getProjectDetails } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import ImageUpload2 from '../components/imageUpload2';
-import chat from '../lib/chat';
 // import Map from '../components/map';
 
 import FinalModal from '../components/finalModal';
@@ -182,9 +179,14 @@ function Create() {
     setPrev('');
   };
 
+  console.log('defaultValues', mapLocation);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: projectId ? defaultValues : emptyProjectData,
+    defaultValues:
+      projectId !== undefined && prev !== 'home'
+        ? defaultValues
+        : emptyProjectData,
   });
 
   const handleNextPageClick = () => {
@@ -233,6 +235,7 @@ function Create() {
       isFavorite: false,
       mapLocation,
     });
+
     // append({ role: 'user', content: JSON.stringify(values) });
     // setChatGptRes(await chat(JSON.stringify(values)));
     fetch('https://cyan-important-rattlesnake.cyclic.app/', {

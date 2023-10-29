@@ -10,12 +10,21 @@ import LiveClock from '../LiveClock';
 import { Button } from './button';
 import { logout } from '../../lib/firebasedb';
 import { useSignInPageStore } from '../../stores/signInPageStore';
+import { useCreatePageStore } from '../../stores/createPageStore';
 export default function SideNavbar() {
   const router = useRouter();
   const { setSignedIn, getValues, sideBarIsOpen, setSideBarIsOpen } =
     useSignInPageStore();
+  const { setProjectId, setIntentions, setProjectName, setPrev } =
+    useCreatePageStore();
   const handleClick = (e) => {
-    e.target.id === 'dashboardBtn' && router.push('/home');
+    if (e.target.id === 'dashboardBtn') {
+      setProjectId('');
+      setIntentions('');
+      setProjectName('');
+      setPrev('');
+      router.push('/home');
+    }
   };
   const [time, setTime] = useState(new Date());
   const toggleSidebar = () => {
@@ -31,14 +40,14 @@ export default function SideNavbar() {
     };
   }, []);
   let greeting;
-  if (time.getHours() > 5) {
-    greeting = 'Good Morning';
-  } else if (time.getHours() > 12) {
-    greeting = 'Good Noon';
-  } else if (time.getHours() > 16) {
-    greeting = 'Good Afternoon';
-  } else {
+  if (time.getHours() >= 19 || time.getHours() < 5) {
     greeting = 'Good Evening';
+  } else if (time.getHours() < 12) {
+    greeting = 'Good Morning';
+  } else if (time.getHours() < 16) {
+    greeting = 'Good Noon';
+  } else {
+    greeting = 'Good Afternoon';
   }
   return (
     <div
