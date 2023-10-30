@@ -419,7 +419,7 @@ function Create() {
                           <AlertDialogHeader>
                             <AlertDialogDescription>
                               <div className="w-full flex justify-between">
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogCancel>Done</AlertDialogCancel>
                                 {/* <AlertDialogAction>Continue</AlertDialogAction> */}
                               </div>
 
