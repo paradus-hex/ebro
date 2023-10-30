@@ -420,16 +420,11 @@ function Create() {
                             <AlertDialogDescription>
                               <div className="w-full flex justify-between">
                                 <AlertDialogCancel>Done</AlertDialogCancel>
-                                {/* <AlertDialogAction>Continue</AlertDialogAction> */}
                               </div>
 
                               <Map />
                             </AlertDialogDescription>
                           </AlertDialogHeader>
-                          {/* <AlertDialogFooter>
-                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                   <AlertDialogAction>Continue</AlertDialogAction>
-                 </AlertDialogFooter> */}
                         </AlertDialogContent>
                       )}
                     </AlertDialog>
