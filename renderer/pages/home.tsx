@@ -71,7 +71,7 @@ function Home() {
               <div className="text-left text-sm font-semibold pt-5">
                 <p>75 GB of 100 GB is being used</p>
               </div>
-              <button onClick={()=>window.ipc.send('message','ki hoise?')}>send</button>
+              <button onClick={()=>window.ipc.send('message','hoise ki?')}>send</button>
             </div>
           </div>
         </div>
