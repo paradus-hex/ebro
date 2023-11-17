@@ -49,6 +49,10 @@ function Home() {
     setImageArray([]);
     setImagesToDel([]);
     setMapLocation({ lat: 60.472, lng: 8.4689 });
+    window.ipc.on('message', (message: string) => {
+      // setProjectId(arg);
+      console.log(message);
+    });
   }, []);
   return (
     <React.Fragment>
@@ -67,6 +71,7 @@ function Home() {
               <div className="text-left text-sm font-semibold pt-5">
                 <p>75 GB of 100 GB is being used</p>
               </div>
+              <button onClick={()=>window.ipc.send('message','hoise ki?')}>send</button>
             </div>
           </div>
         </div>
