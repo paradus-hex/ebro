@@ -34,10 +34,9 @@ function Home() {
   };
   React.useEffect(() => {
     window.ipc.on('retrieve', (message: string) => {
-      // const base64String = btoa(String.fromCharCode(...new Uint8Array(message)));
       setMessage(message);
     });
-    window.ipc.on('message', (message: string) => {
+    window.ipc.on('save', (message: string) => {
       setMessage(message);
     });
   }, []);
@@ -101,7 +100,7 @@ function Home() {
                   onClick={() =>
                     window.ipc.send(
                       'retrieve',
-                      `D://Javascript/test-app/images/test2/1700065754526.jpg`,
+                      `D://Javascript/ebro/images/test2/1700065754526.jpg`,
                     )
                   }
                 >
@@ -109,8 +108,8 @@ function Home() {
                 </Button>
                 <img src={imageSrc} alt="From Server" />
                 {/* <img src={`../../images/test2/1700065830898.jpg`} alt="From Server" />; */}
-                {/* <p>{message}</p> */}
-                {/* <p>{imageSrc}</p> */}
+                <p>{message}</p>
+                <p>{imageSrc}</p>
               </div>
             </div>
           </div>

@@ -74,22 +74,8 @@ export default function FinalModal() {
   };
 
   const handleAISubmitClick = async () => {
-    // append({
-    //   role: 'user',
-    //   content: JSON.stringify(text + '$$$' + feedback),
-    // });
     handleCloseModal();
     setButtonsDisabled(true);
-    // setText(
-    //   await chat(
-    //     JSON.stringify(
-    //       text +
-    //         '$$$' +
-    //         feedback +
-    //         '.\n Keep every other information as it is.',
-    //     ),
-    //   ),
-    // );
     fetch('https://cyan-important-rattlesnake.cyclic.app', {
       method: 'POST',
       headers: {

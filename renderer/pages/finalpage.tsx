@@ -44,11 +44,7 @@ const FinalPage: NextPageWithLayout = () => {
   const { getImageArray, getImagesToDel } = useImageStore();
   const [feedback, setFeedback] = useState<string>('');
   const [text, setText] = useState<string>(getResponse());
-  // const { append, isLoading } = useChat({
-  //   onFinish: (message) => {
-  //     setResponse(message.content.slice(1, -1));
-  //   },
-  // });
+
   const { params } = router.query;
   const parsedParams: Params = params
     ? JSON.parse(decodeURIComponent(params as string))
@@ -73,7 +69,15 @@ const FinalPage: NextPageWithLayout = () => {
       )}`,
     );
   };
-
+  React.useEffect(() => {
+    window.ipc.on('retrieve', (message: any) => {
+      // setMessage(message);
+    });
+    window.ipc.on('save2', (message: any) => {
+      // setMessage(message);
+      console.log('save2', message);
+    });
+  }, []);
   const handleEditClick = () => {
     setIsEditing(true);
   };
@@ -85,22 +89,9 @@ const FinalPage: NextPageWithLayout = () => {
   };
 
   const handleAISubmitClick = async () => {
-    // append({
-    //   role: 'user',
-    //   content: JSON.stringify(text + '$$$' + feedback),
-    // });
     handleCloseModal();
     setButtonsDisabled(true);
-    // setText(
-    //   await chat(
-    //     JSON.stringify(
-    //       text +
-    //         '$$$' +
-    //         feedback +
-    //         '.\n Keep every other information as it is.',
-    //     ),
-    //   ),
-    // );
+
     fetch('https://cyan-important-rattlesnake.cyclic.app', {
       method: 'POST',
       headers: {
@@ -132,6 +123,36 @@ const FinalPage: NextPageWithLayout = () => {
   const handleAIPromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setFeedback(e.target.value);
   };
+  const filesystemUpload = () => {
+    const uploadedFiles = getImageArray()
+      .map(({ file }) => file)
+      .filter((file) => file !== undefined)
+      .map((el) => el?.path);
+    console.log('getImageArray', getImageArray());
+    console.log('filesystemUpload', uploadedFiles);
+    let folderName = `project_id`;
+    try {
+      window.ipc.send('save2', [userId, folderName, uploadedFiles]);
+    } catch {
+      console.log('eroor in ipc error');
+    }
+    return;
+    // const imagesDesc = getImageArray().map(({ url, desc }) => ({ url, desc }));
+    // const uploadedFiles = getImageArray()
+    //   .map(({ file }) => file)
+    //   .filter((file) => file !== undefined);
+    // try {
+    //   let obj = JSON.stringify({
+    //     userId: userId,
+    //     folderName: `${projectName}_project_id}`,
+    //     files: uploadedFiles,
+    //   });
+    //   console.log(obj);
+    //   // window.ipc.send('save2', obj);
+    // } catch {
+    //   console.log('error');
+    // }
+  };
 
   const handleSaveToCloudClick = async () => {
     setCloudSaveDisabled(true);
@@ -156,6 +177,16 @@ const FinalPage: NextPageWithLayout = () => {
             `${projectName}_${docRef.id}`,
             uploadedFiles,
           );
+          try {
+            let obj = JSON.stringify({
+              userId: userId,
+              folderName: `${projectName}_project_id}`,
+              files: uploadedFiles,
+            });
+            await window.ipc.send('save2', obj);
+          } catch {
+            console.log('error');
+          }
           return { downloadUrls, docRef };
         })
         .then(({ downloadUrls, docRef }) => {
@@ -170,6 +201,18 @@ const FinalPage: NextPageWithLayout = () => {
         projectName,
         note: getNote(),
       });
+      // try {
+      //   let obj = JSON.stringify({
+      //     userId: userId,
+      //     folderName: `${projectName}_project_id}`,
+      //     files: uploadedFiles,
+      //   });
+      //   await window.ipc.send('save', obj);
+      // } catch {
+      //   console.log('error');
+      // }
+      // console.log(uploadedFiles);
+
       saveImagesToCloud(
         userId,
         `${projectName}_${projectID}`,
@@ -179,7 +222,7 @@ const FinalPage: NextPageWithLayout = () => {
         setImagesDescToCloud(projectID, imagesDesc, downloadUrls);
       });
     }
-    router.push('/home');
+    // router.push('/home');
   };
 
   const handleAIButtonClick = () => {
@@ -270,7 +313,10 @@ const FinalPage: NextPageWithLayout = () => {
               buttonsDisabled
             }
             className=" bg-nav_primary text-white w-[200px] rounded-xl text-sm px-2 h-10 mb-5"
-            onClick={handleSaveToCloudClick}
+            onClick={() => {
+              handleSaveToCloudClick();
+              filesystemUpload();
+            }}
           >
             Save to Cloud
           </Button>
