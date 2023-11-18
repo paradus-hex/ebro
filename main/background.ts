@@ -116,10 +116,10 @@ ipcMain.on('save2', async (event, arg) => {
   files.forEach((filePath) => {
     try {
       let fileName = `${Date.now()}.jpg`;
-      let destFilePath = path.join(destinationPath, fileName);
+      let destFilePath = path.join(destinationPath, filePath.name);
 
       // Read the file and write it to the new destination
-      fs.copyFileSync(filePath, destFilePath);
+      fs.copyFileSync(filePath.path, destFilePath);
       console.log(`File saved as ${destFilePath}`);
 
       // Optionally add to return list if needed

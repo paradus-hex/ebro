@@ -137,21 +137,6 @@ const FinalPage: NextPageWithLayout = () => {
       console.log('eroor in ipc error');
     }
     return;
-    // const imagesDesc = getImageArray().map(({ url, desc }) => ({ url, desc }));
-    // const uploadedFiles = getImageArray()
-    //   .map(({ file }) => file)
-    //   .filter((file) => file !== undefined);
-    // try {
-    //   let obj = JSON.stringify({
-    //     userId: userId,
-    //     folderName: `${projectName}_project_id}`,
-    //     files: uploadedFiles,
-    //   });
-    //   console.log(obj);
-    //   // window.ipc.send('save2', obj);
-    // } catch {
-    //   console.log('error');
-    // }
   };
 
   const handleSaveToCloudClick = async () => {
@@ -201,18 +186,24 @@ const FinalPage: NextPageWithLayout = () => {
         projectName,
         note: getNote(),
       });
-      // try {
-      //   let obj = JSON.stringify({
-      //     userId: userId,
-      //     folderName: `${projectName}_project_id}`,
-      //     files: uploadedFiles,
-      //   });
-      //   await window.ipc.send('save', obj);
-      // } catch {
-      //   console.log('error');
-      // }
-      // console.log(uploadedFiles);
+      // filesystemUpload();
+      const uploadedFilesName = getImageArray()
+        .map(({ file }) => file)
+        .filter((file) => file !== undefined)
+        .map((el) => {
+          return {
+            path: el?.path,
+            name: new Date().getTime().toString() + '.jpg',
+          };
+        });
+      let folderName = `project_id`;
+      try {
+        window.ipc.send('save2', [userId, folderName, uploadedFilesName]);
+      } catch {
+        console.log('eroor in ipc error');
+      }
 
+      // console.log('res', res);
       saveImagesToCloud(
         userId,
         `${projectName}_${projectID}`,
@@ -315,7 +306,7 @@ const FinalPage: NextPageWithLayout = () => {
             className=" bg-nav_primary text-white w-[200px] rounded-xl text-sm px-2 h-10 mb-5"
             onClick={() => {
               handleSaveToCloudClick();
-              filesystemUpload();
+              // filesystemUpload();
             }}
           >
             Save to Cloud
