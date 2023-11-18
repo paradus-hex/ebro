@@ -15,4 +15,3 @@ export const firebaseConfig = {
   measurementId: 'G-63DCF2YG51',
 };
 
-export const openAiApiKey = "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"

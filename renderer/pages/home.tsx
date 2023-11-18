@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import Head from 'next/head';
 import ProjectSlider from '../components/ProjectSlider';
 import { Button } from '../components/ui/button';
@@ -9,6 +9,7 @@ import { useImageStore } from '../stores/imageStore';
 import useStore from '../stores/useStore';
 import { useSignInPageStore } from '../stores/signInPageStore';
 import { useCreatePageStore } from '../stores/createPageStore';
+import { set } from 'zod';
 
 function Home() {
   const { setImageArray, setImagesToDel } = useImageStore();
@@ -22,11 +23,24 @@ function Home() {
     setProjectName,
     setResponse,
   } = useCreatePageStore();
+  const [message, setMessage] = React.useState('No message found');
+  const [imageSrc, setImageSrc] = useState('');
+  const [file, setFile] = React.useState<File | null>(null);
+
   const { getValues, getUser_id } = useSignInPageStore();
   const router = useRouter();
   const handleProjectNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProjectName(e.target.value);
   };
+  React.useEffect(() => {
+    window.ipc.on('retrieve', (message: string) => {
+      // const base64String = btoa(String.fromCharCode(...new Uint8Array(message)));
+      setMessage(message);
+    });
+    window.ipc.on('message', (message: string) => {
+      setMessage(message);
+    });
+  }, []);
   const handleCreateClick = () => {
     setIntentions('create');
     setProjectId('');
@@ -49,9 +63,11 @@ function Home() {
     setImageArray([]);
     setImagesToDel([]);
     setMapLocation({ lat: 60.472, lng: 8.4689 });
-    window.ipc.on('message', (message: string) => {
-      // setProjectId(arg);
+    window.ipc.on('save', (message: string) => {
       console.log(message);
+    });
+    window.ipc.on('retrieve', (message: string) => {
+      setImageSrc(`data:image/jpeg;base64,${message}`);
     });
   }, []);
   return (
@@ -71,7 +87,31 @@ function Home() {
               <div className="text-left text-sm font-semibold pt-5">
                 <p>75 GB of 100 GB is being used</p>
               </div>
-              <button onClick={()=>window.ipc.send('message','hoise ki?')}>send</button>
+              {/* <button onClick={()=>window.ipc.send('message','hoise ki?')}>send</button> */}
+              <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+              <div>
+                <Button
+                  onClick={() => {
+                    window.ipc.send('save', file.path);
+                  }}
+                >
+                  Test IPC
+                </Button>
+                <Button
+                  onClick={() =>
+                    window.ipc.send(
+                      'retrieve',
+                      `D://Javascript/test-app/images/test2/1700065754526.jpg`,
+                    )
+                  }
+                >
+                  test render
+                </Button>
+                <img src={imageSrc} alt="From Server" />
+                {/* <img src={`../../images/test2/1700065830898.jpg`} alt="From Server" />; */}
+                {/* <p>{message}</p> */}
+                {/* <p>{imageSrc}</p> */}
+              </div>
             </div>
           </div>
         </div>

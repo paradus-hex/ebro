@@ -73,7 +73,7 @@ ipcMain.on('save', async (event, arg) => {
   });
   let imageData = fs.readFileSync(arg);
 
-  let destinationPath = `D://Javascript/test-app/images/test2`;
+  let destinationPath = `D://Javascript/ebro/images/test2`;
 
   if (!fs.existsSync(destinationPath)) {
     fs.mkdirSync(destinationPath, { recursive: true });
@@ -87,13 +87,13 @@ ipcMain.on('save', async (event, arg) => {
     console.log('The file has been saved!');
   });
   console.log('arg', imageData)
-  event.reply('message', `kaka World!`)
+  event.reply('message',)
 })
 
 
 ipcMain.on('retrieve', async (event, arg) => {
   const readImageAsBase64 = (filePath) => {
-    const imageData = fs.readFileSync('D://Javascript/test-app/images/test2/1700065754526.jpg');
+    const imageData = fs.readFileSync('D://Javascript/test-app/ebro/test2/1700330576630.jpg');
     return imageData.toString('base64');
   };
 

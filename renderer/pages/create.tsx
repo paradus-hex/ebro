@@ -204,22 +204,7 @@ function Create() {
   };
 
   const textAlreadyExists = getStoredResponse().length !== 0;
-  // const { append, isLoading } = useChat({
-  //   api: '../lib/chat',
-  //   onFinish: (message) => {
-  //     setResponse(message.content.slice(1, -1));
-  //     router.push(
-  //       `/finalpage?params=${encodeURIComponent(
-  //         JSON.stringify({
-  //           projectName: projectName,
-  //           intention,
-  //           projectId,
-  //           userId,
-  //         }),
-  //       )}`,
-  //     );
-  //   },
-  // });
+
   const [loading, setLoading] = useState(false);
   const [notesToggle, setNotesToggle] = useState(false);
   const { control, formState, watch } = form;
@@ -236,8 +221,6 @@ function Create() {
       mapLocation,
     });
 
-    // append({ role: 'user', content: JSON.stringify(values) });
-    // setChatGptRes(await chat(JSON.stringify(values)));
     fetch('https://cyan-important-rattlesnake.cyclic.app/', {
       method: 'POST',
       headers: {
@@ -269,16 +252,6 @@ function Create() {
       setUserId(userId);
       setIntentions(intention);
       setProjectName(projectName);
-      // router.push(
-      //   `/finalpage?params=${encodeURIComponent(
-      //     JSON.stringify({
-      //       projectName: projectName,
-      //       intention,
-      //       projectId,
-      //       userId,
-      //     }),
-      //   )}`,
-      // );
     }
   }, [chatGptRes]);
 
@@ -384,29 +357,8 @@ function Create() {
                     />
                   </div>
                   <div className="grid  items-center gap-4">
-                    {/* <FormField
-                      control={form.control}
-                      name="city"
-                      render={({ field }) => (
-                        <FormItem className=" flex flex-col items-center">
-                          <FormLabel className="text-xl col-span-1">
-                            City
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              className="max-w-[920px] bg-white rounded-xl col-span-2 h-8 border focus:border-1 focus:border-slate-400"
-                              placeholder="Enter the name of the city"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    /> */}
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
-                        {/* <Button variant="outline">Show Dialog</Button>
-                         */}
                         <Button disabled={disableButtons} type="submit">
                           {loading && (
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -700,14 +652,9 @@ function Create() {
                 )}
               />
             </div>
-            {/* <Button disabled={disableButtons} type="submit">
-              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Submit
-            </Button> */}
+
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                {/* <Button variant="outline">Show Dialog</Button>
-                 */}
                 <Button disabled={disableButtons} type="submit">
                   {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Generate
@@ -725,21 +672,15 @@ function Create() {
                       <FinalModal />
                     </AlertDialogDescription>
                   </AlertDialogHeader>
-                  {/* <AlertDialogFooter>
-                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                   <AlertDialogAction>Continue</AlertDialogAction>
-                 </AlertDialogFooter> */}
                 </AlertDialogContent>
               )}
             </AlertDialog>
-            {/* <Button type="submit">Submit</Button> */}
           </form>
         </Form>
         <DevTool control={control} />
       </div>
       <div className="flex flex-col justify-start items-center bg-transparent max-w-fit min-h-screen sticky top-0">
         <div className="mx-8 my-10 bg-[#ebf2fc] h-full rounded-2xl shadow-[0_0_0_14px_white]">
-          {/* <ImageUpload></ImageUpload> */}
           <ImageUpload2></ImageUpload2>
           <div
             className="flex
@@ -763,15 +704,6 @@ function Create() {
               />
             )}
           </div>
-
-          {/* <Button
-          className="text-xl mx-8 my-10 rounded-xl"
-          onClick={handleGenerateClick}
-          disabled={isLoading}
-        >
-          Generate
-        </Button> */}
-          {/* <Map></Map> */}
         </div>
       </div>
     </div>
