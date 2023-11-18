@@ -43,56 +43,12 @@ app.on('window-all-closed', () => {
 
 
 ipcMain.on('message', async (event, arg) => {
-  // fs.writeFile('mynewfile3.txt', 'Hello content!', function (err) {
-  //   if (err) throw err;
-  //   console.log('Saved!');
-  // });
-  // let imageData = fs.readFileSync(arg);
 
-  // let destinationPath = `D://Javascript/test-app/images/test2`;
-
-  // if (!fs.existsSync(destinationPath)) {
-  //   fs.mkdirSync(destinationPath, { recursive: true });
-  // }
-
-  // let fileName = Date.now()
-
-  // fs.writeFile(`${destinationPath}/${fileName}.jpg`, imageData, (err) => {
-  //   if (err) throw err;
-
-  //   console.log('The file has been saved!');
-  // });
   console.log('arg', typeof arg)
   event.reply('message', arg)
 })
 
-// ipcMain.on('save2', async (event, arg) => {
-//   let userId = arg[0]
-//   let folderName = arg[1]
-//   let files = arg[2]
-//   let returnList = []
-//   console.log('arg', arg)
 
-
-
-//   // let imageData = fs.readFileSync(arg);
-
-//   // let destinationPath = `D://Javascript/ebro/images/test2`;
-
-//   // if (!fs.existsSync(destinationPath)) {
-//   //   fs.mkdirSync(destinationPath, { recursive: true });
-//   // }
-
-//   // let fileName = Date.now()
-
-//   // fs.writeFile(`${destinationPath}/${fileName}.jpg`, imageData, (err) => {
-//   //   if (err) throw err;
-
-//   //   console.log('The file has been saved!');
-//   // });
-//   // console.log('arg', imageData)
-//   event.reply('message', arg)
-// })
 
 ipcMain.on('save2', async (event, arg) => {
   let userId = arg[0];
@@ -110,12 +66,12 @@ ipcMain.on('save2', async (event, arg) => {
   if (!fs.existsSync(destinationPath)) {
     fs.mkdirSync(destinationPath, { recursive: true });
   }
-  // console.log('destinationPath', destinationPath);
+
 
   // Iterate through each file and copy it to the destination
   files.forEach((filePath) => {
     try {
-      let fileName = `${Date.now()}.jpg`;
+
       let destFilePath = path.join(destinationPath, filePath.name);
 
       // Read the file and write it to the new destination
@@ -157,11 +113,7 @@ ipcMain.on('save', async (event, arg) => {
 
 
 ipcMain.on('retrieve', async (event, arg) => {
-  // window.ipc.send('save', {
-  //   userId: userId,
-  //   folderName: `${projectName}_project_id}`,
-  //   files: uploadedFiles,
-  // });
+
 
   const readImageAsBase64 = (filePath) => {
     const imageData = fs.readFileSync('D://Javascript/test-app/ebro/test2/1700330576630.jpg');
@@ -169,10 +121,10 @@ ipcMain.on('retrieve', async (event, arg) => {
   };
 
   const base64Image = readImageAsBase64(arg);
-  // let imageData = fs.readFileSync(arg);
+
   // ... rest of your code to save the image ...
 
-  // Send the binary data to the front-end
+
 
   console.log('arg', base64Image)
 
@@ -181,8 +133,3 @@ ipcMain.on('retrieve', async (event, arg) => {
 
 })
 
-// ipcRenderer.on('imageData', (event, imageData) => {
-//   // Convert the Buffer to a Blob
-//   let blob = new Blob([imageData], { type: 'image/jpeg' });
-//   // Now, 'blob' is a Blob object representing the image
-// });

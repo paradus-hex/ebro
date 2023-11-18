@@ -186,7 +186,7 @@ const FinalPage: NextPageWithLayout = () => {
         projectName,
         note: getNote(),
       });
-      // filesystemUpload();
+
       const uploadedFilesName = getImageArray()
         .map(({ file }) => file)
         .filter((file) => file !== undefined)
