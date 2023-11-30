@@ -39,8 +39,8 @@ export default function signin() {
     setSignedIn,
     setUser_id,
     setAccount_type,
-    getAccount_type,
-    getSignedIn,
+    setDefaultSavePath,
+    setAccount_id,
   } = useSignInPageStore();
 
   const [showPassLogin, setShowPassLogin] = useState<boolean>(false);
@@ -65,6 +65,8 @@ export default function signin() {
               setUser_id(cred.user.uid);
               getAccountDetails(cred.user.uid)
                 .then((account) => {
+                  setAccount_id(account.key);
+                  setDefaultSavePath(account.default_save_path);
                   setAccount_type(account.account_tier);
                 })
                 .then(() => router.push('/home'));
@@ -202,7 +204,6 @@ export default function signin() {
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="password"

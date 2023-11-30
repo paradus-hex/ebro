@@ -4,18 +4,14 @@ import { Button } from '../components/ui/button';
 import { useCreatePageStore } from '../stores/createPageStore';
 import { useRouter } from 'next/router';
 import {
-  saveImagesToCloud,
   setProjects,
   updateProjectDetails,
   setImagesDescToCloud,
-  deleteProjectPhotosFromCloud,
-  deleteImagesFromCloud,
 } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
 import { useImageStore } from '../stores/imageStore';
-import { ipcRenderer } from 'electron';
-import { set } from 'zod';
+import { useSignInPageStore } from '../stores/signInPageStore';
 interface Params {
   projectID: string;
   userID: string;
@@ -30,6 +26,7 @@ const FinalPage: NextPageWithLayout = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [buttonsDisabled, setButtonsDisabled] = useState<boolean>(false);
+  const defaultSavePath = useSignInPageStore((state) => state.defaultSavePath);
   const {
     getResponse,
     setResponse,
@@ -79,21 +76,7 @@ const FinalPage: NextPageWithLayout = () => {
       )}`,
     );
   };
-  useEffect(() => {
-    window.ipc.on('retrieve', (message: any) => {
-      // setMessage(message);
-    });
-    window.ipc.on('returnList', (arr) => {
-      console.log('returnList', arr);
-    });
-    window.ipc.on('save2', (arr) => {
-      console.log('save2', arr);
-    });
-    window.ipc.send('message', ['ping']);
-    window.ipc.on('message', async (arg) => {
-      console.log('messageF', arg);
-    });
-  }, []);
+
   const handleEditClick = () => {
     setIsEditing(true);
   };
@@ -168,8 +151,8 @@ const FinalPage: NextPageWithLayout = () => {
             });
           let saveUrls: string[] = [];
           try {
-            await window.ipc.send('save2', [
-              userId,
+            await window.ipc.send('savePhotos', [
+              defaultSavePath,
               `${projectName}_${docRef.id}`,
               uploadedFilesName,
             ]);
@@ -211,8 +194,8 @@ const FinalPage: NextPageWithLayout = () => {
       console.log('uploadedFilesName', uploadedFilesName);
       let saveUrls: string[] = [];
       try {
-        window.ipc.send('save2', [
-          userId,
+        window.ipc.send('savePhotos', [
+          defaultSavePath,
           `${projectName}_${projectID}`,
           uploadedFilesName,
         ]);
@@ -234,7 +217,7 @@ const FinalPage: NextPageWithLayout = () => {
         console.log('ipc error');
       }
     }
-    // router.push('/home');
+    router.push('/home');
   };
 
   const handleAIButtonClick = () => {

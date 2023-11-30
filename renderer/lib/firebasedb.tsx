@@ -53,6 +53,12 @@ export interface ProjectData {
   mapLocation?: { lat: number; lng: number };
 }
 
+export interface AccountData {
+  account_tier: string;
+  default_save_path: string;
+  user_id: string;
+}
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const projects = collection(db, 'projects');
@@ -157,9 +163,18 @@ export async function logout() {
 }
 
 export async function getAccountDetails(id: string) {
-  return (
-    await getDocs(query(accounts, where('user_id', '==', id)))
-  ).docs[0].data();
+  const docSnap = (await getDocs(query(accounts, where('user_id', '==', id))))
+    .docs[0];
+  const returnData = docSnap && {
+    key: docSnap.id,
+    ...(docSnap.data() as AccountData),
+  };
+  return returnData;
+}
+
+export async function saveDefaultSavePath(id: string, path: string) {
+  const docRef = doc(db, 'accounts', id);
+  updateDoc(docRef, { default_save_path: path });
 }
 
 export async function saveImagesToCloud(

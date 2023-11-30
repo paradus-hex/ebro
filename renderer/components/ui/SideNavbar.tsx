@@ -9,13 +9,20 @@ import { CgProfile } from 'react-icons/cg';
 import { useRouter } from 'next/router';
 import LiveClock from '../LiveClock';
 import { Button } from './button';
-import { logout } from '../../lib/firebasedb';
+import { logout, saveDefaultSavePath } from '../../lib/firebasedb';
 import { useSignInPageStore } from '../../stores/signInPageStore';
 import { useCreatePageStore } from '../../stores/createPageStore';
 export default function SideNavbar() {
   const router = useRouter();
-  const { setSignedIn, getValues, sideBarIsOpen, setSideBarIsOpen } =
-    useSignInPageStore();
+  const {
+    setSignedIn,
+    getValues,
+    sideBarIsOpen,
+    setSideBarIsOpen,
+    defaultSavePath,
+    setDefaultSavePath,
+    account_id,
+  } = useSignInPageStore();
   const { setProjectId, setIntentions, setProjectName, setPrev } =
     useCreatePageStore();
   const handleClick = (e) => {
@@ -40,8 +47,11 @@ export default function SideNavbar() {
       clearInterval(intervalId);
     };
   }, []);
-  window.ipc.on('saveLocation', (saveLocation) => {
+  window.ipc.on('saveLocation', async (saveLocation: string) => {
     console.log(saveLocation);
+    await saveDefaultSavePath(account_id, saveLocation).then(() => {
+      setDefaultSavePath(saveLocation);
+    });
   });
   let greeting;
   if (time.getHours() >= 19 || time.getHours() < 5) {
@@ -108,7 +118,10 @@ export default function SideNavbar() {
             </div>
             <div
               onClick={() => {
-                window.ipc.send('browseSaveLocation', __dirname);
+                window.ipc.send(
+                  'browseSaveLocation',
+                  defaultSavePath || __dirname,
+                );
               }}
               className="flex mb-2 justify-start gap-1 lg:gap-4 -translate-x-2 lg:translate-x-0 hover:primary_grad p-2 rounded-lg group cursor-pointer hover:shadow-lg m-auto"
             >

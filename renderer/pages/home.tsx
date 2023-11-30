@@ -26,7 +26,7 @@ function Home() {
   const [imageSrc, setImageSrc] = useState('');
   const [file, setFile] = React.useState<File | null>(null);
 
-  const { getValues, getUser_id } = useSignInPageStore();
+  const { getValues, getUser_id, defaultSavePath } = useSignInPageStore();
   const router = useRouter();
   const handleProjectNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProjectName(e.target.value);
@@ -105,7 +105,11 @@ function Home() {
         </div>
       </div>
       <div className="w-full  flex flex-col justify-center items-center space-y-10 mt-16 min-h-[300px]">
-        <h1 className="font-extrabold">Lets Get To Work!</h1>
+        <h1 className="font-extrabold">
+          {defaultSavePath.length === 0
+            ? 'Please select a save path for the project photos.'
+            : 'Lets Get To Work!'}
+        </h1>
 
         <input
           type="text"
@@ -117,7 +121,7 @@ function Home() {
         <Button
           className="mt-10 text-xl rounded-md px-8 py-6 tracking-wider w-[300px] primary_grad shadow-lg shadow-gray-500"
           onClick={handleCreateClick}
-          disabled={projectName.length === 0}
+          disabled={projectName.length === 0 || defaultSavePath.length === 0}
         >
           Create New
         </Button>

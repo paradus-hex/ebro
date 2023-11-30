@@ -61,13 +61,12 @@ ipcMain.on('deleteImages', async (event, imagesToDel) => {
 });
 
 ipcMain.on('message', async (event, arg) => {
-  let message = arg[0];
-  event.sender.send('message', 'matha')
+  event.sender.send('message', arg)
 })
 
 ipcMain.on('browseSaveLocation', async (event, defaultPath) => {
   dialog.showOpenDialog({
-    title: 'Select a directory to save files',
+    title: 'Select a directory to save project photos to',
     defaultPath,
     properties: ['openDirectory', 'createDirectory']
   }).then(result => {
@@ -81,66 +80,20 @@ ipcMain.on('browseSaveLocation', async (event, defaultPath) => {
 }
 )
 
-ipcMain.on('save2', async (event, arg) => {
-  let userId = arg[0];
+ipcMain.on('savePhotos', async (event, arg) => {
+  let defaultSavePath = arg[0];
   let folderName = arg[1];
   let files = arg[2];
   let returnList = [];
-  // console.log('arg', arg);
-  // console.log('files', folderName)
-  // console.log('files', typeof folderName)
-
-  if (!fs.existsSync(path.join(__dirname, `../images`, folderName))) {
-    fs.mkdirSync(path.join(__dirname, `../images`, folderName), { recursive: true });
+  if (!fs.existsSync(path.join(defaultSavePath, folderName))) {
+    fs.mkdirSync(path.join(defaultSavePath, folderName), { recursive: true });
   }
-  dialog.showOpenDialog({
-    title: 'Select a directory to save files',
-    defaultPath: path.join(__dirname, `../images`, folderName),
-    properties: ['openDirectory', 'createDirectory']
-  }).then(result => {
-    if (!result.canceled) {
-      let destinationPath = result.filePaths[0];
-      files.forEach((fileObject) => {
-        let destFilePath = path.join(destinationPath, fileObject.name);
-        fs.copyFileSync(fileObject.path, destFilePath);
-        returnList.push(destFilePath);
-      });
-      event.sender.send('returnList', returnList);
-    }
-  }).catch(err => {
-    console.error('Error selecting directory:', err);
+  const destinationPath = path.join(defaultSavePath, folderName);
+  files.forEach((fileObject) => {
+    const destFilePath = path.join(destinationPath, fileObject.name);
+    fs.copyFileSync(fileObject.path, destFilePath);
+    returnList.push(destFilePath);
   });
+  event.sender.send('returnList', returnList);
 });
-
-
-// ipcMain.on('save', async (event, arg) => {
-
-//   let imageData = fs.readFileSync(arg);
-
-//   let destinationPath = `D://Javascript/ebro/images/test2`;
-
-//   if (!fs.existsSync(destinationPath)) {
-//     fs.mkdirSync(destinationPath, { recursive: true });
-//   }
-
-//   let fileName = Date.now()
-
-//   fs.writeFile(`${destinationPath}/${fileName}.jpg`, imageData, (err) => {
-//     if (err) throw err;
-
-//     console.log('The file has been saved!');
-//   });
-//   console.log('arg', imageData)
-//   event.reply('message', `kaka World!`)
-// })
-
-ipcMain.on('retrieve', async (event, arg) => {
-  const readImageAsBase64 = (filePath) => {
-    const imageData = fs.readFileSync('D://Javascript/test-app/ebro/test2/1700330576630.jpg');
-    return imageData.toString('base64');
-  };
-  const base64Image = readImageAsBase64(arg);
-  console.log('arg', base64Image)
-  event.reply('retrieve', base64Image);
-})
 
