@@ -179,8 +179,6 @@ function Create() {
     setPrev('');
   };
 
-  console.log('defaultValues', mapLocation);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues:

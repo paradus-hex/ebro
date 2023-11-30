@@ -11,7 +11,6 @@ import {
   deleteDoc,
   getDoc,
 } from 'firebase/firestore/lite';
-
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -27,7 +26,6 @@ import {
   ref,
   uploadBytes,
 } from 'firebase/storage';
-import { forEach } from 'lodash';
 
 export interface ProjectData {
   address: string;
@@ -134,6 +132,9 @@ export async function isFav(id: string, fav: boolean) {
 
 export async function deleteProject(id: string) {
   const docRef = doc(db, 'projects', id);
+  const docSnap = await getDoc(docRef);
+  const key = docSnap.id;
+  const data = docSnap.data();
   deleteDoc(docRef).then((e) => console.log(id, 'has been deleted'));
 }
 

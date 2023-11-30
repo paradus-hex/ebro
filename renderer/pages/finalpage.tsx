@@ -14,6 +14,8 @@ import {
 import Layout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
 import { useImageStore } from '../stores/imageStore';
+import { ipcRenderer } from 'electron';
+import { set } from 'zod';
 interface Params {
   projectID: string;
   userID: string;
@@ -41,9 +43,17 @@ const FinalPage: NextPageWithLayout = () => {
     setPrev,
     mapLocation,
   } = useCreatePageStore();
-  const { getImageArray, getImagesToDel } = useImageStore();
+  const { getImageUrlArray, getImagesToDel, getImageInfoArray } =
+    useImageStore();
   const [feedback, setFeedback] = useState<string>('');
   const [text, setText] = useState<string>(getResponse());
+
+  console.log('getImageUrlArray', getImageUrlArray());
+  console.log('getImageInfoArray', getImageInfoArray());
+  console.log(
+    'getImagesToDel',
+    getImagesToDel().map((image) => image.url),
+  );
 
   const { params } = router.query;
   const parsedParams: Params = params
@@ -69,13 +79,19 @@ const FinalPage: NextPageWithLayout = () => {
       )}`,
     );
   };
-  React.useEffect(() => {
+  useEffect(() => {
     window.ipc.on('retrieve', (message: any) => {
       // setMessage(message);
     });
-    window.ipc.on('save2', (message: any) => {
-      // setMessage(message);
-      console.log('save2', message);
+    window.ipc.on('returnList', (arr) => {
+      console.log('returnList', arr);
+    });
+    window.ipc.on('save2', (arr) => {
+      console.log('save2', arr);
+    });
+    window.ipc.send('message', ['ping']);
+    window.ipc.on('message', async (arg) => {
+      console.log('messageF', arg);
     });
   }, []);
   const handleEditClick = () => {
@@ -123,30 +139,14 @@ const FinalPage: NextPageWithLayout = () => {
   const handleAIPromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setFeedback(e.target.value);
   };
-  const filesystemUpload = () => {
-    const uploadedFiles = getImageArray()
-      .map(({ file }) => file)
-      .filter((file) => file !== undefined)
-      .map((el) => el?.path);
-    console.log('getImageArray', getImageArray());
-    console.log('filesystemUpload', uploadedFiles);
-    let folderName = `project_id`;
-    try {
-      window.ipc.send('save2', [userId, folderName, uploadedFiles]);
-    } catch {
-      console.log('eroor in ipc error');
-    }
-    return;
-  };
 
   const handleSaveToCloudClick = async () => {
     setCloudSaveDisabled(true);
     setEditDisabled(true);
-    const imagesDesc = getImageArray().map(({ url, desc }) => ({ url, desc }));
-    const uploadedFiles = getImageArray()
-      .map(({ file }) => file)
-      .filter((file) => file !== undefined);
-
+    const imagesDesc = getImageInfoArray().map(({ url, desc }) => ({
+      url,
+      desc,
+    }));
     if (intention === 'create') {
       await setProjects({
         ...getValues(),
@@ -157,25 +157,39 @@ const FinalPage: NextPageWithLayout = () => {
         note: getNote(),
       })
         .then(async (docRef) => {
-          const downloadUrls = await saveImagesToCloud(
-            userId,
-            `${projectName}_${docRef.id}`,
-            uploadedFiles,
-          );
-          try {
-            let obj = JSON.stringify({
-              userId: userId,
-              folderName: `${projectName}_project_id}`,
-              files: uploadedFiles,
+          const uploadedFilesName = getImageInfoArray()
+            .filter((file) => file !== undefined)
+            .map(({ file }) => file)
+            .map((el, index) => {
+              return {
+                path: el.path,
+                name: `${new Date().getTime()}_${index}.jpg`,
+              };
             });
-            await window.ipc.send('save2', obj);
+          let saveUrls: string[] = [];
+          try {
+            await window.ipc.send('save2', [
+              userId,
+              `${projectName}_${docRef.id}`,
+              uploadedFilesName,
+            ]);
+            window.ipc.on('returnList', (arr: string[]) => {
+              console.log('returnList', arr);
+              saveUrls = arr;
+              if (arr.length !== 0) {
+                // deleteImagesFromCloud(
+                //   getImagesToDel().map((image) => image.url),
+                // );
+                setImagesDescToCloud(docRef.id, imagesDesc, saveUrls);
+              }
+            });
           } catch {
-            console.log('error');
+            console.log('ipc error');
           }
-          return { downloadUrls, docRef };
+          return { docRef, saveUrls };
         })
-        .then(({ downloadUrls, docRef }) => {
-          setImagesDescToCloud(docRef.id, imagesDesc, downloadUrls);
+        .then(({ docRef, saveUrls }) => {
+          setImagesDescToCloud(docRef.id, imagesDesc, saveUrls);
         });
     } else {
       updateProjectDetails(projectID, {
@@ -186,32 +200,39 @@ const FinalPage: NextPageWithLayout = () => {
         projectName,
         note: getNote(),
       });
-
-      const uploadedFilesName = getImageArray()
-        .map(({ file }) => file)
-        .filter((file) => file !== undefined)
-        .map((el) => {
+      const uploadedFilesName = getImageInfoArray()
+        .filter((el) => el.file !== undefined)
+        .map((el, index) => {
           return {
-            path: el?.path,
-            name: new Date().getTime().toString() + '.jpg',
+            path: el.file?.path,
+            name: `${new Date().getTime()}_${index}.jpg`,
           };
         });
-      let folderName = `project_id`;
+      console.log('uploadedFilesName', uploadedFilesName);
+      let saveUrls: string[] = [];
       try {
-        window.ipc.send('save2', [userId, folderName, uploadedFilesName]);
+        window.ipc.send('save2', [
+          userId,
+          `${projectName}_${projectID}`,
+          uploadedFilesName,
+        ]);
+        window.ipc.on('returnList', (arr: string[]) => {
+          console.log('returnList', arr);
+          saveUrls = arr;
+          console.log(
+            'getImagesToDel',
+            getImagesToDel().map((image) => image.url),
+          );
+          getImagesToDel().length &&
+            window.ipc.send(
+              'deleteImages',
+              getImagesToDel().map((image) => image.url),
+            );
+          arr.length && setImagesDescToCloud(projectID, imagesDesc, saveUrls);
+        });
       } catch {
-        console.log('eroor in ipc error');
+        console.log('ipc error');
       }
-
-      // console.log('res', res);
-      saveImagesToCloud(
-        userId,
-        `${projectName}_${projectID}`,
-        uploadedFiles,
-      ).then(async (downloadUrls) => {
-        deleteImagesFromCloud(getImagesToDel().map((image) => image.url));
-        setImagesDescToCloud(projectID, imagesDesc, downloadUrls);
-      });
     }
     // router.push('/home');
   };
@@ -280,9 +301,9 @@ const FinalPage: NextPageWithLayout = () => {
         <div className="col-span-4">
           <div className="mx-auto mr-2 relative max-h-[600px] rounded flex overflow-y-auto flex-col items-center justify-center">
             <div className="flex flex-wrap w-full gap-2 items-center justify-center overflow-auto">
-              {getImageArray().map((image) => (
-                <div key={image.url} className="border-red-700">
-                  <img className="object-cover " src={image.url} alt="" />
+              {getImageUrlArray().map((url) => (
+                <div key={url} className="border-red-700">
+                  <img className="object-cover " src={url} alt="" />
                 </div>
               ))}
             </div>

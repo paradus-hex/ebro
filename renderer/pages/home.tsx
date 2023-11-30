@@ -6,13 +6,12 @@ import { useRouter } from 'next/router';
 import Search from '../components/search';
 import Layout from '../components/Layout';
 import { useImageStore } from '../stores/imageStore';
-import useStore from '../stores/useStore';
 import { useSignInPageStore } from '../stores/signInPageStore';
 import { useCreatePageStore } from '../stores/createPageStore';
-import { set } from 'zod';
 
 function Home() {
-  const { setImageArray, setImagesToDel } = useImageStore();
+  const { setImageInfoArray, setImageUrlArray, setImagesToDel } =
+    useImageStore();
   const {
     setProjectId,
     setUserId,
@@ -32,14 +31,6 @@ function Home() {
   const handleProjectNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProjectName(e.target.value);
   };
-  React.useEffect(() => {
-    window.ipc.on('retrieve', (message: string) => {
-      setMessage(message);
-    });
-    window.ipc.on('save', (message: string) => {
-      setMessage(message);
-    });
-  }, []);
   const handleCreateClick = () => {
     setIntentions('create');
     setProjectId('');
@@ -59,15 +50,10 @@ function Home() {
   };
   useEffect(() => {
     setResponse('');
-    setImageArray([]);
+    setImageInfoArray([]);
+    setImageUrlArray([]);
     setImagesToDel([]);
-    setMapLocation({ lat: 60.472, lng: 8.4689 });
-    window.ipc.on('save', (message: string) => {
-      console.log(message);
-    });
-    window.ipc.on('retrieve', (message: string) => {
-      setImageSrc(`data:image/jpeg;base64,${message}`);
-    });
+    setMapLocation({ lat: 59.9139, lng: 10.7522 });
   }, []);
   return (
     <React.Fragment>

@@ -27,10 +27,12 @@ const ImageUpload = () => {
   const router = useRouter();
 
   const {
-    setImageArray,
-    getImageArray,
-    pushImageArray,
-    getImagesToDel,
+    setImageUrlArray,
+    getImageUrlArray,
+    pushImageUrlArray,
+    setImageInfoArray,
+    pushImageInfoArray,
+    getImageInfoArray,
     onAddDesc,
     onDelete,
   } = useImageStore();
@@ -43,11 +45,42 @@ const ImageUpload = () => {
   ) => {
     if (prev === 'home' && intention === 'update') {
       const imageDesc = await getImageDescFromCloud(projectID);
-      setImageArray(imageDesc);
+      setImageInfoArray(imageDesc);
+      // console.log(imageDesc);
+      // setImageUrlArray(imageDesc);
+      try {
+        window.ipc.send('convertToBlobURL', imageDesc);
+        window.ipc.on(
+          'convertedImages',
+          (
+            convertedImages: {
+              url: string;
+              desc: string;
+              file: File;
+            }[],
+          ) => {
+            console.log(convertedImages);
+            const blobImages = convertedImages.map((image) => {
+              const blob = new Blob([image.file], { type: 'image/jpeg' });
+              const file = new File([blob], image.url, {
+                type: 'image/jpeg',
+              });
+              const blobUrl = URL.createObjectURL(file);
+              return { url: blobUrl, desc: image.desc };
+            });
+            console.log(blobImages);
+            setImageUrlArray(blobImages.map((item) => item.url));
+          },
+        );
+      } catch {
+        console.log('ipc error');
+      }
     } else {
-      setImageArray(getImageArray());
+      setImageUrlArray(getImageUrlArray());
     }
   };
+  console.log(getImageUrlArray());
+  console.log(getImageInfoArray());
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -55,7 +88,8 @@ const ImageUpload = () => {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         const url = URL.createObjectURL(file);
-        pushImageArray({ url, desc: '', file });
+        pushImageUrlArray(url);
+        pushImageInfoArray({ url, desc: '', file });
       }
     }
   };
@@ -66,7 +100,8 @@ const ImageUpload = () => {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         const url = URL.createObjectURL(file);
-        pushImageArray({ url, desc: '', file });
+        pushImageUrlArray(url);
+        pushImageInfoArray({ url, desc: '', file });
       }
     }
   };
@@ -81,7 +116,7 @@ const ImageUpload = () => {
   }, []);
   return (
     <div className="mx-5 mt-7 max-w-xs">
-      {getImageArray()?.length === 0 ? (
+      {getImageUrlArray()?.length === 0 ? (
         <div className="flex flex-col items-center w-[320px] h-[360px] cursor-pointer">
           <form>
             <label>
@@ -118,26 +153,26 @@ const ImageUpload = () => {
             }}
             navigation={true}
             modules={[Pagination, Navigation]}
-            className="mySwiper"
             onSlideChange={(swiper) => {
               inputElement.current.value =
-                getImageArray()[swiper.activeIndex].desc;
+                getImageInfoArray()[swiper.activeIndex].desc;
             }}
           >
-            {getImageArray()?.map((image, index) => (
-              <SwiperSlide key={image.url}>
+            {getImageUrlArray()?.map((url) => (
+              <SwiperSlide key={url}>
                 <div className="relative w-[320px] h-[200px]">
                   <button
                     onClick={(e) => {
                       onDelete(swiperRef.current.activeIndex);
                     }}
-                    className="absolute top-2 text-center right-2 bg-red-800 hover:bg-red-500 text-white hover:scale-105 text-sm h-[20px] w-[20px] "
+                    className="absolute top-2 z-10 text-center right-2 bg-red-800 hover:bg-red-500 text-white hover:scale-105 text-sm h-[20px] w-[20px] "
                   >
                     x
                   </button>
-                  <img
-                    src={image.url}
+                  <Image
+                    src={url}
                     alt="Preview"
+                    layout="fill"
                     className="object-cover rounded-xl"
                   />
                 </div>
@@ -148,7 +183,7 @@ const ImageUpload = () => {
             className="mt-8 text-base min-h-[100px] w-[320px] m-auto border focus:border-1 bg-white focus:outline-slate-400 rounded-lg px-2"
             id="imageDesc"
             ref={inputElement}
-            value={getImageArray()[swiperRef.current?.activeIndex]?.desc}
+            value={getImageInfoArray()[swiperRef.current?.activeIndex]?.desc}
             onChange={(e) => {
               onAddDesc(swiperRef.current.activeIndex, e.target.value);
             }}
@@ -173,7 +208,8 @@ const ImageUpload = () => {
             </label>
             <button
               onClick={() => {
-                setImageArray([]);
+                setImageInfoArray([]);
+                setImageUrlArray([]);
               }}
             >
               <div className="flex gap-2">

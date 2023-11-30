@@ -1,12 +1,12 @@
 {
   "private": true,
-  "name": "my-nextron-app",
-  "description": "My application description",
+  "name": "Ebro",
+  "description": "",
   "version": "1.0.0",
-  "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
+  "author": "Ascend AI",
   "main": "app/background.js",
   "scripts": {
-    "dev": "nextron",
+    "dev": "nextron --run-only",
     "build": "nextron build",
     "postinstall": "electron-builder install-app-deps"
   },
