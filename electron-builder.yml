@@ -1,6 +1,6 @@
 appId: com.example.nextron
-productName: My Nextron App
-copyright: Copyright © 2018 Yoshihide Shiono
+productName: Ebro App
+copyright: Copyright © 2023 Ascend AI
 directories:
   output: dist
   buildResources: resources
@@ -10,3 +10,6 @@ files:
       - package.json
       - app
 publish: null
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true

@@ -30,39 +30,10 @@ export default function FinalModal() {
     userId,
     mapLocation,
   } = useCreatePageStore();
-  const { getImageArray, getImagesToDel } = useImageStore();
+  const { getImageInfoArray, getImagesToDel, getImageUrlArray } =
+    useImageStore();
   const [feedback, setFeedback] = useState<string>('');
   const [text, setText] = useState<string>(getResponse());
-  // const { append, isLoading } = useChat({
-  //   onFinish: (message) => {
-  //     setResponse(message.content.slice(1, -1));
-  //   },
-  // });
-  const { params } = router.query;
-  // const parsedParams: Params = params
-  //   ? JSON.parse(decodeURIComponent(params as string))
-  //   : {};
-  // const { projectId, projectName, intention, userId } = parsedParams;
-  // const { projectId, projectName, intention, userId } = {
-  //   projectId: 'asdf',
-  //   projectName: 'Asdf',
-  //   intention: 'asdf',
-  //   userId: 'Asdfsd',
-  // };
-  // const handleGoBack = () => {
-  //   router.push(
-  //     `/create?params=${encodeURIComponent(
-  //       JSON.stringify({
-  //         passedProjectName: projectName,
-  //         intention,
-  //         projectId,
-  //         userId,
-  //         prev: 'finalpage',
-  //       }),
-  //     )}`,
-  //   );
-  // };
-
   const handleEditClick = () => {
     setIsEditing(true);
   };
@@ -74,22 +45,8 @@ export default function FinalModal() {
   };
 
   const handleAISubmitClick = async () => {
-    // append({
-    //   role: 'user',
-    //   content: JSON.stringify(text + '$$$' + feedback),
-    // });
     handleCloseModal();
     setButtonsDisabled(true);
-    // setText(
-    //   await chat(
-    //     JSON.stringify(
-    //       text +
-    //         '$$$' +
-    //         feedback +
-    //         '.\n Keep every other information as it is.',
-    //     ),
-    //   ),
-    // );
     fetch('https://cyan-important-rattlesnake.cyclic.app', {
       method: 'POST',
       headers: {
@@ -104,7 +61,6 @@ export default function FinalModal() {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        // console.log(response);
         return response.json();
       })
       .then((data) => {
@@ -126,8 +82,11 @@ export default function FinalModal() {
   const handleSaveToCloudClick = async () => {
     setCloudSaveDisabled(true);
     setEditDisabled(true);
-    const imagesDesc = getImageArray().map(({ url, desc }) => ({ url, desc }));
-    const uploadedFiles = getImageArray()
+    const imagesDesc = getImageInfoArray().map(({ url, desc }) => ({
+      url,
+      desc,
+    }));
+    const uploadedFiles = getImageInfoArray()
       .map(({ file }) => file)
       .filter((file) => file !== undefined);
     if (intention === 'create') {
@@ -168,7 +127,7 @@ export default function FinalModal() {
         setImagesDescToCloud(projectId, imagesDesc, downloadUrls);
       });
     }
-    router.push('/home');
+    // router.push('/home');
   };
 
   const handleAIButtonClick = () => {
@@ -185,14 +144,6 @@ export default function FinalModal() {
 
   return (
     <div className="flex flex-col w-full max-h-[700px] justify-center">
-      {/* <Button
-        className="sticky top-5 w-24 h-12"
-        onClick={handleGoBack}
-        disabled={editDisabled || isEditing || buttonsDisabled}
-      >
-        Go back
-      </Button> */}
-
       <h1 className="font-extrabold mt-4 ml-3 mb-4 ">
         {projectName || 'Project Name'}
       </h1>
@@ -238,12 +189,12 @@ export default function FinalModal() {
         <div className="col-span-4  max-h-[550px] flex justify-center items-center ">
           <div className="max-w-screen-2xl  px-4 py-16 lg:py-24 relative  m-2 rounded mr-5 flex  flex-col space-y-5 items-center justify-center">
             <div className="flex flex-wrap w-full max-h-[550px] gap-2 items-center justify-center overflow-auto">
-              {getImageArray().map((image, index) => (
+              {getImageUrlArray().map((url) => (
                 <div className="border-red-700">
                   <img
                     className="object-cover w-[320px] h-[200px]"
-                    src={image.url}
-                    key={image.url}
+                    src={url}
+                    key={url}
                     alt=""
                   />
                 </div>

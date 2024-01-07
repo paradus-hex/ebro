@@ -1,11 +1,8 @@
 import path from 'path'
-import { app, ipcMain, ipcRenderer } from 'electron'
+import { app, dialog, ipcMain, ipcRenderer } from 'electron'
 import serve from 'electron-serve'
 import { createWindow } from './helpers'
 import fs from 'fs'
-
-
-
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -39,79 +36,64 @@ app.on('window-all-closed', () => {
   app.quit()
 })
 
+ipcMain.on('convertToBlobURL', async (event, imageDescArray) => {
+  let convertedImages = [];
+  for (const imageDesc of imageDescArray) {
+    try {
+      const imageData = fs.readFileSync(imageDesc.url);
+      const fileName = path.basename(imageDesc.url);
+      convertedImages.push({ file: imageData, desc: imageDesc.desc, url: fileName });
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  event.sender.send('convertedImages', convertedImages);
+});
 
-
+ipcMain.on('deleteImages', async (event, imagesToDel) => {
+  for (const image of imagesToDel) {
+    try {
+      fs.unlinkSync(image);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+});
 
 ipcMain.on('message', async (event, arg) => {
-  // fs.writeFile('mynewfile3.txt', 'Hello content!', function (err) {
-  //   if (err) throw err;
-  //   console.log('Saved!');
-  // });
-  // let imageData = fs.readFileSync(arg);
-
-  // let destinationPath = `D://Javascript/test-app/images/test2`;
-
-  // if (!fs.existsSync(destinationPath)) {
-  //   fs.mkdirSync(destinationPath, { recursive: true });
-  // }
-
-  // let fileName = Date.now()
-
-  // fs.writeFile(`${destinationPath}/${fileName}.jpg`, imageData, (err) => {
-  //   if (err) throw err;
-
-  //   console.log('The file has been saved!');
-  // });
-  console.log('arg', typeof arg)
-  event.reply('message', arg)
+  event.sender.send('message', arg)
 })
 
-ipcMain.on('save', async (event, arg) => {
-  fs.writeFile('mynewfile3.txt', 'Hello content!', function (err) {
-    if (err) throw err;
-    console.log('Saved!');
+ipcMain.on('browseSaveLocation', async (event, defaultPath) => {
+  dialog.showOpenDialog({
+    title: 'Select a directory to save project photos to',
+    defaultPath,
+    properties: ['openDirectory', 'createDirectory']
+  }).then(result => {
+    if (!result.canceled) {
+      let destinationPath = result.filePaths[0];
+      event.sender.send('saveLocation', destinationPath);
+    }
+  }).catch(err => {
+    console.error('Error selecting directory:', err);
   });
-  let imageData = fs.readFileSync(arg);
+}
+)
 
-  let destinationPath = `D://Javascript/test-app/images/test2`;
-
-  if (!fs.existsSync(destinationPath)) {
-    fs.mkdirSync(destinationPath, { recursive: true });
+ipcMain.on('savePhotos', async (event, arg) => {
+  let defaultSavePath = arg[0];
+  let folderName = arg[1];
+  let files = arg[2];
+  let returnList = [];
+  if (!fs.existsSync(path.join(defaultSavePath, folderName))) {
+    fs.mkdirSync(path.join(defaultSavePath, folderName), { recursive: true });
   }
-
-  let fileName = Date.now()
-
-  fs.writeFile(`${destinationPath}/${fileName}.jpg`, imageData, (err) => {
-    if (err) throw err;
-
-    console.log('The file has been saved!');
+  const destinationPath = path.join(defaultSavePath, folderName);
+  files.forEach((fileObject) => {
+    const destFilePath = path.join(destinationPath, fileObject.name);
+    fs.copyFileSync(fileObject.path, destFilePath);
+    returnList.push(destFilePath);
   });
-  console.log('arg', imageData)
-  event.reply('message', `kaka World!`)
-})
+  event.sender.send('returnList', returnList);
+});
 
-
-ipcMain.on('retrieve', async (event, arg) => {
-  const readImageAsBase64 = (filePath) => {
-    const imageData = fs.readFileSync('D://Javascript/test-app/images/test2/1700065754526.jpg');
-    return imageData.toString('base64');
-  };
-
-  const base64Image = readImageAsBase64(arg);
-  // let imageData = fs.readFileSync(arg);
-  // ... rest of your code to save the image ...
-
-  // Send the binary data to the front-end
-
-  console.log('arg', base64Image)
-
-  event.reply('retrieve', base64Image);
-
-
-})
-
-// ipcRenderer.on('imageData', (event, imageData) => {
-//   // Convert the Buffer to a Blob
-//   let blob = new Blob([imageData], { type: 'image/jpeg' });
-//   // Now, 'blob' is a Blob object representing the image
-// });

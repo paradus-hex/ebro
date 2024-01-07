@@ -11,7 +11,6 @@ import {
   deleteDoc,
   getDoc,
 } from 'firebase/firestore/lite';
-
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -27,7 +26,6 @@ import {
   ref,
   uploadBytes,
 } from 'firebase/storage';
-import { forEach } from 'lodash';
 
 export interface ProjectData {
   address: string;
@@ -53,6 +51,12 @@ export interface ProjectData {
   imagesDesc: string[];
   note: string;
   mapLocation?: { lat: number; lng: number };
+}
+
+export interface AccountData {
+  account_tier: string;
+  default_save_path: string;
+  user_id: string;
 }
 
 const app = initializeApp(firebaseConfig);
@@ -134,6 +138,9 @@ export async function isFav(id: string, fav: boolean) {
 
 export async function deleteProject(id: string) {
   const docRef = doc(db, 'projects', id);
+  const docSnap = await getDoc(docRef);
+  const key = docSnap.id;
+  const data = docSnap.data();
   deleteDoc(docRef).then((e) => console.log(id, 'has been deleted'));
 }
 
@@ -156,9 +163,18 @@ export async function logout() {
 }
 
 export async function getAccountDetails(id: string) {
-  return (
-    await getDocs(query(accounts, where('user_id', '==', id)))
-  ).docs[0].data();
+  const docSnap = (await getDocs(query(accounts, where('user_id', '==', id))))
+    .docs[0];
+  const returnData = docSnap && {
+    key: docSnap.id,
+    ...(docSnap.data() as AccountData),
+  };
+  return returnData;
+}
+
+export async function saveDefaultSavePath(id: string, path: string) {
+  const docRef = doc(db, 'accounts', id);
+  updateDoc(docRef, { default_save_path: path });
 }
 
 export async function saveImagesToCloud(

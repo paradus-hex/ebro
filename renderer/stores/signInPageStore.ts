@@ -10,6 +10,7 @@ interface SignInPagePageStoreState {
   account_type: string;
   account_id: string;
   sideBarIsOpen: boolean;
+  defaultSavePath: string;
   setAccount_id: (account_id: string) => void;
   getAccount_id: () => string;
   setAccount_type: (account_type: string) => void;
@@ -21,6 +22,7 @@ interface SignInPagePageStoreState {
   getSignedIn: () => boolean;
   setSignedIn: (signedIn: boolean) => void;
   setSideBarIsOpen: (sideBarIsOpen: boolean) => void;
+  setDefaultSavePath: (defaultSavePath: string) => void;
 }
 
 export const useSignInPageStore = create<SignInPagePageStoreState>()(
@@ -36,6 +38,7 @@ export const useSignInPageStore = create<SignInPagePageStoreState>()(
         account_type: '',
         account_id: '',
         sideBarIsOpen: true,
+        defaultSavePath: '',
         setAccount_id: (account_id) => set({ account_id }),
         getAccount_id: () => get().account_id,
         setAccount_type: (account_type) => set({ account_type }),
@@ -47,6 +50,7 @@ export const useSignInPageStore = create<SignInPagePageStoreState>()(
         getSignedIn: () => get().signedIn,
         setSignedIn: (signedIn) => set({ signedIn }),
         setSideBarIsOpen: (sideBarIsOpen) => set({ sideBarIsOpen }),
+        setDefaultSavePath: (defaultSavePath) => set({ defaultSavePath }),
       }),
       { name: 'signInStore' }
     )

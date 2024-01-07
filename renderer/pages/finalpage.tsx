@@ -4,16 +4,14 @@ import { Button } from '../components/ui/button';
 import { useCreatePageStore } from '../stores/createPageStore';
 import { useRouter } from 'next/router';
 import {
-  saveImagesToCloud,
   setProjects,
   updateProjectDetails,
   setImagesDescToCloud,
-  deleteProjectPhotosFromCloud,
-  deleteImagesFromCloud,
 } from '../lib/firebasedb';
 import Layout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
 import { useImageStore } from '../stores/imageStore';
+import { useSignInPageStore } from '../stores/signInPageStore';
 interface Params {
   projectID: string;
   userID: string;
@@ -28,6 +26,7 @@ const FinalPage: NextPageWithLayout = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [buttonsDisabled, setButtonsDisabled] = useState<boolean>(false);
+  const defaultSavePath = useSignInPageStore((state) => state.defaultSavePath);
   const {
     getResponse,
     setResponse,
@@ -41,14 +40,18 @@ const FinalPage: NextPageWithLayout = () => {
     setPrev,
     mapLocation,
   } = useCreatePageStore();
-  const { getImageArray, getImagesToDel } = useImageStore();
+  const { getImageUrlArray, getImagesToDel, getImageInfoArray } =
+    useImageStore();
   const [feedback, setFeedback] = useState<string>('');
   const [text, setText] = useState<string>(getResponse());
-  // const { append, isLoading } = useChat({
-  //   onFinish: (message) => {
-  //     setResponse(message.content.slice(1, -1));
-  //   },
-  // });
+
+  console.log('getImageUrlArray', getImageUrlArray());
+  console.log('getImageInfoArray', getImageInfoArray());
+  console.log(
+    'getImagesToDel',
+    getImagesToDel().map((image) => image.url),
+  );
+
   const { params } = router.query;
   const parsedParams: Params = params
     ? JSON.parse(decodeURIComponent(params as string))
@@ -85,22 +88,9 @@ const FinalPage: NextPageWithLayout = () => {
   };
 
   const handleAISubmitClick = async () => {
-    // append({
-    //   role: 'user',
-    //   content: JSON.stringify(text + '$$$' + feedback),
-    // });
     handleCloseModal();
     setButtonsDisabled(true);
-    // setText(
-    //   await chat(
-    //     JSON.stringify(
-    //       text +
-    //         '$$$' +
-    //         feedback +
-    //         '.\n Keep every other information as it is.',
-    //     ),
-    //   ),
-    // );
+
     fetch('https://cyan-important-rattlesnake.cyclic.app', {
       method: 'POST',
       headers: {
@@ -136,11 +126,10 @@ const FinalPage: NextPageWithLayout = () => {
   const handleSaveToCloudClick = async () => {
     setCloudSaveDisabled(true);
     setEditDisabled(true);
-    const imagesDesc = getImageArray().map(({ url, desc }) => ({ url, desc }));
-    const uploadedFiles = getImageArray()
-      .map(({ file }) => file)
-      .filter((file) => file !== undefined);
-
+    const imagesDesc = getImageInfoArray().map(({ url, desc }) => ({
+      url,
+      desc,
+    }));
     if (intention === 'create') {
       await setProjects({
         ...getValues(),
@@ -151,15 +140,39 @@ const FinalPage: NextPageWithLayout = () => {
         note: getNote(),
       })
         .then(async (docRef) => {
-          const downloadUrls = await saveImagesToCloud(
-            userId,
-            `${projectName}_${docRef.id}`,
-            uploadedFiles,
-          );
-          return { downloadUrls, docRef };
+          const uploadedFilesName = getImageInfoArray()
+            .filter((file) => file !== undefined)
+            .map(({ file }) => file)
+            .map((el, index) => {
+              return {
+                path: el.path,
+                name: `${new Date().getTime()}_${index}.jpg`,
+              };
+            });
+          let saveUrls: string[] = [];
+          try {
+            await window.ipc.send('savePhotos', [
+              defaultSavePath,
+              `${projectName}_${docRef.id}`,
+              uploadedFilesName,
+            ]);
+            window.ipc.on('returnList', (arr: string[]) => {
+              console.log('returnList', arr);
+              saveUrls = arr;
+              if (arr.length !== 0) {
+                // deleteImagesFromCloud(
+                //   getImagesToDel().map((image) => image.url),
+                // );
+                setImagesDescToCloud(docRef.id, imagesDesc, saveUrls);
+              }
+            });
+          } catch {
+            console.log('ipc error');
+          }
+          return { docRef, saveUrls };
         })
-        .then(({ downloadUrls, docRef }) => {
-          setImagesDescToCloud(docRef.id, imagesDesc, downloadUrls);
+        .then(({ docRef, saveUrls }) => {
+          setImagesDescToCloud(docRef.id, imagesDesc, saveUrls);
         });
     } else {
       updateProjectDetails(projectID, {
@@ -170,14 +183,39 @@ const FinalPage: NextPageWithLayout = () => {
         projectName,
         note: getNote(),
       });
-      saveImagesToCloud(
-        userId,
-        `${projectName}_${projectID}`,
-        uploadedFiles,
-      ).then(async (downloadUrls) => {
-        deleteImagesFromCloud(getImagesToDel().map((image) => image.url));
-        setImagesDescToCloud(projectID, imagesDesc, downloadUrls);
-      });
+      const uploadedFilesName = getImageInfoArray()
+        .filter((el) => el.file !== undefined)
+        .map((el, index) => {
+          return {
+            path: el.file?.path,
+            name: `${new Date().getTime()}_${index}.jpg`,
+          };
+        });
+      console.log('uploadedFilesName', uploadedFilesName);
+      let saveUrls: string[] = [];
+      try {
+        window.ipc.send('savePhotos', [
+          defaultSavePath,
+          `${projectName}_${projectID}`,
+          uploadedFilesName,
+        ]);
+        window.ipc.on('returnList', (arr: string[]) => {
+          console.log('returnList', arr);
+          saveUrls = arr;
+          console.log(
+            'getImagesToDel',
+            getImagesToDel().map((image) => image.url),
+          );
+          getImagesToDel().length &&
+            window.ipc.send(
+              'deleteImages',
+              getImagesToDel().map((image) => image.url),
+            );
+          arr.length && setImagesDescToCloud(projectID, imagesDesc, saveUrls);
+        });
+      } catch {
+        console.log('ipc error');
+      }
     }
     router.push('/home');
   };
@@ -246,9 +284,9 @@ const FinalPage: NextPageWithLayout = () => {
         <div className="col-span-4">
           <div className="mx-auto mr-2 relative max-h-[600px] rounded flex overflow-y-auto flex-col items-center justify-center">
             <div className="flex flex-wrap w-full gap-2 items-center justify-center overflow-auto">
-              {getImageArray().map((image) => (
-                <div key={image.url} className="border-red-700">
-                  <img className="object-cover " src={image.url} alt="" />
+              {getImageUrlArray().map((url) => (
+                <div key={url} className="border-red-700">
+                  <img className="object-cover " src={url} alt="" />
                 </div>
               ))}
             </div>
@@ -270,7 +308,10 @@ const FinalPage: NextPageWithLayout = () => {
               buttonsDisabled
             }
             className=" bg-nav_primary text-white w-[200px] rounded-xl text-sm px-2 h-10 mb-5"
-            onClick={handleSaveToCloudClick}
+            onClick={() => {
+              handleSaveToCloudClick();
+              // filesystemUpload();
+            }}
           >
             Save to Cloud
           </Button>

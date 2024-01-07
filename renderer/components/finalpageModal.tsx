@@ -1,9 +1,6 @@
-// EditModal.tsx
-
 import { useRef, useEffect } from 'react';
 import React from 'react';
 import { Button } from './ui/button';
-
 interface EditModalProps {
   text: string;
   feedback: string;
@@ -23,7 +20,6 @@ const EditModal: React.FC<EditModalProps> = ({
   text,
   feedback,
   isEditing,
-  buttonsDisabled,
   setText,
   setIsEditing,
   handleChange,
@@ -97,9 +93,4 @@ const EditModal: React.FC<EditModalProps> = ({
     </div>
   );
 };
-
 export default EditModal;
-
-{
-  /* <button onClick={handleCloseModal}>Close</button> */
-}

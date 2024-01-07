@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import Head from 'next/head';
 import ProjectSlider from '../components/ProjectSlider';
 import { Button } from '../components/ui/button';
@@ -6,12 +6,12 @@ import { useRouter } from 'next/router';
 import Search from '../components/search';
 import Layout from '../components/Layout';
 import { useImageStore } from '../stores/imageStore';
-import useStore from '../stores/useStore';
 import { useSignInPageStore } from '../stores/signInPageStore';
 import { useCreatePageStore } from '../stores/createPageStore';
 
 function Home() {
-  const { setImageArray, setImagesToDel } = useImageStore();
+  const { setImageInfoArray, setImageUrlArray, setImagesToDel } =
+    useImageStore();
   const {
     setProjectId,
     setUserId,
@@ -22,7 +22,11 @@ function Home() {
     setProjectName,
     setResponse,
   } = useCreatePageStore();
-  const { getValues, getUser_id } = useSignInPageStore();
+  const [message, setMessage] = React.useState('No message found');
+  const [imageSrc, setImageSrc] = useState('');
+  const [file, setFile] = React.useState<File | null>(null);
+
+  const { getValues, getUser_id, defaultSavePath } = useSignInPageStore();
   const router = useRouter();
   const handleProjectNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProjectName(e.target.value);
@@ -46,13 +50,10 @@ function Home() {
   };
   useEffect(() => {
     setResponse('');
-    setImageArray([]);
+    setImageInfoArray([]);
+    setImageUrlArray([]);
     setImagesToDel([]);
-    setMapLocation({ lat: 60.472, lng: 8.4689 });
-    window.ipc.on('message', (message: string) => {
-      // setProjectId(arg);
-      console.log(message);
-    });
+    setMapLocation({ lat: 59.9139, lng: 10.7522 });
   }, []);
   return (
     <React.Fragment>
@@ -71,7 +72,31 @@ function Home() {
               <div className="text-left text-sm font-semibold pt-5">
                 <p>75 GB of 100 GB is being used</p>
               </div>
-              <button onClick={()=>window.ipc.send('message','hoise ki?')}>send</button>
+              {/* <button onClick={()=>window.ipc.send('message','hoise ki?')}>send</button> */}
+              <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+              <div>
+                <Button
+                  onClick={() => {
+                    window.ipc.send('save', file.path);
+                  }}
+                >
+                  Test IPC
+                </Button>
+                <Button
+                  onClick={() =>
+                    window.ipc.send(
+                      'retrieve',
+                      `D://Javascript/ebro/images/test2/1700065754526.jpg`,
+                    )
+                  }
+                >
+                  test render
+                </Button>
+                <img src={imageSrc} alt="From Server" />
+                {/* <img src={`../../images/test2/1700065830898.jpg`} alt="From Server" />; */}
+                <p>{message}</p>
+                <p>{imageSrc}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -80,7 +105,11 @@ function Home() {
         </div>
       </div>
       <div className="w-full  flex flex-col justify-center items-center space-y-10 mt-16 min-h-[300px]">
-        <h1 className="font-extrabold">Lets Get To Work!</h1>
+        <h1 className="font-extrabold">
+          {defaultSavePath.length === 0
+            ? 'Please select a save path for the project photos.'
+            : 'Lets Get To Work!'}
+        </h1>
 
         <input
           type="text"
@@ -92,7 +121,7 @@ function Home() {
         <Button
           className="mt-10 text-xl rounded-md px-8 py-6 tracking-wider w-[300px] primary_grad shadow-lg shadow-gray-500"
           onClick={handleCreateClick}
-          disabled={projectName.length === 0}
+          disabled={projectName.length === 0 || defaultSavePath.length === 0}
         >
           Create New
         </Button>
